@@ -33,7 +33,10 @@ namespace Untei
         /// <returns>List of keys</returns>
         public List<string> GetKeys()
         {
-            return BibDictionary.Keys.ToList();
+            List<string> keys = BibDictionary.Keys.ToList();
+            keys.Reverse();
+
+            return keys;
         }
 
         /// <summary>

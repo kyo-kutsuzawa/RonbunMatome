@@ -24,14 +24,14 @@
                     <ListView x:Name="BiblioListView" Margin="0,0,0,0" Grid.Column="1">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Authors" DisplayMemberBinding="{Binding [0]}"/>
-                                <GridViewColumn Header="Title" DisplayMemberBinding="{Binding [1]}"/>
                                 <GridViewColumn Header="Year" DisplayMemberBinding="{Binding [2]}"/>
+                                <GridViewColumn Header="Title" DisplayMemberBinding="{Binding [1]}"/>
+                                <GridViewColumn Header="Authors" DisplayMemberBinding="{Binding [0]}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
                     <ListBox Margin="0,0,3,0"/>
-                    <GridSplitter HorizontalAlignment="Right" Height="163" Margin="0,0,0,0" Width="3"/>
+                    <GridSplitter HorizontalAlignment="Right" Margin="0,0,0,0" Width="3"/>
                 </Grid>
             </TabItem>
             <TabItem Header="TabItem">
