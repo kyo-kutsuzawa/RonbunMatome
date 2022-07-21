@@ -20,18 +20,15 @@ namespace Untei
     /// </summary>
     public partial class MainWindow : Window
     {
+        private BibManager bibManager;
+
         public MainWindow()
         {
             InitializeComponent();
 
-            BibManager tmp = new BibManager();
-            DebugTextBox.Text = tmp.JsonString;
+            bibManager = new BibManager();
 
-            foreach (string key in tmp.GetKeys())
-            {
-                List<string> list = tmp.GetBibSummary(key);
-                BiblioListView.Items.Add(list);
-            }
+            BiblioListView.DataContext = new List<BibItem>(bibManager.BibDictionary.Values);
         }
     }
 }

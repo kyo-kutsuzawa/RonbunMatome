@@ -21,12 +21,12 @@
                         <ColumnDefinition Width="0.2*"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <ListView x:Name="BiblioListView" Margin="0,0,0,0" Grid.Column="1">
+                    <ListView x:Name="BiblioListView" Margin="0,0,0,0" Grid.Column="1" ItemsSource="{Binding}">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Year" DisplayMemberBinding="{Binding [2]}"/>
-                                <GridViewColumn Header="Title" DisplayMemberBinding="{Binding [1]}"/>
-                                <GridViewColumn Header="Authors" DisplayMemberBinding="{Binding [0]}"/>
+                                <GridViewColumn Header="Year" DisplayMemberBinding="{Binding Year}"/>
+                                <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}"/>
+                                <GridViewColumn Header="Authors" DisplayMemberBinding="{Binding Author}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
