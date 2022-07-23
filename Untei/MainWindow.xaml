@@ -6,6 +6,12 @@
         xmlns:local="clr-namespace:Untei"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
+    <Window.Resources>
+        <Style TargetType="ListViewItem">
+            <EventSetter Event="MouseUp" Handler="BiblioListViewItem_ShowDetails"/>
+            <EventSetter Event="MouseDoubleClick" Handler="BiblioListViewItem_OpenPdf"/>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -24,9 +30,10 @@
                     <ListView x:Name="BiblioListView" Margin="0,0,0,0" Grid.Column="1" ItemsSource="{Binding}">
                         <ListView.View>
                             <GridView>
+                                <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Id}"/>
+                                <GridViewColumn Header="Authors" DisplayMemberBinding="{Binding AuthorSummary}"/>
                                 <GridViewColumn Header="Year" DisplayMemberBinding="{Binding Year}"/>
                                 <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Title}"/>
-                                <GridViewColumn Header="Authors" DisplayMemberBinding="{Binding Author}"/>
                             </GridView>
                         </ListView.View>
                     </ListView>
@@ -47,7 +54,7 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <GridSplitter HorizontalAlignment="Stretch" Margin="0,0,0,0" Height="3" VerticalAlignment="Bottom"/>
-            <TextBox Margin="3,0,0,0" Grid.Row="1" TextWrapping="Wrap" Text="TextBox"/>
+            <TextBox x:Name="CommentBox" Margin="3,0,0,0" Grid.Row="1" TextWrapping="Wrap" Text="TextBox"/>
         </Grid>
     </Grid>
 </Window>

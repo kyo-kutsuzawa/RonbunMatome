@@ -21,6 +21,7 @@ namespace Untei
     public partial class MainWindow : Window
     {
         private BibManager bibManager;
+        private string selectedId;
 
         public MainWindow()
         {
@@ -29,6 +30,26 @@ namespace Untei
             bibManager = new BibManager();
 
             BiblioListView.DataContext = new List<BibItem>(bibManager.BibDictionary.Values);
+
+            selectedId = "";
+        }
+
+        void BiblioListViewItem_ShowDetails(object sender, MouseButtonEventArgs e)
+        {
+            BibItem? item = ((ListViewItem)sender).Content as BibItem;
+
+            if (item == null)
+            {
+                return;
+            }
+
+            selectedId = item.Id;
+            CommentBox.Text = item.Comment;
+        }
+
+        void BiblioListViewItem_OpenPdf(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }
