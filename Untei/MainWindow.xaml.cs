@@ -49,6 +49,41 @@ namespace Untei
 
         void BiblioListViewItem_OpenPdf(object sender, MouseButtonEventArgs e)
         {
+            BibItem? item = ((ListViewItem)sender).Content as BibItem;
+
+            if (item == null)
+            {
+                return;
+            }
+
+            // Return if no PDF file is registered
+            if (item.Files.Count < 1)
+            {
+                return;
+            }
+
+            // Setup a tab header
+            string tabHeader = item.Title;
+            const int tabHeaderLength = 20;
+
+            if (tabHeader.Length > tabHeaderLength)
+            {
+                tabHeader = tabHeader.Substring(0, tabHeaderLength - 3) + "...";
+            }
+
+            WebBrowser pdfBrowser = new WebBrowser();
+            pdfBrowser.Navigate("file://" + item.Files[0] + "#toolbar=1");
+            Grid contentGrid = new Grid();
+            contentGrid.Children.Add(pdfBrowser);
+
+            // Create a new tab
+            TabItem newTabItem = new TabItem
+            {
+                Header = tabHeader,
+                Content = contentGrid
+            };
+
+            BiblioTabControl.Items.Add(newTabItem);
 
         }
     }
