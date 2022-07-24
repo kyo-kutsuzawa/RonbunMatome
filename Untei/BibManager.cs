@@ -39,23 +39,6 @@ namespace Untei
 
             return keys;
         }
-
-        /// <summary>
-        /// Get a summary data of a bibliography item.
-        /// </summary>
-        /// <param name="key">Citation key</param>
-        /// <returns>List of the author, title, and publication year of the given `key`</returns>
-        public List<string> GetBibSummary(string key)
-        {
-            List<string> list = new()
-            {
-                BibDictionary[key].AuthorSummary,
-                BibDictionary[key].Title,
-                BibDictionary[key].Year
-            };
-
-            return list;
-        }
     }
 
     class BibItem
@@ -83,7 +66,7 @@ namespace Untei
                 // Set AuthorSummary
                 if (_authors.Count >= 2)
                 {
-                    AuthorSummary = _authors[0] + "et al.";
+                    AuthorSummary = _authors[0] + " et al.";
                 }
                 else if (_authors.Count == 1)
                 {
