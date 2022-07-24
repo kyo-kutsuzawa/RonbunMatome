@@ -85,6 +85,9 @@ namespace Untei
 
             BiblioTabControl.Items.Add(newTabItem);
 
+            BiblioTabControl.SelectedIndex = BiblioTabControl.Items.Count - 1;
+            BiblioTabControl.SelectedItem = newTabItem;
+            newTabItem.IsSelected = true;
         }
     }
 }
