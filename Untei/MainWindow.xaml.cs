@@ -31,6 +31,8 @@ namespace Untei
 
             BiblioListView.DataContext = new List<BibItem>(bibManager.BibDictionary.Values);
 
+            TagListBox.DataContext = bibManager.ExtractTags();
+
             selectedId = "";
         }
 
@@ -71,6 +73,7 @@ namespace Untei
                 tabHeader = tabHeader.Substring(0, tabHeaderLength - 3) + "...";
             }
 
+            // Create a PDF browser
             WebBrowser pdfBrowser = new WebBrowser();
             pdfBrowser.Navigate("file://" + item.Files[0] + "#toolbar=1");
             Grid contentGrid = new Grid();
@@ -82,9 +85,9 @@ namespace Untei
                 Header = tabHeader,
                 Content = contentGrid
             };
-
             BiblioTabControl.Items.Add(newTabItem);
 
+            // Change selected tab
             BiblioTabControl.SelectedIndex = BiblioTabControl.Items.Count - 1;
             BiblioTabControl.SelectedItem = newTabItem;
             newTabItem.IsSelected = true;

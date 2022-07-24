@@ -39,6 +39,18 @@ namespace Untei
 
             return keys;
         }
+
+        public SortedSet<string> ExtractTags()
+        {
+            SortedSet<string> tagSet = new SortedSet<string>();
+
+            foreach (var item in BibDictionary)
+            {
+                tagSet.UnionWith(item.Value.Tags);
+            }
+
+            return tagSet;
+        }
     }
 
     class BibItem
