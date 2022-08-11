@@ -56,7 +56,31 @@ namespace RonbunMatome
         }
 
         /// <summary>
-        /// Show details and comments of the selected item
+        /// Open a pdf file of the given bibliography item
+        /// </summary>
+        /// <param name="bibItem"></param>
+        void OpenNewPdfTab(BibItem bibItem)
+        {
+            // Return if no PDF file is registered
+            if (bibItem.Files.Count < 1)
+            {
+                return;
+            }
+
+            // Create a new tab
+            PaperTabItem newTabItem = new(bibItem.Id);
+            newTabItem.OpenPdf(bibItem.Files[0]);  // Open a PDF file
+            newTabItem.SetHeaderTitle(bibItem.Title);  // Set the tab header title
+            BiblioTabControl.Items.Add(newTabItem);
+
+            // Change selected tab
+            BiblioTabControl.SelectedIndex = BiblioTabControl.Items.Count - 1;
+            BiblioTabControl.SelectedItem = newTabItem;
+            newTabItem.IsSelected = true;
+        }
+
+        /// <summary>
+        /// Show details of the selected item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -72,6 +96,11 @@ namespace RonbunMatome
             ShowDetails(item.Id);
         }
 
+        /// <summary>
+        /// Open a PDF file when a listview item is double-clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         void BiblioListViewItem_OpenPdf(object sender, MouseButtonEventArgs e)
         {
             // Get the selected item
@@ -83,29 +112,27 @@ namespace RonbunMatome
                 return;
             }
 
-            // Return if no PDF file is registered
-            if (item.Files.Count < 1)
+            OpenNewPdfTab(item);
+        }
+
+        /// <summary>
+        /// Update the detail panel when the selected tab is changed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BiblioTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Get the selected tab
+            int selectedTabIndex = BiblioTabControl.SelectedIndex;
+
+            // Which item to show is changed, depending on the current tab.
+            // If the current tab is the listview tab, the selected item in the listview is shown;
+            // otherwise, details of the current tab is shown.
+            if (selectedTabIndex == -1)  // When no tab is selected
             {
                 return;
             }
-
-            // Create a new tab
-            PaperTabItem newTabItem = new(item.Id);
-            newTabItem.OpenPdf(item.Files[0]);  // Open a PDF file
-            newTabItem.SetHeaderTitle(item.Title);  // Set the tab header title
-            BiblioTabControl.Items.Add(newTabItem);
-
-            // Change selected tab
-            BiblioTabControl.SelectedIndex = BiblioTabControl.Items.Count - 1;
-            BiblioTabControl.SelectedItem = newTabItem;
-            newTabItem.IsSelected = true;
-        }
-
-        private void BiblioTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            int selectedTabIndex = BiblioTabControl.SelectedIndex;
-
-            if (selectedTabIndex == 0)
+            else if (selectedTabIndex == 0)
             {
                 BibItem? selectedItem = (BibItem)BiblioListView.SelectedItem;
 
