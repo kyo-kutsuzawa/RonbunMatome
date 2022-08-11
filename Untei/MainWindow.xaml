@@ -9,7 +9,8 @@
     <Window.Resources>
         <Style TargetType="ListViewItem">
             <EventSetter Event="MouseUp" Handler="BiblioListViewItem_ShowDetails"/>
-            <EventSetter Event="MouseDoubleClick" Handler="BiblioListViewItem_OpenPdf"/>
+            <EventSetter Event="MouseDoubleClick" Handler="BiblioListViewItem_MouseDoubleClick"/>
+            <EventSetter Event="KeyDown" Handler="BiblioListViewItem_KeyDown"/>
         </Style>
     </Window.Resources>
     <Grid>

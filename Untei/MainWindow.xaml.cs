@@ -101,8 +101,33 @@ namespace RonbunMatome
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        void BiblioListViewItem_OpenPdf(object sender, MouseButtonEventArgs e)
+        void BiblioListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
+            // Get the selected item
+            BibItem? item = ((ListViewItem)sender).Content as BibItem;
+
+            // Return if no item is selected
+            if (item == null)
+            {
+                return;
+            }
+
+            OpenNewPdfTab(item);
+        }
+
+        /// <summary>
+        /// Open a PDF file when Enter key is pressed on a listview item
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void BiblioListViewItem_KeyDown(object sender, KeyEventArgs e)
+        {
+            // Do nothing and return if the pressed key is not Enter
+            if (e.Key != Key.Return)
+            {
+                return;
+            }
+
             // Get the selected item
             BibItem? item = ((ListViewItem)sender).Content as BibItem;
 
