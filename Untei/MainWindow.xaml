@@ -41,11 +41,6 @@
                     <GridSplitter HorizontalAlignment="Right" Margin="0,0,0,0" Width="3"/>
                 </Grid>
             </TabItem>
-            <TabItem Header="TabItem">
-                <Grid Background="#FFE5E5E5">
-                    <TextBox x:Name="DebugTextBox" HorizontalAlignment="Left" Height="141" Margin="131,91,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="198"/>
-                </Grid>
-            </TabItem>
         </TabControl>
         <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Width="3"/>
         <Grid Grid.Column="1" Margin="0,0,0,0">
@@ -53,8 +48,8 @@
                 <RowDefinition/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <GridSplitter HorizontalAlignment="Stretch" Margin="0,0,0,0" Height="3" VerticalAlignment="Bottom"/>
             <TextBox x:Name="CommentBox" Margin="3,0,0,0" Grid.Row="1" TextWrapping="Wrap" Text="TextBox"/>
+            <GridSplitter HorizontalAlignment="Stretch" Margin="0,0,0,0" Height="3" VerticalAlignment="Bottom"/>
         </Grid>
     </Grid>
 </Window>
