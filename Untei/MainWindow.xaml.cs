@@ -85,19 +85,22 @@ namespace RonbunMatome
 
             // Create a PDF browser
             WebBrowser pdfBrowser = new WebBrowser();
-            pdfBrowser.Navigate("file://" + item.Files[0] + "#toolbar=1");
+            Uri pdfUri = new("file://" + item.Files[0] + "#toolbar=1");
+            pdfBrowser.Navigate(pdfUri);  // Open a PDF file
             Grid contentGrid = new();
             contentGrid.Children.Add(pdfBrowser);
 
             // Create a new tab
-            TabItem newTabItem = new();
-            newTabItem.Content = contentGrid;
+            TabItem newTabItem = new()
+            {
+                Content = contentGrid  // Add the PDF viewer
+            };
             BiblioTabControl.Items.Add(newTabItem);
 
             // Create a tab header
             ClosableTabHeader header = new ClosableTabHeader();
             header.Title.Content = tabHeader;
-            header.CloseButton.Click += new RoutedEventHandler(ClosePaperTab);
+            header.CloseButton.Click += new RoutedEventHandler(ClosePaperTab);  // Close the tab when x-button is clicked
             newTabItem.Header = header;
 
             // Change selected tab
