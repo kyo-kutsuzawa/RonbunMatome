@@ -52,7 +52,6 @@ namespace RonbunMatome
             }
 
             selectedId = item.Id;
-            //PaperTitleBox.Text = item.Title;
             CommentBox.Text = item.Comment;
         }
 
@@ -73,64 +72,16 @@ namespace RonbunMatome
                 return;
             }
 
-            // Setup a tab header
-            string tabHeader = item.Title;
-            const int tabHeaderLength = 20;
-
-            // Limit the text length of the tab header
-            if (tabHeader.Length > tabHeaderLength)
-            {
-                tabHeader = string.Concat(tabHeader.AsSpan(0, tabHeaderLength - 3), "...");
-            }
-
-            // Create a PDF browser
-            WebBrowser pdfBrowser = new WebBrowser();
-            Uri pdfUri = new("file://" + item.Files[0] + "#toolbar=1");
-            pdfBrowser.Navigate(pdfUri);  // Open a PDF file
-            Grid contentGrid = new();
-            contentGrid.Children.Add(pdfBrowser);
-
             // Create a new tab
-            TabItem newTabItem = new()
-            {
-                Content = contentGrid  // Add the PDF viewer
-            };
+            PaperTabItem newTabItem = new(item.Id);
+            newTabItem.OpenPdf(item.Files[0]);  // Open a PDF file
+            newTabItem.SetHeaderTitle(item.Title);  // Set the tab header title
             BiblioTabControl.Items.Add(newTabItem);
-
-            // Create a tab header
-            ClosableTabHeader header = new ClosableTabHeader();
-            header.Title.Content = tabHeader;
-            header.CloseButton.Click += new RoutedEventHandler(ClosePaperTab);  // Close the tab when x-button is clicked
-            newTabItem.Header = header;
 
             // Change selected tab
             BiblioTabControl.SelectedIndex = BiblioTabControl.Items.Count - 1;
             BiblioTabControl.SelectedItem = newTabItem;
             newTabItem.IsSelected = true;
-        }
-
-        /// <summary>
-        /// Close a tab
-        /// </summary>
-        /// <param name="sender">This must be a Button in a tab header.</param>
-        /// <param name="e"></param>
-        void ClosePaperTab(object sender, RoutedEventArgs e)
-        {
-            // Get the parent tab
-            TabItem? clickedTab = (TabItem?)((ClosableTabHeader)((Grid)((Button)sender).Parent).Parent).Parent;
-
-            if (clickedTab == null)
-            {
-                return;
-            }
-
-            if (clickedTab.Parent != BiblioTabControl)
-            {
-                return;
-            }
-
-            // Remove the clicked tab
-            BiblioTabControl.Items.Remove(clickedTab);
         }
     }
 }
