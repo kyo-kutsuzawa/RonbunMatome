@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.PortableExecutable;
@@ -38,6 +39,23 @@ namespace RonbunMatome
         }
 
         /// <summary>
+        /// Show details of a paper with the specified id to the detail panel
+        /// </summary>
+        /// <param name="bibItemId">Id of a bibliography item</param>
+        void ShowDetails(string bibItemId)
+        {
+            if (!bibManager.BibDictionary.ContainsKey(bibItemId))
+            {
+                return;
+            }
+
+            selectedId = bibItemId;
+
+            BibItem item = bibManager.BibDictionary[bibItemId];
+            CommentBox.Text = item.Comment;
+        }
+
+        /// <summary>
         /// Show details and comments of the selected item
         /// </summary>
         /// <param name="sender"></param>
@@ -51,8 +69,7 @@ namespace RonbunMatome
                 return;
             }
 
-            selectedId = item.Id;
-            CommentBox.Text = item.Comment;
+            ShowDetails(item.Id);
         }
 
         void BiblioListViewItem_OpenPdf(object sender, MouseButtonEventArgs e)
@@ -82,6 +99,28 @@ namespace RonbunMatome
             BiblioTabControl.SelectedIndex = BiblioTabControl.Items.Count - 1;
             BiblioTabControl.SelectedItem = newTabItem;
             newTabItem.IsSelected = true;
+        }
+
+        private void BiblioTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int selectedTabIndex = BiblioTabControl.SelectedIndex;
+
+            if (selectedTabIndex == 0)
+            {
+                BibItem? selectedItem = (BibItem)BiblioListView.SelectedItem;
+
+                if (selectedItem == null)
+                {
+                    return;
+                }
+
+                ShowDetails(selectedItem.Id);
+            }
+            else
+            {
+                PaperTabItem selectedTab = (PaperTabItem)BiblioTabControl.SelectedItem;
+                ShowDetails(selectedTab.Id);
+            }
         }
     }
 }

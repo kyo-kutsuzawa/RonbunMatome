@@ -20,7 +20,7 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TabControl x:Name="BiblioTabControl" Margin="0,0,0,0" Grid.ColumnSpan="1">
+        <TabControl x:Name="BiblioTabControl" Margin="0,0,0,0" Grid.ColumnSpan="1" SelectionChanged="BiblioTabControl_SelectionChanged">
             <TabItem Header="Bibliography">
                 <Grid Background="#FFE5E5E5">
                     <Grid.ColumnDefinitions>
