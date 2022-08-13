@@ -76,18 +76,7 @@ namespace RonbunMatome
                 _authors = value;
 
                 // Set AuthorSummary
-                if (_authors.Count >= 2)
-                {
-                    AuthorSummary = _authors[0] + " et al.";
-                }
-                else if (_authors.Count == 1)
-                {
-                    AuthorSummary = _authors[0];
-                }
-                else
-                {
-                    AuthorSummary = "";
-                }
+                AuthorSummary = ConvertAuthorSummary(_authors);
             }
         }
         public string Year { get; set; } = "";
@@ -105,5 +94,27 @@ namespace RonbunMatome
         public string Archiveprefix { get; set; } = "";
 
         public string AuthorSummary { get; private set; } = "";
+
+        /// <summary>
+        /// Convert a list of author names to a summarized string
+        /// If the number of authors is more than 2, the authors except for the first author are abbreviated to "et al.".
+        /// </summary>
+        /// <param name="authors">List of author names</param>
+        /// <returns></returns>
+        string ConvertAuthorSummary(List<string> authors)
+        {
+            if (authors.Count >= 2)
+            {
+                return authors[0] + " et al.";
+            }
+            else if (authors.Count == 1)
+            {
+                return authors[0];
+            }
+            else
+            {
+                return "";
+            }
+        }
     }
 }

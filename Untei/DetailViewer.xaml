@@ -7,8 +7,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Background="White">
     <UserControl.Resources>
-        <Style TargetType="TextBox">
-        </Style>
+        <local:ListStringConverter x:Key="ListString"></local:ListStringConverter>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -52,7 +51,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Content="Authors:" Grid.Column="0"></Label>
-                    <TextBox x:Name="Authors" Grid.Column="1" Text="{Binding Authors}" AcceptsReturn="True"></TextBox>
+                    <TextBox x:Name="Authors" Grid.Column="1" Text="{Binding Authors, Converter={StaticResource ListString}}"></TextBox>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -76,7 +75,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Content="Tags:" Grid.Column="0"></Label>
-                    <TextBox x:Name="Tags" Grid.Column="1" Text="{Binding Tags}" AcceptsReturn="True"></TextBox>
+                    <TextBox x:Name="Tags" Grid.Column="1" Text="{Binding Tags, Converter={StaticResource ListString}}"></TextBox>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -84,7 +83,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Content="Files:" Grid.Column="0"></Label>
-                    <TextBox x:Name="Files" Grid.Column="1" Text="{Binding Files}" AcceptsReturn="True"></TextBox>
+                    <TextBox x:Name="Files" Grid.Column="1" Text="{Binding Files, Converter={StaticResource ListString}}" AcceptsReturn="True"></TextBox>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
