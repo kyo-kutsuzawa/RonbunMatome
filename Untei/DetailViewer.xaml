@@ -6,6 +6,10 @@
              xmlns:local="clr-namespace:RonbunMatome"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" Background="White">
+    <UserControl.Resources>
+        <Style TargetType="TextBox">
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -18,41 +22,78 @@
                     <Setter Property="VerticalAlignment" Value="Center"></Setter>
                 </Style>
                 <Style TargetType="TextBox">
-                    <!--
-                    <Setter Property="HorizontalAlignment" Value="Stretch"></Setter>
-                    <Setter Property="Margin" Value="0,0,0,0"></Setter>
-                    -->
-                    <Setter Property="BorderThickness" Value="0"></Setter>
+                    <Setter Property="BorderBrush" Value="Transparent"></Setter>
                     <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                    <Setter Property="TextWrapping" Value="WrapWithOverflow"></Setter>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type TextBox}">
+                                <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                    <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="BorderBrush" Value="Gray"></Setter>
+                                    </Trigger>
+                                    <Trigger Property="IsFocused" Value="true">
+                                        <Setter Property="BorderThickness" Value="1"></Setter>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
-
             </ScrollViewer.Resources>
             <StackPanel Orientation="Vertical">
                 <TextBox x:Name="Title" TextWrapping="WrapWithOverflow" FontWeight="Bold" FontSize="16"></TextBox>
-                <StackPanel Orientation="Horizontal" Margin="0,0,0,0">
-                    <Label Content="Authors:"></Label>
-                    <TextBox x:Name="Authors" AcceptsReturn="True"></TextBox>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Journal:"></Label>
-                    <TextBox x:Name="Journal"></TextBox>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Year:"></Label>
-                    <TextBox x:Name="Year"></TextBox>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Tags:"></Label>
-                    <TextBox x:Name="Tags" AcceptsReturn="True"></TextBox>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Files:"></Label>
-                    <TextBox x:Name="Files" AcceptsReturn="True"></TextBox>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="DOI:"></Label>
-                    <TextBox x:Name="Doi"></TextBox>
-                </StackPanel>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Authors:" Grid.Column="0"></Label>
+                    <TextBox x:Name="Authors" Grid.Column="1" AcceptsReturn="True"></TextBox>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Journal:" Grid.Column="0"></Label>
+                    <TextBox x:Name="Journal" Grid.Column="1"></TextBox>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Year:" Grid.Column="0"></Label>
+                    <TextBox x:Name="Year" Grid.Column="1"></TextBox>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Tags:" Grid.Column="0"></Label>
+                    <TextBox x:Name="Tags" Grid.Column="1" AcceptsReturn="True"></TextBox>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Files:" Grid.Column="0"></Label>
+                    <TextBox x:Name="Files" Grid.Column="1" AcceptsReturn="True"></TextBox>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="DOI:" Grid.Column="0"></Label>
+                    <TextBox x:Name="Doi" Grid.Column="1"></TextBox>
+                </Grid>
             </StackPanel>
         </ScrollViewer>
         <GridSplitter HorizontalAlignment="Stretch" Margin="0,0,0,0" Height="3" VerticalAlignment="Bottom"/>

@@ -20,21 +20,27 @@ namespace RonbunMatome
     /// </summary>
     public partial class DetailViewer : UserControl
     {
+        private BibItem currentBibItem;
+
         public DetailViewer()
         {
             InitializeComponent();
+
+            currentBibItem = new();
         }
 
         public void Show(BibItem bibItem)
         {
-            Title.Text = bibItem.Title;
-            Authors.Text = bibItem.AuthorSummary;
-            Journal.Text = bibItem.Journal;
-            Year.Text = bibItem.Year;
-            Tags.Text = bibItem.Tags.ToString();
-            Files.Text = bibItem.Files.ToString();
-            Doi.Text = bibItem.Doi;
-            CommentBox.Text = bibItem.Comment;
+            currentBibItem = bibItem;
+
+            Title.Text = currentBibItem.Title;
+            Authors.Text = currentBibItem.AuthorSummary;
+            Journal.Text = currentBibItem.Journal;
+            Year.Text = currentBibItem.Year;
+            Tags.Text = currentBibItem.Tags.ToString();
+            Files.Text = currentBibItem.Files.ToString();
+            Doi.Text = currentBibItem.Doi;
+            CommentBox.Text = currentBibItem.Comment;
         }
     }
 }
