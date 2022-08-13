@@ -53,7 +53,7 @@ namespace RonbunMatome
         }
     }
 
-    class BibItem
+    public class BibItem
     {
         public BibItem()
         {

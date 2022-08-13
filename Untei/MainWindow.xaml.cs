@@ -52,7 +52,7 @@ namespace RonbunMatome
             selectedId = bibItemId;
 
             BibItem item = bibManager.BibDictionary[bibItemId];
-            CommentBox.Text = item.Comment;
+            Details.Show(item);
         }
 
         /// <summary>
