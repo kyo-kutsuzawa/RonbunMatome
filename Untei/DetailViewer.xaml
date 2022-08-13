@@ -82,16 +82,16 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Content="Files:" Grid.Column="0"></Label>
-                    <TextBox x:Name="Files" Grid.Column="1" Text="{Binding Files, Converter={StaticResource ListString}}" AcceptsReturn="True"></TextBox>
+                    <Label Content="DOI:" Grid.Column="0"></Label>
+                    <TextBox x:Name="Doi" Grid.Column="1" Text="{Binding Doi}"></TextBox>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Content="DOI:" Grid.Column="0"></Label>
-                    <TextBox x:Name="Doi" Grid.Column="1" Text="{Binding Doi}"></TextBox>
+                    <Label Content="Files:" Grid.Column="0"></Label>
+                    <TextBox x:Name="Files" Grid.Column="1" Text="{Binding Files, Converter={StaticResource ListString}}" AcceptsReturn="True"></TextBox>
                 </Grid>
             </StackPanel>
         </ScrollViewer>

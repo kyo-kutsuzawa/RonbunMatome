@@ -41,6 +41,11 @@ namespace RonbunMatome
                 return DependencyProperty.UnsetValue;
             }
 
+            if (((List<string>)value).Count < 1)
+            {
+                return "";
+            }
+
             string concatAuthors = ((List<string>)value).Aggregate((x, y) => x + "; " + y);
 
             return concatAuthors;

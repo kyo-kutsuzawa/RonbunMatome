@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RonbunMatome"
         mc:Ignorable="d"
-        Title="MainWindow" Height="720" Width="1280">
+        Title="RonbunMatome" Height="720" Width="1280">
     <Window.Resources>
         <Style TargetType="ListViewItem">
             <EventSetter Event="MouseUp" Handler="BiblioListViewItem_ShowDetails"/>
