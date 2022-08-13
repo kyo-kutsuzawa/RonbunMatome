@@ -20,15 +20,9 @@ namespace RonbunMatome
     /// </summary>
     public partial class DetailViewer : UserControl
     {
-        private BibItem currentBibItem;
-
         public DetailViewer()
         {
             InitializeComponent();
-
-            currentBibItem = new();
-
-            //RootElement.DataContext = currentBibItem;
         }
     }
 }
