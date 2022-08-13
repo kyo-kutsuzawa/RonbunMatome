@@ -38,12 +38,12 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <ListBox x:Name="TagListBox" Margin="0,0,3,0"  ItemsSource="{Binding}"/>
-                    <GridSplitter HorizontalAlignment="Right" Margin="0,0,0,0" Width="3"/>
+                    <ListBox x:Name="TagListBox" Margin="0,0,5,0"  ItemsSource="{Binding}"/>
+                    <GridSplitter HorizontalAlignment="Right" Margin="0,0,0,0" Width="5"/>
                 </Grid>
             </TabItem>
         </TabControl>
-        <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Width="3"/>
-        <local:DetailViewer x:Name="Details" Grid.Column="1" Margin="0,0,0,0"></local:DetailViewer>
+        <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Width="5"/>
+        <local:DetailViewer x:Name="Details" Grid.Column="1" Margin="5,0,0,0"></local:DetailViewer>
     </Grid>
 </Window>

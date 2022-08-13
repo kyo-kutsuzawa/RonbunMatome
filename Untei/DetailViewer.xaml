@@ -10,12 +10,12 @@
         <Style TargetType="TextBox">
         </Style>
     </UserControl.Resources>
-    <Grid x:Name="RootElement">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <ScrollViewer Grid.Row="0">
+        <ScrollViewer Grid.Row="0" Margin="0,0,0,5">
             <ScrollViewer.Resources>
                 <Style TargetType="Label">
                     <Setter Property="FontWeight" Value="Bold"></Setter>
@@ -96,8 +96,8 @@
                 </Grid>
             </StackPanel>
         </ScrollViewer>
-        <GridSplitter HorizontalAlignment="Stretch" Margin="0,0,0,0" Height="3" VerticalAlignment="Bottom"/>
-        <TextBox x:Name="CommentBox" Margin="3,0,0,0" Grid.Row="1" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Comment}">
+        <GridSplitter HorizontalAlignment="Stretch" Margin="0,0,0,0" Height="5" VerticalAlignment="Bottom"/>
+        <TextBox x:Name="CommentBox" Margin="0,0,0,0" Grid.Row="1" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Comment}">
         </TextBox>
     </Grid>
 </UserControl>
