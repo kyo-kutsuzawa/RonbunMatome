@@ -31,7 +31,7 @@
                     <ListView x:Name="BiblioListView" Margin="0,0,0,0" Grid.Column="1" ItemsSource="{Binding}">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="ID" DisplayMemberBinding="{Binding Value.Id}"/>
+                                <GridViewColumn Header="Citation Key" DisplayMemberBinding="{Binding Value.CitationKey}"/>
                                 <GridViewColumn Header="Authors" DisplayMemberBinding="{Binding Value.AuthorSummary}"/>
                                 <GridViewColumn Header="Year" DisplayMemberBinding="{Binding Value.Year}"/>
                                 <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Value.Title}"/>

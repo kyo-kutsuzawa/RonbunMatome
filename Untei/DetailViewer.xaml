@@ -74,6 +74,14 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+                    <Label Content="Citation Key:" Grid.Column="0"></Label>
+                    <TextBox x:Name="CitationKey" Grid.Column="1" Text="{Binding CitationKey}"></TextBox>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
                     <Label Content="Tags:" Grid.Column="0"></Label>
                     <TextBox x:Name="Tags" Grid.Column="1" Text="{Binding Tags, Converter={StaticResource ListString}}"></TextBox>
                 </Grid>
