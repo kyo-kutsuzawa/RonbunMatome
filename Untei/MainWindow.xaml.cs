@@ -31,7 +31,7 @@ namespace RonbunMatome
 
             bibManager = new BibManager();
 
-            BiblioListView.DataContext = new List<BibItem>(bibManager.BibDictionary.Values);
+            BiblioListView.DataContext = bibManager.BibDictionary;
 
             TagListBox.DataContext = bibManager.ExtractTags();
 
@@ -59,18 +59,18 @@ namespace RonbunMatome
         /// Open a pdf file of the given bibliography item
         /// </summary>
         /// <param name="bibItem"></param>
-        void OpenNewPdfTab(BibItem bibItem)
+        void OpenNewPdfTab(KeyValuePair<string, BibItem> bibKeyValue)
         {
             // Return if no PDF file is registered
-            if (bibItem.Files.Count < 1)
+            if (bibKeyValue.Value.Files.Count < 1)
             {
                 return;
             }
 
             // Create a new tab
-            PaperTabItem newTabItem = new(bibItem.Id);
-            newTabItem.OpenPdf(bibItem.Files[0]);  // Open a PDF file
-            newTabItem.SetHeaderTitle(bibItem.Title);  // Set the tab header title
+            PaperTabItem newTabItem = new(bibKeyValue.Key);
+            newTabItem.OpenPdf(bibKeyValue.Value.Files[0]);  // Open a PDF file
+            newTabItem.SetHeaderTitle(bibKeyValue.Value.Title);  // Set the tab header title
             BiblioTabControl.Items.Add(newTabItem);
 
             // Change selected tab
@@ -86,14 +86,14 @@ namespace RonbunMatome
         /// <param name="e"></param>
         void BiblioListViewItem_ShowDetails(object sender, MouseButtonEventArgs e)
         {
-            BibItem? item = ((ListViewItem)sender).Content as BibItem;
+            var item = ((ListViewItem)sender).Content;
 
             if (item == null)
             {
                 return;
             }
 
-            ShowDetails(item.Id);
+            ShowDetails(((KeyValuePair<string, BibItem>)item).Key);
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace RonbunMatome
         void BiblioListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             // Get the selected item
-            BibItem? item = ((ListViewItem)sender).Content as BibItem;
+            var item = ((ListViewItem)sender).Content;
 
             // Return if no item is selected
             if (item == null)
@@ -112,7 +112,7 @@ namespace RonbunMatome
                 return;
             }
 
-            OpenNewPdfTab(item);
+            OpenNewPdfTab((KeyValuePair<string, BibItem>)item);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ namespace RonbunMatome
             }
 
             // Get the selected item
-            BibItem? item = ((ListViewItem)sender).Content as BibItem;
+            var item = ((ListViewItem)sender).Content;
 
             // Return if no item is selected
             if (item == null)
@@ -137,7 +137,7 @@ namespace RonbunMatome
                 return;
             }
 
-            OpenNewPdfTab(item);
+            OpenNewPdfTab((KeyValuePair<string, BibItem>)item);
         }
 
         /// <summary>
@@ -159,14 +159,14 @@ namespace RonbunMatome
             }
             else if (selectedTabIndex == 0)
             {
-                BibItem? selectedItem = (BibItem)BiblioListView.SelectedItem;
+                var selectedItem = BiblioListView.SelectedItem;
 
                 if (selectedItem == null)
                 {
                     return;
                 }
 
-                ShowDetails(selectedItem.Id);
+                ShowDetails(((KeyValuePair<string, BibItem>)selectedItem).Key);
             }
             else
             {
