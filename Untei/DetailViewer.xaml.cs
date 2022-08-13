@@ -27,20 +27,8 @@ namespace RonbunMatome
             InitializeComponent();
 
             currentBibItem = new();
-        }
 
-        public void Show(BibItem bibItem)
-        {
-            currentBibItem = bibItem;
-
-            Title.Text = currentBibItem.Title;
-            Authors.Text = currentBibItem.AuthorSummary;
-            Journal.Text = currentBibItem.Journal;
-            Year.Text = currentBibItem.Year;
-            Tags.Text = currentBibItem.Tags.ToString();
-            Files.Text = currentBibItem.Files.ToString();
-            Doi.Text = currentBibItem.Doi;
-            CommentBox.Text = currentBibItem.Comment;
+            //RootElement.DataContext = currentBibItem;
         }
     }
 }

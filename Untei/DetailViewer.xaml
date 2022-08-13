@@ -10,7 +10,7 @@
         <Style TargetType="TextBox">
         </Style>
     </UserControl.Resources>
-    <Grid>
+    <Grid x:Name="RootElement">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
@@ -45,14 +45,14 @@
                 </Style>
             </ScrollViewer.Resources>
             <StackPanel Orientation="Vertical">
-                <TextBox x:Name="Title" TextWrapping="WrapWithOverflow" FontWeight="Bold" FontSize="16"></TextBox>
+                <TextBox x:Name="Title" TextWrapping="WrapWithOverflow" FontWeight="Bold" FontSize="16" Text="{Binding Title}"></TextBox>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Content="Authors:" Grid.Column="0"></Label>
-                    <TextBox x:Name="Authors" Grid.Column="1" AcceptsReturn="True"></TextBox>
+                    <TextBox x:Name="Authors" Grid.Column="1" Text="{Binding Authors}" AcceptsReturn="True"></TextBox>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -60,7 +60,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Content="Journal:" Grid.Column="0"></Label>
-                    <TextBox x:Name="Journal" Grid.Column="1"></TextBox>
+                    <TextBox x:Name="Journal" Grid.Column="1" Text="{Binding Journal}"></TextBox>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -68,7 +68,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Content="Year:" Grid.Column="0"></Label>
-                    <TextBox x:Name="Year" Grid.Column="1"></TextBox>
+                    <TextBox x:Name="Year" Grid.Column="1" Text="{Binding Year}"></TextBox>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -76,7 +76,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Content="Tags:" Grid.Column="0"></Label>
-                    <TextBox x:Name="Tags" Grid.Column="1" AcceptsReturn="True"></TextBox>
+                    <TextBox x:Name="Tags" Grid.Column="1" Text="{Binding Tags}" AcceptsReturn="True"></TextBox>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -84,7 +84,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Content="Files:" Grid.Column="0"></Label>
-                    <TextBox x:Name="Files" Grid.Column="1" AcceptsReturn="True"></TextBox>
+                    <TextBox x:Name="Files" Grid.Column="1" Text="{Binding Files}" AcceptsReturn="True"></TextBox>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -92,12 +92,12 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Content="DOI:" Grid.Column="0"></Label>
-                    <TextBox x:Name="Doi" Grid.Column="1"></TextBox>
+                    <TextBox x:Name="Doi" Grid.Column="1" Text="{Binding Doi}"></TextBox>
                 </Grid>
             </StackPanel>
         </ScrollViewer>
         <GridSplitter HorizontalAlignment="Stretch" Margin="0,0,0,0" Height="3" VerticalAlignment="Bottom"/>
-        <TextBox x:Name="CommentBox" Margin="3,0,0,0" Grid.Row="1" TextWrapping="Wrap" AcceptsReturn="True">
+        <TextBox x:Name="CommentBox" Margin="3,0,0,0" Grid.Row="1" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Comment}">
         </TextBox>
     </Grid>
 </UserControl>
