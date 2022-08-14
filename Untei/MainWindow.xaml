@@ -6,13 +6,6 @@
         xmlns:local="clr-namespace:RonbunMatome"
         mc:Ignorable="d"
         Title="RonbunMatome" Height="720" Width="1280">
-    <Window.Resources>
-        <Style TargetType="ListViewItem">
-            <EventSetter Event="MouseUp" Handler="BiblioListViewItem_ShowDetails"/>
-            <EventSetter Event="MouseDoubleClick" Handler="BiblioListViewItem_MouseDoubleClick"/>
-            <EventSetter Event="KeyDown" Handler="BiblioListViewItem_KeyDown"/>
-        </Style>
-    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -29,12 +22,31 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <ListView x:Name="BiblioListView" Margin="0,0,0,0" Grid.Column="1" ItemsSource="{Binding}">
+                        <ListView.Resources>
+                            <Style TargetType="ListViewItem">
+                                <EventSetter Event="MouseUp" Handler="BiblioListViewItem_ShowDetails"/>
+                                <EventSetter Event="MouseDoubleClick" Handler="BiblioListViewItem_MouseDoubleClick"/>
+                                <EventSetter Event="KeyDown" Handler="BiblioListViewItem_KeyDown"/>
+                            </Style>
+                            <Style TargetType="GridViewColumnHeader">
+                                <EventSetter Event="Click" Handler="GridViewColumnHeader_Click"></EventSetter>
+                            </Style>
+                        </ListView.Resources>
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Citation Key" DisplayMemberBinding="{Binding Value.Citationkey}"/>
-                                <GridViewColumn Header="Authors" DisplayMemberBinding="{Binding Value.AuthorSummary}"/>
-                                <GridViewColumn Header="Year" DisplayMemberBinding="{Binding Value.Year}"/>
-                                <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Value.Title}"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Value.Citationkey}">
+                                    <GridViewColumnHeader Content="Citation Key" Tag="Citationkey"></GridViewColumnHeader>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Value.AuthorSummary}">
+                                    <GridViewColumnHeader Content="Authors" Tag="AuthorSummary"></GridViewColumnHeader>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Value.Year}">
+                                    <GridViewColumnHeader Content="Year" Tag="Year"></GridViewColumnHeader>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Value.Title}">
+                                    <GridViewColumnHeader Content="Title" Tag="Title"></GridViewColumnHeader>
+                                </GridViewColumn>
+                                <!---->
                             </GridView>
                         </ListView.View>
                     </ListView>

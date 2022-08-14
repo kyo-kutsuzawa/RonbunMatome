@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
@@ -173,6 +174,51 @@ namespace RonbunMatome
                 PaperTabItem selectedTab = (PaperTabItem)BiblioTabControl.SelectedItem;
                 ShowDetails(selectedTab.Id);
             }
+        }
+
+        private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
+        {
+            if (!(sender is GridViewColumnHeader))
+            {
+                return;
+            }
+
+            // Get the name of the column header; this should be the same as the member name of BibItem.
+            string propertyName = "Value." + ((GridViewColumnHeader)sender).Tag;
+
+            ListSortDirection sortDirection;
+
+            // Determine the sort order (Ascending/Descending).
+            // If the column has already been sorted yet, sort in the opposite order.
+            // Otherwise, sort in the ascending order.
+            if (BiblioListView.Items.SortDescriptions.Count == 0)
+            {
+                sortDirection = ListSortDirection.Ascending;
+            }
+            else
+            {
+                if (BiblioListView.Items.SortDescriptions.Last().PropertyName == propertyName)
+                {
+                    if (BiblioListView.Items.SortDescriptions.Last().Direction == ListSortDirection.Ascending)
+                    {
+                        sortDirection = ListSortDirection.Descending;
+                    }
+                    else
+                    {
+                        sortDirection = ListSortDirection.Ascending;
+                    }
+                }
+                else
+                {
+                    sortDirection = ListSortDirection.Ascending;
+                }
+
+                // Clear the previous SortDescription
+                BiblioListView.Items.SortDescriptions.Clear();
+            }
+
+            // Sort BiblioListView
+            BiblioListView.Items.SortDescriptions.Add(new SortDescription(propertyName, sortDirection));
         }
     }
 }
