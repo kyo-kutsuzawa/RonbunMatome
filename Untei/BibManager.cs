@@ -62,7 +62,7 @@ namespace RonbunMatome
 
         private List<string> _authors = new List<string>();
 
-        public string CitationKey { get; set; } = "";
+        public string Citationkey { get; set; } = "";
         public string EntryType { get; set; } = "";
         public string Title { get; set; } = "";
         public List<string> Authors
