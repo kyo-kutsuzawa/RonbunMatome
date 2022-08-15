@@ -14,14 +14,20 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <TabControl x:Name="BiblioTabControl" Margin="0,0,0,0" Grid.ColumnSpan="1" SelectionChanged="BiblioTabControl_SelectionChanged">
+        <Menu Grid.ColumnSpan="2" Margin="0,0,0,0" VerticalAlignment="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Add"></MenuItem>
+                <MenuItem Header="Save"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <TabControl x:Name="BiblioTabControl" Margin="0,18,0,0" Grid.ColumnSpan="1" SelectionChanged="BiblioTabControl_SelectionChanged">
             <TabItem Header="Bibliography">
                 <Grid Background="#FFE5E5E5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.2*"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <ListView x:Name="BiblioListView" Margin="0,0,0,0" Grid.Column="1" ItemsSource="{Binding}">
+                    <ListView x:Name="BiblioListView" Margin="0,20,0,0" ItemsSource="{Binding}" Grid.Column="1">
                         <ListView.Resources>
                             <Style TargetType="ListViewItem">
                                 <EventSetter Event="MouseUp" Handler="BiblioListViewItem_ShowDetails"/>
@@ -46,16 +52,16 @@
                                 <GridViewColumn DisplayMemberBinding="{Binding Value.Title}">
                                     <GridViewColumnHeader Content="Title" Tag="Title"></GridViewColumnHeader>
                                 </GridViewColumn>
-                                <!---->
                             </GridView>
                         </ListView.View>
                     </ListView>
                     <ListBox x:Name="TagListBox" Margin="0,0,5,0"  ItemsSource="{Binding}"/>
+                    <TextBox Height="20" Margin="0,0,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Grid.Column="1"/>
                     <GridSplitter HorizontalAlignment="Right" Margin="0,0,0,0" Width="5"/>
                 </Grid>
             </TabItem>
         </TabControl>
         <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Width="5"/>
-        <local:DetailViewer x:Name="Details" Grid.Column="1" Margin="5,0,0,0"></local:DetailViewer>
+        <local:DetailViewer x:Name="Details" Grid.Column="1" Margin="5,18,0,0"></local:DetailViewer>
     </Grid>
 </Window>
