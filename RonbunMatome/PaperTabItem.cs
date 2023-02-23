@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Web.WebView2.Wpf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection.PortableExecutable;
@@ -21,7 +22,7 @@ namespace RonbunMatome
         private readonly Grid contentGrid;
         private const int titleLength = 20;
         public ClosableTabHeader ClosableHeader { get; set; }
-        public WebBrowser PdfViewer { get; private set; }
+        public WebView2 PdfViewer { get; private set; }
         public string Id { get; set; } = "";
 
         static PaperTabItem()
@@ -34,7 +35,7 @@ namespace RonbunMatome
             // Initialize control items
             contentGrid = new Grid();
             ClosableHeader = new ClosableTabHeader();
-            PdfViewer = new WebBrowser();
+            PdfViewer = new WebView2();
 
             // Add the control items to children
             this.AddChild(contentGrid);
@@ -75,8 +76,8 @@ namespace RonbunMatome
         /// <param name="fileName">Path of the PDF file to open</param>
         public void OpenPdf(string fileName)
         {
-            Uri pdfUri = new("file://" + fileName + "#toolbar=1");
-            PdfViewer.Navigate(pdfUri);  // Open a PDF file
+            Uri pdfUri = new(fileName);
+            PdfViewer.Source = pdfUri;  // Open a PDF file
         }
 
         /// <summary>

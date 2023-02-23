@@ -55,7 +55,13 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <ListBox x:Name="TagListBox" Margin="0,0,5,0"  ItemsSource="{Binding}"/>
+                    <ListBox x:Name="TagListBox" Margin="0,0,5,0" ItemsSource="{Binding}">
+                        <ListBox.Resources>
+                            <Style TargetType="ListBoxItem">
+                                <EventSetter Event="Selected" Handler="ListBoxItem_Selected"></EventSetter>
+                            </Style>
+                        </ListBox.Resources>
+                    </ListBox>
                     <TextBox Height="20" Margin="0,0,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Grid.Column="1"/>
                     <GridSplitter HorizontalAlignment="Right" Margin="0,0,0,0" Width="5"/>
                 </Grid>

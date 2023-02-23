@@ -24,7 +24,6 @@ namespace RonbunMatome
     public partial class MainWindow : Window
     {
         private BibManager bibManager;
-        private string selectedId;
 
         public MainWindow()
         {
@@ -35,8 +34,6 @@ namespace RonbunMatome
             BiblioListView.DataContext = bibManager.BibDictionary;
 
             TagListBox.DataContext = bibManager.ExtractTags();
-
-            selectedId = "";
         }
 
         /// <summary>
@@ -49,8 +46,6 @@ namespace RonbunMatome
             {
                 return;
             }
-
-            selectedId = bibItemId;
 
             BibItem item = bibManager.BibDictionary[bibItemId];
             Details.DataContext = item;
@@ -220,5 +215,25 @@ namespace RonbunMatome
             // Sort BiblioListView
             BiblioListView.Items.SortDescriptions.Add(new SortDescription(propertyName, sortDirection));
         }
+
+        /// <summary>
+        /// Narrow down with the selected tag when a tag-list item is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ListBoxItem_Selected(object sender, RoutedEventArgs e)
+        {
+            if (!(sender is ListBoxItem))
+            {
+                return;
+            }
+
+            string tagName = (string)((ListBoxItem)sender).DataContext;
+
+            var narrowedDownDictionary = bibManager.NarrowDownWithTag(tagName);
+
+            BiblioListView.DataContext = narrowedDownDictionary;
+        }
+
     }
 }

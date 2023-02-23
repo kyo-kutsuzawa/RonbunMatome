@@ -40,7 +40,7 @@ namespace RonbunMatome
             return keys;
         }
 
-        public SortedSet<string> ExtractTags()
+        public List<string> ExtractTags()
         {
             SortedSet<string> tagSet = new SortedSet<string>();
 
@@ -49,7 +49,23 @@ namespace RonbunMatome
                 tagSet.UnionWith(item.Value.Tags);
             }
 
-            return tagSet;
+            List<string> tagList = tagSet.ToList();
+            tagList.Insert(0, "All");
+
+            return tagList;
+        }
+
+        public Dictionary<string, BibItem> NarrowDownWithTag(string tagName)
+        {
+            if (tagName == "All")
+            {
+                return BibDictionary;
+            }
+            else
+            {
+                var dict = BibDictionary.Where(x => x.Value.Tags.Contains(tagName)).ToDictionary(x => x.Key, x => x.Value);
+                return dict;
+            }
         }
     }
 
@@ -96,7 +112,7 @@ namespace RonbunMatome
         public string AuthorSummary { get; private set; } = "";
 
         /// <summary>
-        /// Convert a list of author names to a summarized string
+        /// Convert a list of author names to a summarized string.
         /// If the number of authors is more than 2, the authors except for the first author are abbreviated to "et al.".
         /// </summary>
         /// <param name="authors">List of author names</param>
