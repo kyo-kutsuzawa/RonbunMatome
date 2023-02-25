@@ -235,5 +235,17 @@ namespace RonbunMatome
             BiblioListView.DataContext = narrowedDownDictionary;
         }
 
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            switch ((string)((MenuItem)sender).Header)
+            {
+                case "Save":
+                    bibManager.Save();
+                    break;
+
+                default:
+                    break;
+            }
+        }
     }
 }

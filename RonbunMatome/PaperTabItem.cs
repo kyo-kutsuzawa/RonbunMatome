@@ -27,7 +27,6 @@ namespace RonbunMatome
 
         static PaperTabItem()
         {
-            //DefaultStyleKeyProperty.OverrideMetadata(typeof(PaperTabItem), new FrameworkPropertyMetadata(typeof(PaperTabItem)));
         }
 
         public PaperTabItem()
