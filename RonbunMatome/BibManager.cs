@@ -84,6 +84,18 @@ namespace RonbunMatome
             File.WriteAllText(libraryFileName, text, Encoding.UTF8);
             return true;
         }
+
+        public bool ExportToBibtex(string fileName)
+        {
+            string text = "";
+            foreach (BibItem item in BibDictionary.Values)
+            {
+                text += item.ExportToBibtex() + "\n";
+            }
+            File.WriteAllText(fileName, text, Encoding.UTF8);
+
+            return true;
+        }
     }
 
     public class BibItem
@@ -129,12 +141,47 @@ namespace RonbunMatome
         public string AuthorSummary { get; private set; } = "";
 
         /// <summary>
+        /// Conver the item to BibTeX string.
+        /// </summary>
+        /// <returns>BibTeX string</returns>
+        public string ExportToBibtex()
+        {
+            string content = "";
+
+            switch (EntryType)
+            {
+                case "Journal":
+                    content += "@article{";
+                    break;
+
+                case "InProceedings":
+                    content += "@inproceedings{";
+                    break;
+
+                default:
+                    content += "@misc{";
+                    break;
+            }
+
+            content += Citationkey + "\n";
+            content += (Authors.Count != 0) ? "author = {" + string.Join(" and ", Authors) + "},\n" : "";
+            content += (Title != "") ? "journal = {" + Title + "},\n" : "";
+            content += (Year != "") ? "year = {" + Year + "},\n" : "";
+            content += (Month != "") ? "month = {" + Month + "},\n" : "";
+            content += (Doi != "") ? "doi = {" + Doi + "},\n" : "";
+
+            content += "}";
+
+            return content;
+        }
+
+        /// <summary>
         /// Convert a list of author names to a summarized string.
         /// If the number of authors is more than 2, the authors except for the first author are abbreviated to "et al.".
         /// </summary>
         /// <param name="authors">List of author names</param>
         /// <returns></returns>
-        string ConvertAuthorSummary(List<string> authors)
+        static string ConvertAuthorSummary(List<string> authors)
         {
             if (authors.Count >= 2)
             {

@@ -239,8 +239,15 @@ namespace RonbunMatome
         {
             switch ((string)((MenuItem)sender).Header)
             {
+                case "Add":
+                    break;
+
                 case "Save":
                     bibManager.Save();
+                    break;
+
+                case "Export":
+                    bibManager.ExportToBibtex("library.bib");
                     break;
 
                 default:

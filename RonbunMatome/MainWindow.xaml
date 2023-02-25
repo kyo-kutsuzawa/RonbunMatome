@@ -16,10 +16,9 @@
         </Grid.RowDefinitions>
         <Menu Grid.ColumnSpan="2" Margin="0,0,0,0" VerticalAlignment="Top">
             <MenuItem Header="File">
-                <MenuItem Header="Add"></MenuItem>
+                <MenuItem Header="Add" Click="MenuItem_Click"></MenuItem>
                 <MenuItem Header="Save" Click="MenuItem_Click"></MenuItem>
-                <MenuItem Header="Export"></MenuItem>
-                <MenuItem Header="Reload"></MenuItem>
+                <MenuItem Header="Export" Click="MenuItem_Click"></MenuItem>
             </MenuItem>
         </Menu>
         <TabControl x:Name="BiblioTabControl" Margin="0,18,0,0" Grid.ColumnSpan="1" SelectionChanged="BiblioTabControl_SelectionChanged">
