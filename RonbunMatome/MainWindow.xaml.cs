@@ -32,20 +32,6 @@ namespace RonbunMatome
             TagListBox.DataContext = ((MainWindowViewModel)DataContext).TagList;
         }
 
-        private void ListViewItem_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            var content = ((ListViewItem)sender).Content;
-
-            if (content == null)
-            {
-                return;
-            }
-
-            string key = ((KeyValuePair<string, BibItem>)content).Key;
-
-            ((MainWindowViewModel)DataContext).ChangeShownBibItem(key);
-        }
-
         private void ListBoxItem_Selected(object sender, RoutedEventArgs e)
         {
             if (sender is not ListBoxItem)
@@ -67,9 +53,51 @@ namespace RonbunMatome
                 return;
             }
 
-            string key = ((KeyValuePair<string, BibItem>)content).Key;
+            ((MainWindowViewModel)DataContext).OpenPdf((BibItem)content);
+        }
 
-            ((MainWindowViewModel)DataContext).OpenPdf(key);
+        private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not GridViewColumnHeader)
+            {
+                return;
+            }
+
+            // 列の名前を取得する（このとき、取得する名前はBibItemのプロパティと同じになる必要がある）
+            string propertyName = (string)((GridViewColumnHeader)sender).Tag;
+
+            ListSortDirection sortDirection;
+
+            // 並び替えの昇降（Ascending/Descending）を決める。
+            // 並び替えがまだなら昇順にして、すでに並び替えされていればそれと逆順にする。
+            if (BiblioListView.Items.SortDescriptions.Count == 0)
+            {
+                sortDirection = ListSortDirection.Ascending;
+            }
+            else
+            {
+                if (BiblioListView.Items.SortDescriptions.Last().PropertyName == propertyName)
+                {
+                    if (BiblioListView.Items.SortDescriptions.Last().Direction == ListSortDirection.Ascending)
+                    {
+                        sortDirection = ListSortDirection.Descending;
+                    }
+                    else
+                    {
+                        sortDirection = ListSortDirection.Ascending;
+                    }
+                }
+                else
+                {
+                    sortDirection = ListSortDirection.Ascending;
+                }
+
+                // 直前の並び替えを消去する
+                BiblioListView.Items.SortDescriptions.Clear();
+            }
+
+            // BiblioListViewを並び替える
+            BiblioListView.Items.SortDescriptions.Add(new SortDescription(propertyName, sortDirection));
         }
 
         /*

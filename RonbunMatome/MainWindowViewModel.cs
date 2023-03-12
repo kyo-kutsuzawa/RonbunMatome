@@ -14,41 +14,44 @@ namespace RonbunMatome
     internal class MainWindowViewModel : INotifyPropertyChanged
     {
         private readonly BibManager bibManager;
+        private BibItem selectedBibItem;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
         /// <summary>
-        /// 表示される文献データ
+        /// 表示される文献リスト
         /// </summary>
-        public Dictionary<string, BibItem> DisplayedBibDictionary { get; private set; }
+        public List<BibItem> DisplayedBibList{ get; private set; }
 
-        public BibItem ShownBibItem { get; private set; }
+        /// <summary>
+        /// 選択中の文献データ
+        /// </summary>
+        public BibItem SelectedBibItem
+        {
+            get
+            {
+                return selectedBibItem;
+            }
+            set
+            {
+                selectedBibItem = value;
+
+                // ShownBibItemの変更をUIに通知する
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedBibItem)));
+            }
+        }
 
         public List<string> TagList { get; private set; }
-
-        //public ICommand NarrowDownWithTagCommand { get; set; }
 
         public MainWindowViewModel()
         {
             bibManager = new BibManager();
 
-            DisplayedBibDictionary = bibManager.BibDictionary;
+            DisplayedBibList = bibManager.BibList;
 
             TagList = bibManager.ExtractTags();
 
-            ShownBibItem = new();
-        }
-
-        /// <summary>
-        /// 選択中の文献を変更する
-        /// </summary>
-        /// <param name="key">新たに選択する文献のキー</param>
-        public void ChangeShownBibItem(string key)
-        {
-            ShownBibItem = bibManager.BibDictionary[key];
-
-            // ShownBibItemの変更をUIに通知する
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ShownBibItem)));
+            SelectedBibItem = new();
         }
 
         /// <summary>
@@ -57,14 +60,13 @@ namespace RonbunMatome
         /// <param name="tagName">絞り込むタグ</param>
         public void NarrowDownWithTag(string tagName)
         {
-            DisplayedBibDictionary = bibManager.NarrowDownWithTag(tagName);
+            DisplayedBibList = bibManager.NarrowDownWithTag(tagName);
 
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DisplayedBibDictionary)));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DisplayedBibList)));
         }
 
-        public void OpenPdf(string key)
+        public void OpenPdf(BibItem item)
         {
-            BibItem selectedItem = bibManager.BibDictionary[key];
         }
     }
 }

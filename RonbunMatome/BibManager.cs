@@ -13,6 +13,7 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows;
 using ObservableCollections;
+using System.Windows.Documents;
 
 namespace RonbunMatome
 {
@@ -23,13 +24,14 @@ namespace RonbunMatome
         public BibManager()
         {
             JsonString = File.ReadAllText(libraryFileName);
-            BibDictionary = JsonSerializer.Deserialize<Dictionary<string, BibItem>>(JsonString) ?? new Dictionary<string, BibItem>();
+            Dictionary<string, BibItem> bibDictionary = JsonSerializer.Deserialize<Dictionary<string, BibItem>>(JsonString) ?? new Dictionary<string, BibItem>();
+            BibList = bibDictionary.Values.ToList();
         }
 
         /// <summary>
         /// すべての文献データ
         /// </summary>
-        public Dictionary<string, BibItem> BibDictionary { get; private set; }
+        public List<BibItem> BibList { get; private set; }
 
         /// <summary>
         /// 文献データベースのJson文字列
@@ -49,18 +51,6 @@ namespace RonbunMatome
         }
 
         /// <summary>
-        /// 文献データベースのキー一覧を得る
-        /// </summary>
-        /// <returns>キーのリスト</returns>
-        public List<string> GetKeys()
-        {
-            List<string> keys = BibDictionary.Keys.ToList();
-            keys.Reverse();
-
-            return keys;
-        }
-
-        /// <summary>
         /// 文献データベースのタグ一覧を得る
         /// </summary>
         /// <returns>タグのリスト</returns>
@@ -70,9 +60,9 @@ namespace RonbunMatome
             SortedSet<string> tagSet = new();
 
             // 各文献のタグを追加する。Setなので重複は自動的に省かれる
-            foreach (var item in BibDictionary)
+            foreach (var item in BibList)
             {
-                tagSet.UnionWith(item.Value.Tags);
+                tagSet.UnionWith(item.Tags);
             }
 
             // タグ一覧をリストに変換する
@@ -89,16 +79,16 @@ namespace RonbunMatome
         /// </summary>
         /// <param name="tagName">絞り込みのタグ</param>
         /// <returns>指定されたタグをもつ文献の一覧</returns>
-        public Dictionary<string, BibItem> NarrowDownWithTag(string tagName)
+        public List<BibItem> NarrowDownWithTag(string tagName)
         {
             // Allなら全文献を返す
             if (tagName == "All")
             {
-                return BibDictionary;
+                return BibList;
             }
 
-            var dict = BibDictionary.Where(x => x.Value.Tags.Contains(tagName)).ToDictionary(x => x.Key, x => x.Value);
-            return dict;
+            var list = BibList.FindAll(x => x.Tags.Contains(tagName));
+            return (List<BibItem>)list;
         }
 
         /// <summary>
@@ -113,7 +103,7 @@ namespace RonbunMatome
             Guid guid = Guid.NewGuid();
             string key = guid.ToString();
 
-            BibDictionary.Add(key, item);
+            BibList.Add(item);
 
             return true;
         }
@@ -125,7 +115,7 @@ namespace RonbunMatome
                 Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
                 WriteIndented = true
             };
-            string text = JsonSerializer.Serialize(BibDictionary, options);
+            string text = JsonSerializer.Serialize(BibList, options);
             File.WriteAllText(libraryFileName, text, Encoding.UTF8);
             return true;
         }
@@ -133,9 +123,9 @@ namespace RonbunMatome
         public bool ExportToBibtex(string fileName)
         {
             string text = "";
-            foreach (KeyValuePair<string, BibItem> item in BibDictionary)
+            foreach (BibItem item in BibList)
             {
-                text += item.Value.ToBibtexString() + "\n";
+                text += item.ToBibtexString() + "\n";
             }
             File.WriteAllText(fileName, text, Encoding.UTF8);
 
