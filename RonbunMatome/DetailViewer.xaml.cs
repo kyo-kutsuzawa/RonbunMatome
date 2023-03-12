@@ -26,36 +26,4 @@ namespace RonbunMatome
             InitializeComponent();
         }
     }
-
-    /// <summary>
-    /// Convert a list of string to a string with a delimiter of "; "
-    /// For example, a list ["aaa", "bbb"] is converted to "aaa; bbb".
-    /// Note that a space is placed at the next to the semi-colon.
-    /// </summary>
-    public class ListStringConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (!(value is List<string>))
-            {
-                return DependencyProperty.UnsetValue;
-            }
-
-            if (((List<string>)value).Count < 1)
-            {
-                return "";
-            }
-
-            string concatAuthors = ((List<string>)value).Aggregate((x, y) => x + "; " + y);
-
-            return concatAuthors;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            List<string> newAuthors = ((string)value).Split("; ").ToList();
-
-            return newAuthors;
-        }
-    }
 }

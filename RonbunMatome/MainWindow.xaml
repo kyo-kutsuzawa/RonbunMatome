@@ -5,7 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RonbunMatome"
         mc:Ignorable="d"
+        xmlns:vm="clr-namespace:RonbunMatome"
         Title="RonbunMatome" Height="720" Width="1280">
+    <Window.DataContext>
+        <vm:MainWindowViewModel/>
+    </Window.DataContext>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -16,20 +20,28 @@
         </Grid.RowDefinitions>
         <Menu Grid.ColumnSpan="2" Margin="0,0,0,0" VerticalAlignment="Top">
             <MenuItem Header="File">
+                <!--
                 <MenuItem Header="Add" Click="MenuItem_Click"></MenuItem>
                 <MenuItem Header="Save" Click="MenuItem_Click"></MenuItem>
                 <MenuItem Header="Export" Click="MenuItem_Click"></MenuItem>
+                -->
             </MenuItem>
         </Menu>
-        <TabControl x:Name="BiblioTabControl" Margin="0,18,0,0" Grid.ColumnSpan="1" SelectionChanged="BiblioTabControl_SelectionChanged">
+        <!--<TabControl x:Name="BiblioTabControl" Margin="0,18,0,0" Grid.ColumnSpan="1" SelectionChanged="BiblioTabControl_SelectionChanged">-->
+        <TabControl x:Name="BiblioTabControl" Margin="0,18,0,0" Grid.ColumnSpan="1">
             <TabItem Header="Bibliography">
                 <Grid Background="#FFE5E5E5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0.2*"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <ListView x:Name="BiblioListView" Margin="0,20,0,0" ItemsSource="{Binding}" Grid.Column="1">
+                    <ListView x:Name="BiblioListView" Margin="0,20,0,0" ItemsSource="{Binding DisplayedBibDictionary}" Grid.Column="1">
                         <ListView.Resources>
+                            <Style TargetType="ListViewItem">
+                                <EventSetter Event="MouseUp" Handler="ListViewItem_MouseUp"/>
+                                <EventSetter Event="MouseDoubleClick" Handler="BiblioListViewItem_MouseDoubleClick"/>
+                            </Style>
+                            <!--
                             <Style TargetType="ListViewItem">
                                 <EventSetter Event="MouseUp" Handler="BiblioListViewItem_ShowDetails"/>
                                 <EventSetter Event="MouseDoubleClick" Handler="BiblioListViewItem_MouseDoubleClick"/>
@@ -38,6 +50,7 @@
                             <Style TargetType="GridViewColumnHeader">
                                 <EventSetter Event="Click" Handler="GridViewColumnHeader_Click"></EventSetter>
                             </Style>
+                            -->
                         </ListView.Resources>
                         <ListView.View>
                             <GridView>
@@ -69,6 +82,6 @@
             </TabItem>
         </TabControl>
         <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Width="5"/>
-        <local:DetailViewer x:Name="Details" Grid.Column="1" Margin="5,18,0,0"></local:DetailViewer>
+        <local:DetailViewer x:Name="Details" Grid.Column="1" Margin="5,18,0,0" DataContext="{Binding ShownBibItem}"></local:DetailViewer>
     </Grid>
 </Window>

@@ -9,34 +9,49 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Windows.Shapes;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+using System.Globalization;
+using System.Windows.Data;
+using System.Windows;
+using ObservableCollections;
 
 namespace RonbunMatome
 {
     class BibManager
     {
-        private const string libraryFileName = "library.json";
+        private const string libraryFileName = "C:\\Users\\kyo\\source\\repos\\RonbunMatome\\RonbunMatome\\bin\\Debug\\net6.0-windows\\library.json";
 
         public BibManager()
         {
             JsonString = File.ReadAllText(libraryFileName);
-
-            BibDictionary = JsonSerializer.Deserialize<Dictionary<string, BibItem>>(JsonString);
+            BibDictionary = JsonSerializer.Deserialize<Dictionary<string, BibItem>>(JsonString) ?? new Dictionary<string, BibItem>();
         }
 
         /// <summary>
-        /// Dictionary of all bibliography data
+        /// すべての文献データ
         /// </summary>
         public Dictionary<string, BibItem> BibDictionary { get; private set; }
 
         /// <summary>
-        /// Json string of the bibliography data
+        /// 文献データベースのJson文字列
         /// </summary>
         public string JsonString { get; private set; }
 
+        public List<string> TagList
+        {
+            get
+            {
+                return ExtractTags();
+            }
+            private set
+            {
+
+            }
+        }
+
         /// <summary>
-        /// Get a list of keys.
+        /// 文献データベースのキー一覧を得る
         /// </summary>
-        /// <returns>List of keys</returns>
+        /// <returns>キーのリスト</returns>
         public List<string> GetKeys()
         {
             List<string> keys = BibDictionary.Keys.ToList();
@@ -45,32 +60,62 @@ namespace RonbunMatome
             return keys;
         }
 
+        /// <summary>
+        /// 文献データベースのタグ一覧を得る
+        /// </summary>
+        /// <returns>タグのリスト</returns>
         public List<string> ExtractTags()
         {
-            SortedSet<string> tagSet = new SortedSet<string>();
+            // 重複を自動的に省くためにSetを使う
+            SortedSet<string> tagSet = new();
 
+            // 各文献のタグを追加する。Setなので重複は自動的に省かれる
             foreach (var item in BibDictionary)
             {
                 tagSet.UnionWith(item.Value.Tags);
             }
 
+            // タグ一覧をリストに変換する
             List<string> tagList = tagSet.ToList();
+
+            // リストの最初に全文献を表す要素 "All" を足す
             tagList.Insert(0, "All");
 
             return tagList;
         }
 
+        /// <summary>
+        /// 文献データベースを指定されたタグで絞り込む
+        /// </summary>
+        /// <param name="tagName">絞り込みのタグ</param>
+        /// <returns>指定されたタグをもつ文献の一覧</returns>
         public Dictionary<string, BibItem> NarrowDownWithTag(string tagName)
         {
+            // Allなら全文献を返す
             if (tagName == "All")
             {
                 return BibDictionary;
             }
-            else
-            {
-                var dict = BibDictionary.Where(x => x.Value.Tags.Contains(tagName)).ToDictionary(x => x.Key, x => x.Value);
-                return dict;
-            }
+
+            var dict = BibDictionary.Where(x => x.Value.Tags.Contains(tagName)).ToDictionary(x => x.Key, x => x.Value);
+            return dict;
+        }
+
+        /// <summary>
+        /// 文献をデータベースに追加する
+        /// </summary>
+        /// <param name="item">追加する文献</param>
+        /// <returns></returns>
+        public bool AddReference(BibItem item)
+        {
+            // string key = item.Citationkey;
+
+            Guid guid = Guid.NewGuid();
+            string key = guid.ToString();
+
+            BibDictionary.Add(key, item);
+
+            return true;
         }
 
         public bool Save()
@@ -88,9 +133,9 @@ namespace RonbunMatome
         public bool ExportToBibtex(string fileName)
         {
             string text = "";
-            foreach (BibItem item in BibDictionary.Values)
+            foreach (KeyValuePair<string, BibItem> item in BibDictionary)
             {
-                text += item.ExportToBibtex() + "\n";
+                text += item.Value.ToBibtexString() + "\n";
             }
             File.WriteAllText(fileName, text, Encoding.UTF8);
 
@@ -120,7 +165,7 @@ namespace RonbunMatome
             {
                 _authors = value;
 
-                // Set AuthorSummary
+                // 著者名が変更されたときは AuthorSummary も合わせて変更する
                 AuthorSummary = ConvertAuthorSummary(_authors);
             }
         }
@@ -141,10 +186,10 @@ namespace RonbunMatome
         public string AuthorSummary { get; private set; } = "";
 
         /// <summary>
-        /// Conver the item to BibTeX string.
+        /// BibTeX形式の文字列に変換する
         /// </summary>
-        /// <returns>BibTeX string</returns>
-        public string ExportToBibtex()
+        /// <returns>BibTeX形式の文字列</returns>
+        public string ToBibtexString()
         {
             string content = "";
 
@@ -176,8 +221,8 @@ namespace RonbunMatome
         }
 
         /// <summary>
-        /// Convert a list of author names to a summarized string.
-        /// If the number of authors is more than 2, the authors except for the first author are abbreviated to "et al.".
+        /// 著者名のリストを文字列に変換する。
+        /// 著者が2人以上なら "First Author et al." のように省略する。
         /// </summary>
         /// <param name="authors">List of author names</param>
         /// <returns></returns>
@@ -195,6 +240,38 @@ namespace RonbunMatome
             {
                 return "";
             }
+        }
+    }
+
+    /// <summary>
+    /// 文字列のリストをセミコロンで区切った単一文字列に変換する。
+    /// 例えば ["aaa", "bbb"] は "aaa; bbb" になる。
+    /// セミコロンの直後には空白文字が入る。
+    /// </summary>
+    public class ListStringConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is not List<string>)
+            {
+                return DependencyProperty.UnsetValue;
+            }
+
+            if (((List<string>)value).Count < 1)
+            {
+                return "";
+            }
+
+            string concatAuthors = ((List<string>)value).Aggregate((x, y) => x + "; " + y);
+
+            return concatAuthors;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            List<string> newAuthors = ((string)value).Split("; ").ToList();
+
+            return newAuthors;
         }
     }
 }

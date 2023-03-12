@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,8 +24,55 @@ namespace RonbunMatome
     /// </summary>
     public partial class MainWindow : Window
     {
-        private BibManager bibManager;
+        public MainWindow()
+        {
+            InitializeComponent();
 
+            // これ、なくしたい
+            TagListBox.DataContext = ((MainWindowViewModel)DataContext).TagList;
+        }
+
+        private void ListViewItem_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            var content = ((ListViewItem)sender).Content;
+
+            if (content == null)
+            {
+                return;
+            }
+
+            string key = ((KeyValuePair<string, BibItem>)content).Key;
+
+            ((MainWindowViewModel)DataContext).ChangeShownBibItem(key);
+        }
+
+        private void ListBoxItem_Selected(object sender, RoutedEventArgs e)
+        {
+            if (sender is not ListBoxItem)
+            {
+                return;
+            }
+
+            string tagName = (string)((ListBoxItem)sender).DataContext;
+
+            ((MainWindowViewModel)DataContext).NarrowDownWithTag(tagName);
+        }
+
+        void BiblioListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            var content = ((ListViewItem)sender).Content;
+
+            if (content == null)
+            {
+                return;
+            }
+
+            string key = ((KeyValuePair<string, BibItem>)content).Key;
+
+            ((MainWindowViewModel)DataContext).OpenPdf(key);
+        }
+
+        /*
         public MainWindow()
         {
             InitializeComponent();
@@ -230,9 +278,10 @@ namespace RonbunMatome
 
             string tagName = (string)((ListBoxItem)sender).DataContext;
 
-            var narrowedDownDictionary = bibManager.NarrowDownWithTag(tagName);
+            bibManager.NarrowDownWithTag(tagName);
 
-            BiblioListView.DataContext = narrowedDownDictionary;
+            //var narrowedDownDictionary = bibManager.NarrowDownWithTag(tagName);
+            //BiblioListView.DataContext = narrowedDownDictionary;
         }
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
@@ -240,6 +289,15 @@ namespace RonbunMatome
             switch ((string)((MenuItem)sender).Header)
             {
                 case "Add":
+                    AddReferenceDialog dialog = new AddReferenceDialog();
+                    bool? result = dialog.ShowDialog();
+                    if (result == true)
+                    {
+                        bibManager.AddReference(dialog.bibItem);
+                        //((BibManager)BiblioListView.DataContext).AddReference(dialog.bibItem);
+                        bibManager.AddReference(dialog.bibItem);
+                    }
+
                     break;
 
                 case "Save":
@@ -254,5 +312,6 @@ namespace RonbunMatome
                     break;
             }
         }
+        */
     }
 }
