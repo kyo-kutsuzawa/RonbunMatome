@@ -73,6 +73,11 @@ namespace RonbunMatome
         {
         }
 
+        public void SaveLibrary()
+        {
+            bibManager.Save();
+        }
+
         public void ExportToBibTex()
         {
             bibManager.ExportToBibtex("library.bib");
@@ -138,6 +143,7 @@ namespace RonbunMatome
 
         public void Execute(object? parameter)
         {
+            Vm.SaveLibrary();
         }
     }
 
