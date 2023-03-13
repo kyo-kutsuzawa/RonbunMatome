@@ -264,4 +264,31 @@ namespace RonbunMatome
             return newAuthors;
         }
     }
+
+    public class LongStringConverter : IValueConverter
+    {
+        const int titleLength = 20;
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is not string)
+            {
+                return DependencyProperty.UnsetValue;
+            }
+
+            string titleString = (string)value;
+
+            // 文字列長が一定以上なら、末尾を"..."に置き換えて省略する
+            if (titleString.Length > titleLength)
+            {
+                titleString = string.Concat(titleString.AsSpan(0, titleLength - 3), "...");
+            }
+
+            return titleString;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }

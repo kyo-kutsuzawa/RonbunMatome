@@ -4,12 +4,16 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RonbunMatome"
+        xmlns:wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
         mc:Ignorable="d"
-        xmlns:vm="clr-namespace:RonbunMatome"
         Title="RonbunMatome" Height="720" Width="1280">
     <Window.DataContext>
-        <vm:MainWindowViewModel/>
+        <local:MainWindowViewModel/>
     </Window.DataContext>
+    <Window.Resources>
+        <local:LongStringConverter x:Key="LongString"></local:LongStringConverter>
+    </Window.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -80,6 +84,21 @@
                     <TextBox Height="20" Margin="0,0,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Grid.Column="1"/>
                     <GridSplitter HorizontalAlignment="Right" Margin="0,0,0,0" Width="5"/>
                 </Grid>
+            </TabItem>
+            <TabItem Header="Papers">
+                <TabControl ItemsSource="{Binding PapersList}">
+                    <TabControl.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Item1.Title, Converter={StaticResource LongString}}"></TextBlock>
+                        </DataTemplate>
+                    </TabControl.ItemTemplate>
+                    <TabControl.ContentTemplate>
+                        <DataTemplate>
+                            <wpf:WebView2 Source="{Binding Item2}">
+                            </wpf:WebView2>
+                        </DataTemplate>
+                    </TabControl.ContentTemplate>
+                </TabControl>
             </TabItem>
         </TabControl>
         <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Width="5"/>

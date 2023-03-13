@@ -7,6 +7,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace RonbunMatome
@@ -21,7 +23,9 @@ namespace RonbunMatome
         /// <summary>
         /// 表示される文献リスト
         /// </summary>
-        public List<BibItem> DisplayedBibList{ get; private set; }
+        public List<BibItem> DisplayedBibList { get; private set; }
+
+        public ObservableCollection<Tuple<BibItem, Uri>> PapersList { get; private set; }
 
         public AddBibItemCommand AddBibItemCommand { get; private set; }
         public SaveBibListCommand SaveBibListCommand { get; private set; }
@@ -53,8 +57,11 @@ namespace RonbunMatome
 
             DisplayedBibList = bibManager.BibList;
             TagList = bibManager.ExtractTags();
-            SelectedBibItem = new();
+            selectedBibItem = new();
+            PapersList = new();
 
+            AddBibItemCommand = new(this);
+            SaveBibListCommand = new(this);
             ExportBibListCommand = new(this);
         }
 
@@ -71,6 +78,17 @@ namespace RonbunMatome
 
         public void OpenPdf(BibItem item)
         {
+            if (item.Files.Count < 1)
+            {
+                return;
+            }
+
+            // PDFのファイル名のURIを取得する
+            // TODO: どのPDFを参照するか指定できるようにする。
+            string fileName = item.Files[0];
+            Uri paperUri = new(fileName);
+
+            PapersList.Add(new Tuple<BibItem, Uri>(item, paperUri));
         }
 
         public void SaveLibrary()
