@@ -11,7 +11,68 @@
         <local:MainWindowViewModel/>
     </Window.DataContext>
     <Window.Resources>
+        <local:TabTemplateSelector x:Key="selector"></local:TabTemplateSelector>
         <local:LongStringConverter x:Key="LongString"></local:LongStringConverter>
+        <DataTemplate x:Key="PaperTabTemplate">
+            <Grid>
+                <wpf:WebView2 Source="{Binding Item3}">
+                </wpf:WebView2>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="LibraryTabTemplate">
+            <Grid Background="#FFE5E5E5" DataContext="{Binding Item1}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.2*"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <ListView x:Name="BiblioListView" Margin="0,20,0,0" ItemsSource="{Binding DisplayedBibList}" SelectedItem="{Binding SelectedBibItem, Mode=TwoWay}" Grid.Column="1">
+                    <ListView.Resources>
+                        <Style TargetType="ListViewItem">
+                            <EventSetter Event="MouseDoubleClick" Handler="BiblioListViewItem_MouseDoubleClick"/>
+                            <!--<EventSetter Event="KeyDown" Handler="BiblioListViewItem_KeyDown"/>-->
+                        </Style>
+                        <Style TargetType="GridViewColumnHeader">
+                            <EventSetter Event="Click" Handler="GridViewColumnHeader_Click"></EventSetter>
+                        </Style>
+                        <!--
+                            <Style TargetType="ListViewItem">
+                                <EventSetter Event="MouseUp" Handler="BiblioListViewItem_ShowDetails"/>
+                                <EventSetter Event="MouseDoubleClick" Handler="BiblioListViewItem_MouseDoubleClick"/>
+                                <EventSetter Event="KeyDown" Handler="BiblioListViewItem_KeyDown"/>
+                            </Style>
+                            <Style TargetType="GridViewColumnHeader">
+                                <EventSetter Event="Click" Handler="GridViewColumnHeader_Click"></EventSetter>
+                            </Style>
+                            -->
+                    </ListView.Resources>
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn DisplayMemberBinding="{Binding Citationkey}">
+                                <GridViewColumnHeader Content="Citation Key" Tag="Citationkey"></GridViewColumnHeader>
+                            </GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding AuthorSummary}">
+                                <GridViewColumnHeader Content="Authors" Tag="AuthorSummary"></GridViewColumnHeader>
+                            </GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding Year}">
+                                <GridViewColumnHeader Content="Year" Tag="Year"></GridViewColumnHeader>
+                            </GridViewColumn>
+                            <GridViewColumn DisplayMemberBinding="{Binding Title}">
+                                <GridViewColumnHeader Content="Title" Tag="Title"></GridViewColumnHeader>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+                <ListBox Margin="0,0,5,0" ItemsSource="{Binding TagList}" SelectedItem="{Binding SelectedTag, Mode=TwoWay}">
+                    <ListBox.Resources>
+                        <Style TargetType="ListBoxItem">
+                            <EventSetter Event="Selected" Handler="ListBoxItem_Selected"></EventSetter>
+                        </Style>
+                    </ListBox.Resources>
+                </ListBox>
+                <TextBox Height="20" Margin="0,0,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Grid.Column="1"/>
+                <GridSplitter HorizontalAlignment="Right" Margin="0,0,0,0" Width="5"/>
+            </Grid>
+        </DataTemplate>
     </Window.Resources>
 
     <Grid>
@@ -29,77 +90,12 @@
                 <MenuItem Header="Export" Command="{Binding ExportBibListCommand}"></MenuItem>
             </MenuItem>
         </Menu>
-        <!--<TabControl x:Name="BiblioTabControl" Margin="0,18,0,0" Grid.ColumnSpan="1" SelectionChanged="BiblioTabControl_SelectionChanged">-->
-        <TabControl x:Name="BiblioTabControl" Margin="0,18,0,0" Grid.ColumnSpan="1">
-            <TabItem Header="Bibliography">
-                <Grid Background="#FFE5E5E5">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.2*"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <ListView x:Name="BiblioListView" Margin="0,20,0,0" ItemsSource="{Binding DisplayedBibList}" SelectedItem="{Binding SelectedBibItem, Mode=TwoWay}" Grid.Column="1">
-                        <ListView.Resources>
-                            <Style TargetType="ListViewItem">
-                                <EventSetter Event="MouseDoubleClick" Handler="BiblioListViewItem_MouseDoubleClick"/>
-                                <!--<EventSetter Event="KeyDown" Handler="BiblioListViewItem_KeyDown"/>-->
-                            </Style>
-                            <Style TargetType="GridViewColumnHeader">
-                                <EventSetter Event="Click" Handler="GridViewColumnHeader_Click"></EventSetter>
-                            </Style>
-                            <!--
-                            <Style TargetType="ListViewItem">
-                                <EventSetter Event="MouseUp" Handler="BiblioListViewItem_ShowDetails"/>
-                                <EventSetter Event="MouseDoubleClick" Handler="BiblioListViewItem_MouseDoubleClick"/>
-                                <EventSetter Event="KeyDown" Handler="BiblioListViewItem_KeyDown"/>
-                            </Style>
-                            <Style TargetType="GridViewColumnHeader">
-                                <EventSetter Event="Click" Handler="GridViewColumnHeader_Click"></EventSetter>
-                            </Style>
-                            -->
-                        </ListView.Resources>
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn DisplayMemberBinding="{Binding Citationkey}">
-                                    <GridViewColumnHeader Content="Citation Key" Tag="Citationkey"></GridViewColumnHeader>
-                                </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding AuthorSummary}">
-                                    <GridViewColumnHeader Content="Authors" Tag="AuthorSummary"></GridViewColumnHeader>
-                                </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding Year}">
-                                    <GridViewColumnHeader Content="Year" Tag="Year"></GridViewColumnHeader>
-                                </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding Title}">
-                                    <GridViewColumnHeader Content="Title" Tag="Title"></GridViewColumnHeader>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                    <ListBox x:Name="TagListBox" Margin="0,0,5,0" ItemsSource="{Binding}">
-                        <ListBox.Resources>
-                            <Style TargetType="ListBoxItem">
-                                <EventSetter Event="Selected" Handler="ListBoxItem_Selected"></EventSetter>
-                            </Style>
-                        </ListBox.Resources>
-                    </ListBox>
-                    <TextBox Height="20" Margin="0,0,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Grid.Column="1"/>
-                    <GridSplitter HorizontalAlignment="Right" Margin="0,0,0,0" Width="5"/>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Papers">
-                <TabControl ItemsSource="{Binding PapersList}">
-                    <TabControl.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Item1.Title, Converter={StaticResource LongString}}"></TextBlock>
-                        </DataTemplate>
-                    </TabControl.ItemTemplate>
-                    <TabControl.ContentTemplate>
-                        <DataTemplate>
-                            <wpf:WebView2 Source="{Binding Item2}">
-                            </wpf:WebView2>
-                        </DataTemplate>
-                    </TabControl.ContentTemplate>
-                </TabControl>
-            </TabItem>
+        <TabControl x:Name="BiblioTabControl" Margin="0,18,0,0" Grid.ColumnSpan="1" ItemsSource="{Binding PapersList}" ContentTemplateSelector="{StaticResource selector}">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Item2.Title, Converter={StaticResource LongString}}"></TextBlock>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
         </TabControl>
         <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Width="5"/>
         <local:DetailViewer x:Name="Details" Grid.Column="1" Margin="5,18,0,0" DataContext="{Binding SelectedBibItem}"></local:DetailViewer>

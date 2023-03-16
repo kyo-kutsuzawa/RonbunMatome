@@ -27,9 +27,6 @@ namespace RonbunMatome
         public MainWindow()
         {
             InitializeComponent();
-
-            // これ、なくしたい
-            TagListBox.DataContext = ((MainWindowViewModel)DataContext).TagList;
         }
 
         private void ListBoxItem_Selected(object sender, RoutedEventArgs e)
@@ -58,6 +55,7 @@ namespace RonbunMatome
 
         private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
         {
+            /*
             if (sender is not GridViewColumnHeader)
             {
                 return;
@@ -98,6 +96,7 @@ namespace RonbunMatome
 
             // BiblioListViewを並び替える
             BiblioListView.Items.SortDescriptions.Add(new SortDescription(propertyName, sortDirection));
+            */
         }
 
         /*
