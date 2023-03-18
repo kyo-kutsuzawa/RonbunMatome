@@ -12,7 +12,6 @@ using System.Text.Unicode;
 using System.Globalization;
 using System.Windows.Data;
 using System.Windows;
-using ObservableCollections;
 using System.Windows.Documents;
 
 namespace RonbunMatome

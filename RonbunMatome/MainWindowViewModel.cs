@@ -1,5 +1,4 @@
-﻿using ObservableCollections;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -25,7 +24,7 @@ namespace RonbunMatome
         /// </summary>
         public List<BibItem> DisplayedBibList { get; private set; }
 
-        public ObservableCollection<Tuple<MainWindowViewModel?, BibItem, Uri>> PapersList { get; private set; }
+        public ObservableCollection<Tuple<BibItem, Uri>> PapersList { get; private set; }
 
         public AddBibItemCommand AddBibItemCommand { get; private set; }
         public SaveBibListCommand SaveBibListCommand { get; private set; }
@@ -65,13 +64,6 @@ namespace RonbunMatome
             AddBibItemCommand = new(this);
             SaveBibListCommand = new(this);
             ExportBibListCommand = new(this);
-
-            BibItem item = new()
-            {
-                Title = "Bibliography"
-            };
-            Uri paperUri = new("http://www.example.com/");
-            PapersList.Add(new Tuple<MainWindowViewModel?, BibItem, Uri>(this, item, paperUri));
         }
 
         /// <summary>
@@ -97,7 +89,7 @@ namespace RonbunMatome
             string fileName = item.Files[0];
             Uri paperUri = new(fileName);
 
-            PapersList.Add(new Tuple<MainWindowViewModel?, BibItem, Uri>(null, item, paperUri));
+            PapersList.Add(new Tuple<BibItem, Uri>(item, paperUri));
         }
 
         public void SaveLibrary()
@@ -108,21 +100,6 @@ namespace RonbunMatome
         public void ExportToBibTex()
         {
             bibManager.ExportToBibtex("library.bib");
-        }
-    }
-
-    public class TabTemplateSelector : DataTemplateSelector
-    {
-        public override DataTemplate SelectTemplate(object item, DependencyObject container)
-        {
-            if (((Tuple<MainWindowViewModel?, BibItem, Uri>)item).Item1 != null)
-            {
-                return (DataTemplate)Application.Current.MainWindow.FindResource("LibraryTabTemplate");
-            }
-            else
-            {
-                return (DataTemplate)Application.Current.MainWindow.FindResource("PaperTabTemplate");
-            }
         }
     }
 

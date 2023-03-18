@@ -41,7 +41,7 @@ namespace RonbunMatome
             ((MainWindowViewModel)DataContext).NarrowDownWithTag(tagName);
         }
 
-        void BiblioListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        void LibraryListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
             var content = ((ListViewItem)sender).Content;
 
@@ -55,7 +55,6 @@ namespace RonbunMatome
 
         private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
         {
-            /*
             if (sender is not GridViewColumnHeader)
             {
                 return;
@@ -68,15 +67,15 @@ namespace RonbunMatome
 
             // 並び替えの昇降（Ascending/Descending）を決める。
             // 並び替えがまだなら昇順にして、すでに並び替えされていればそれと逆順にする。
-            if (BiblioListView.Items.SortDescriptions.Count == 0)
+            if (LibraryListView.Items.SortDescriptions.Count == 0)
             {
                 sortDirection = ListSortDirection.Ascending;
             }
             else
             {
-                if (BiblioListView.Items.SortDescriptions.Last().PropertyName == propertyName)
+                if (LibraryListView.Items.SortDescriptions.Last().PropertyName == propertyName)
                 {
-                    if (BiblioListView.Items.SortDescriptions.Last().Direction == ListSortDirection.Ascending)
+                    if (LibraryListView.Items.SortDescriptions.Last().Direction == ListSortDirection.Ascending)
                     {
                         sortDirection = ListSortDirection.Descending;
                     }
@@ -91,67 +90,17 @@ namespace RonbunMatome
                 }
 
                 // 直前の並び替えを消去する
-                BiblioListView.Items.SortDescriptions.Clear();
+                LibraryListView.Items.SortDescriptions.Clear();
             }
 
             // BiblioListViewを並び替える
-            BiblioListView.Items.SortDescriptions.Add(new SortDescription(propertyName, sortDirection));
-            */
+            LibraryListView.Items.SortDescriptions.Add(new SortDescription(propertyName, sortDirection));
         }
 
-        /*
-        /// <summary>
-        /// Open a pdf file of the given bibliography item
-        /// </summary>
-        /// <param name="bibItem"></param>
-        void OpenNewPdfTab(KeyValuePair<string, BibItem> bibKeyValue)
+        private void PapersTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Return if no PDF file is registered
-            if (bibKeyValue.Value.Files.Count < 1)
-            {
-                return;
-            }
-
-            // Create a new tab
-            PaperTabItem newTabItem = new(bibKeyValue.Key);
-            newTabItem.OpenPdf(bibKeyValue.Value.Files[0]);  // Open a PDF file
-            newTabItem.SetHeaderTitle(bibKeyValue.Value.Title);  // Set the tab header title
-            BiblioTabControl.Items.Add(newTabItem);
-
-            // Change selected tab
-            BiblioTabControl.SelectedIndex = BiblioTabControl.Items.Count - 1;
-            BiblioTabControl.SelectedItem = newTabItem;
-            newTabItem.IsSelected = true;
+            var selectedItem = ((TabControl)sender).SelectedItem;
+            ((MainWindowViewModel)DataContext).SelectedBibItem = ((Tuple<BibItem, Uri>)selectedItem).Item1;
         }
-
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            switch ((string)((MenuItem)sender).Header)
-            {
-                case "Add":
-                    AddReferenceDialog dialog = new AddReferenceDialog();
-                    bool? result = dialog.ShowDialog();
-                    if (result == true)
-                    {
-                        bibManager.AddReference(dialog.bibItem);
-                        //((BibManager)BiblioListView.DataContext).AddReference(dialog.bibItem);
-                        bibManager.AddReference(dialog.bibItem);
-                    }
-
-                    break;
-
-                case "Save":
-                    bibManager.Save();
-                    break;
-
-                case "Export":
-                    bibManager.ExportToBibtex("library.bib");
-                    break;
-
-                default:
-                    break;
-            }
-        }
-        */
     }
 }
