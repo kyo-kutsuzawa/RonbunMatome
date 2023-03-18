@@ -24,7 +24,7 @@ namespace RonbunMatome
         /// <summary>
         /// 表示される文献リスト
         /// </summary>
-        public List<BibItem> DisplayedBibList { get; private set; }
+        public ObservableCollection<BibItem> DisplayedBibList { get; private set; }
 
         public AddBibItemCommand AddBibItemCommand { get; private set; }
         public SaveBibListCommand SaveBibListCommand { get; private set; }
@@ -58,6 +58,12 @@ namespace RonbunMatome
         public MainWindowViewModel()
         {
             bibManager = new BibManager();
+            bibManager.BibList.CollectionChanged += BibList_CollectionChanged;
+
+            foreach (var bibItem in bibManager.BibList)
+            {
+                bibItem.PropertyChanged += BibItem_PropertyChanged;
+            }
 
             DisplayedBibList = bibManager.BibList;
             TagList = bibManager.ExtractTags();
@@ -70,6 +76,16 @@ namespace RonbunMatome
             ExportBibListCommand = new(this);
         }
 
+        private void BibItem_PropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            UpdateTagList();
+        }
+
+        private void BibList_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            UpdateTagList();
+        }
+
         /// <summary>
         /// タグで文献一覧を絞り込む
         /// </summary>
@@ -79,6 +95,12 @@ namespace RonbunMatome
             DisplayedBibList = bibManager.NarrowDownWithTag(tagName);
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DisplayedBibList)));
+        }
+
+        public void UpdateTagList()
+        {
+            TagList = bibManager.ExtractTags();
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TagList)));
         }
 
         public void SaveLibrary()

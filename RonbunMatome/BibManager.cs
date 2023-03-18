@@ -13,6 +13,8 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows;
 using System.Windows.Documents;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace RonbunMatome
 {
@@ -20,33 +22,21 @@ namespace RonbunMatome
     {
         private const string libraryFileName = "C:\\Users\\kyo\\source\\repos\\RonbunMatome\\RonbunMatome\\bin\\Debug\\net6.0-windows\\library.json";
 
-        public BibManager()
-        {
-            JsonString = File.ReadAllText(libraryFileName);
-            Dictionary<string, BibItem> bibDictionary = JsonSerializer.Deserialize<Dictionary<string, BibItem>>(JsonString) ?? new Dictionary<string, BibItem>();
-            BibList = bibDictionary.Values.ToList();
-        }
-
         /// <summary>
         /// すべての文献データ
         /// </summary>
-        public List<BibItem> BibList { get; private set; }
+        public ObservableCollection<BibItem> BibList { get; private set; }
 
         /// <summary>
         /// 文献データベースのJson文字列
         /// </summary>
         public string JsonString { get; private set; }
 
-        public List<string> TagList
+        public BibManager()
         {
-            get
-            {
-                return ExtractTags();
-            }
-            private set
-            {
-
-            }
+            JsonString = File.ReadAllText(libraryFileName);
+            Dictionary<string, BibItem> bibDictionary = JsonSerializer.Deserialize<Dictionary<string, BibItem>>(JsonString) ?? new Dictionary<string, BibItem>();
+            BibList = new ObservableCollection<BibItem>(bibDictionary.Values);
         }
 
         /// <summary>
@@ -78,7 +68,7 @@ namespace RonbunMatome
         /// </summary>
         /// <param name="tagName">絞り込みのタグ</param>
         /// <returns>指定されたタグをもつ文献の一覧</returns>
-        public List<BibItem> NarrowDownWithTag(string tagName)
+        public ObservableCollection<BibItem> NarrowDownWithTag(string tagName)
         {
             // Allなら全文献を返す
             if (tagName == "All")
@@ -86,8 +76,8 @@ namespace RonbunMatome
                 return BibList;
             }
 
-            var list = BibList.FindAll(x => x.Tags.Contains(tagName));
-            return (List<BibItem>)list;
+            var list = BibList.Where(x => x.Tags.Contains(tagName));
+            return new ObservableCollection<BibItem>(list);
         }
 
         /// <summary>
@@ -132,14 +122,18 @@ namespace RonbunMatome
         }
     }
 
-    public class BibItem
+    public class BibItem : INotifyPropertyChanged
     {
         public BibItem()
         {
             Authors = new List<string>();
+            Tags = new List<string>();
         }
 
-        private List<string> _authors = new List<string>();
+        private List<string> _authors = new();
+        private List<string> _tags = new();
+
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         public string Citationkey { get; set; } = "";
         public string EntryType { get; set; } = "";
@@ -156,6 +150,21 @@ namespace RonbunMatome
 
                 // 著者名が変更されたときは AuthorSummary も合わせて変更する
                 AuthorSummary = ConvertAuthorSummary(_authors);
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Authors)));
+            }
+        }
+        public List<string> Tags
+        {
+            get
+            {
+                return _tags;
+            }
+            set
+            {
+                _tags = value;
+
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Tags)));
             }
         }
         public string Year { get; set; } = "";
@@ -165,7 +174,6 @@ namespace RonbunMatome
         public string Abstract { get; set; } = "";
         public string Arxivid { get; set; } = "";
         public List<string> Urls { get; set; } = new List<string>();
-        public List<string> Tags { get; set; } = new List<string>();
         public string Comment { get; set; } = "";
         public string Keywords { get; set; } = "";
         public List<string> Files { get; set; } = new List<string>();
