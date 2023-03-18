@@ -12,6 +12,7 @@
     </Window.DataContext>
     <Window.Resources>
         <local:LongStringConverter x:Key="LongString"></local:LongStringConverter>
+        <local:BibItemTupleConverter x:Key="TupleConverter"></local:BibItemTupleConverter>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -28,7 +29,8 @@
                 <MenuItem Header="Export" Command="{Binding ExportBibListCommand}"></MenuItem>
             </MenuItem>
         </Menu>
-        <TabControl x:Name="BiblioTabControl" Margin="0,18,0,0" Grid.ColumnSpan="1" TabStripPlacement="Left">
+        <TabControl x:Name="BiblioTabControl" Margin="0,18,0,0" Grid.ColumnSpan="1" TabStripPlacement="Left"
+                    SelectionChanged="BiblioTabControl_SelectionChanged">
             <TabControl.Resources>
                 <Style TargetType="{x:Type TabItem}">
                     <Setter Property="HeaderTemplate">
@@ -90,11 +92,12 @@
             </TabItem>
             <TabItem x:Name="PapersTabItem" Header="Papers">
                 <Grid>
-                    <TabControl x:Name="PapersTabControl" ItemsSource="{Binding PapersList}" SelectionChanged="PapersTabControl_SelectionChanged">
+                    <TabControl x:Name="PapersTabControl" ItemsSource="{Binding PapersList}" SelectedItem="{Binding SelectedBibItem, Mode=OneWayToSource, Converter={StaticResource TupleConverter}}">
                         <TabControl.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
-                                    <Button Name="CloseButton" Background="Transparent" BorderThickness="0" Content="✕" FontWeight="Bold" HorizontalAlignment="Right" Margin="0,0,0,0" Padding="0,0,0,0" ToolTip="Close" VerticalAlignment="Center" Width="15" />
+                                    <Button Name="CloseButton" Background="Transparent" BorderThickness="0" Content="✕" FontWeight="Bold" HorizontalAlignment="Right" Margin="0,0,0,0" Padding="0,0,0,0" ToolTip="Close" VerticalAlignment="Center" Width="15">
+                                    </Button>
                                     <TextBlock Text="{Binding Item1.Title, Converter={StaticResource LongString}}" Margin="0,0,20,0" />
                                 </Grid>
                             </DataTemplate>

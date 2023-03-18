@@ -97,10 +97,19 @@ namespace RonbunMatome
             LibraryListView.Items.SortDescriptions.Add(new SortDescription(propertyName, sortDirection));
         }
 
-        private void PapersTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void BiblioTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedItem = ((TabControl)sender).SelectedItem;
-            ((MainWindowViewModel)DataContext).SelectedBibItem = ((Tuple<BibItem, Uri>)selectedItem).Item1;
+
+            if ((TabItem)selectedItem == LibraryTabItem)
+            {
+                LibraryListView.SelectedItem = LibraryListView.SelectedItem;
+            }
+            else if ((TabItem)selectedItem == PapersTabItem)
+            {
+                PapersTabControl.SelectedItem = PapersTabControl.SelectedItem;
+            }
         }
+
     }
 }
