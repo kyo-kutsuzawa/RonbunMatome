@@ -264,9 +264,27 @@ namespace RonbunMatome
         }
     }
 
+    public class FilenamesConverter : IValueConverter
+    {
+        object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (((List<string>)value).Count < 1)
+            {
+                return new Uri("about:blank");
+            }
+
+            return new Uri(((List<string>)value)[0]);
+        }
+
+        object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class LongStringConverter : IValueConverter
     {
-        const int titleLength = 20;
+        const int titleLength = 30;
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is not string)

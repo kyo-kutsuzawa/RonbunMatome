@@ -11,8 +11,8 @@
         <local:MainWindowViewModel/>
     </Window.DataContext>
     <Window.Resources>
-        <local:LongStringConverter x:Key="LongString"></local:LongStringConverter>
-        <local:BibItemTupleConverter x:Key="TupleConverter"></local:BibItemTupleConverter>
+        <local:LongStringConverter x:Key="LongStringConverter"></local:LongStringConverter>
+        <local:FilenamesConverter x:Key="FilenamesConverter"></local:FilenamesConverter>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -29,22 +29,16 @@
                 <MenuItem Header="Export" Command="{Binding ExportBibListCommand}"></MenuItem>
             </MenuItem>
         </Menu>
-        <TabControl x:Name="BiblioTabControl" Margin="0,18,0,0" Grid.ColumnSpan="1" TabStripPlacement="Left"
-                    SelectionChanged="BiblioTabControl_SelectionChanged">
+        <TabControl x:Name="BiblioTabControl" Margin="0,18,0,0" Grid.ColumnSpan="1">
             <TabControl.Resources>
-                <Style TargetType="{x:Type TabItem}">
+                <Style TargetType="TabItem">
                     <Setter Property="HeaderTemplate">
                         <Setter.Value>
                             <DataTemplate>
-                                <ContentPresenter Content="{TemplateBinding Content}">
-                                    <ContentPresenter.LayoutTransform>
-                                        <RotateTransform Angle="270" />
-                                    </ContentPresenter.LayoutTransform>
-                                </ContentPresenter>
+                                <TextBlock Text="{TemplateBinding Content}" Margin="10, 0, 10, 0"></TextBlock>
                             </DataTemplate>
                         </Setter.Value>
                     </Setter>
-                    <Setter Property="Padding" Value="3" />
                 </Style>
             </TabControl.Resources>
             <TabItem x:Name="LibraryTabItem" Header="Library">
@@ -53,11 +47,8 @@
                         <ColumnDefinition Width="0.2*"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <ListView x:Name="LibraryListView" Margin="0,20,0,0" ItemsSource="{Binding DisplayedBibList}" SelectedItem="{Binding SelectedBibItem, Mode=OneWayToSource}" Grid.Column="1">
+                    <ListView x:Name="LibraryListView" Margin="0,20,0,0" ItemsSource="{Binding DisplayedBibList}" SelectedItem="{Binding SelectedBibItem}" Grid.Column="1">
                         <ListView.Resources>
-                            <Style TargetType="ListViewItem">
-                                <EventSetter Event="MouseDoubleClick" Handler="LibraryListViewItem_MouseDoubleClick"/>
-                            </Style>
                             <Style TargetType="GridViewColumnHeader">
                                 <EventSetter Event="Click" Handler="GridViewColumnHeader_Click"></EventSetter>
                             </Style>
@@ -79,7 +70,7 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <ListBox Margin="0,0,5,0" ItemsSource="{Binding TagList}" SelectedItem="{Binding SelectedTag, Mode=TwoWay}">
+                    <ListBox Margin="0,0,5,0" ItemsSource="{Binding TagList}">
                         <ListBox.Resources>
                             <Style TargetType="ListBoxItem">
                                 <EventSetter Event="Selected" Handler="ListBoxItem_Selected"></EventSetter>
@@ -90,25 +81,8 @@
                     <GridSplitter HorizontalAlignment="Right" Margin="0,0,0,0" Width="5"/>
                 </Grid>
             </TabItem>
-            <TabItem x:Name="PapersTabItem" Header="Papers">
-                <Grid>
-                    <TabControl x:Name="PapersTabControl" ItemsSource="{Binding PapersList}" SelectedItem="{Binding SelectedBibItem, Mode=OneWayToSource, Converter={StaticResource TupleConverter}}">
-                        <TabControl.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Button Name="CloseButton" Background="Transparent" BorderThickness="0" Content="✕" FontWeight="Bold" HorizontalAlignment="Right" Margin="0,0,0,0" Padding="0,0,0,0" ToolTip="Close" VerticalAlignment="Center" Width="15">
-                                    </Button>
-                                    <TextBlock Text="{Binding Item1.Title, Converter={StaticResource LongString}}" Margin="0,0,20,0" />
-                                </Grid>
-                            </DataTemplate>
-                        </TabControl.ItemTemplate>
-                        <TabControl.ContentTemplate>
-                            <DataTemplate>
-                                <wpf:WebView2 Source="{Binding Item2}" />
-                            </DataTemplate>
-                        </TabControl.ContentTemplate>
-                    </TabControl>
-                </Grid>
+            <TabItem x:Name="PapersTabItem" DataContext="{Binding SelectedBibItem}" Header="{Binding Title, Converter={StaticResource LongStringConverter}}">
+                <wpf:WebView2 Source="{Binding Files, Mode=OneWay, Converter={StaticResource FilenamesConverter}}" />
             </TabItem>
         </TabControl>
         <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Width="5"/>

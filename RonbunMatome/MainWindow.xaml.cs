@@ -41,18 +41,6 @@ namespace RonbunMatome
             ((MainWindowViewModel)DataContext).NarrowDownWithTag(tagName);
         }
 
-        void LibraryListViewItem_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            var content = ((ListViewItem)sender).Content;
-
-            if (content == null)
-            {
-                return;
-            }
-
-            ((MainWindowViewModel)DataContext).OpenPdf((BibItem)content);
-        }
-
         private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
         {
             if (sender is not GridViewColumnHeader)
@@ -96,20 +84,5 @@ namespace RonbunMatome
             // BiblioListViewを並び替える
             LibraryListView.Items.SortDescriptions.Add(new SortDescription(propertyName, sortDirection));
         }
-
-        private void BiblioTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var selectedItem = ((TabControl)sender).SelectedItem;
-
-            if ((TabItem)selectedItem == LibraryTabItem)
-            {
-                LibraryListView.SelectedItem = LibraryListView.SelectedItem;
-            }
-            else if ((TabItem)selectedItem == PapersTabItem)
-            {
-                PapersTabControl.SelectedItem = PapersTabControl.SelectedItem;
-            }
-        }
-
     }
 }

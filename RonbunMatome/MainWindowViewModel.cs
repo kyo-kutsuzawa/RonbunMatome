@@ -26,8 +26,6 @@ namespace RonbunMatome
         /// </summary>
         public List<BibItem> DisplayedBibList { get; private set; }
 
-        public ObservableCollection<Tuple<BibItem, Uri>> PapersList { get; private set; }
-
         public AddBibItemCommand AddBibItemCommand { get; private set; }
         public SaveBibListCommand SaveBibListCommand { get; private set; }
         public ExportBibListCommand ExportBibListCommand { get; private set; }
@@ -43,6 +41,11 @@ namespace RonbunMatome
             }
             set
             {
+                if (value == null)
+                {
+                    return;
+                }
+
                 selectedBibItem = value;
 
                 // SelectedBibItemの変更をUIに通知する
@@ -59,7 +62,6 @@ namespace RonbunMatome
             DisplayedBibList = bibManager.BibList;
             TagList = bibManager.ExtractTags();
             selectedBibItem = new();
-            PapersList = new();
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TagList)));
 
@@ -77,21 +79,6 @@ namespace RonbunMatome
             DisplayedBibList = bibManager.NarrowDownWithTag(tagName);
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DisplayedBibList)));
-        }
-
-        public void OpenPdf(BibItem item)
-        {
-            if (item.Files.Count < 1)
-            {
-                return;
-            }
-
-            // PDFのファイル名のURIを取得する
-            // TODO: どのPDFを参照するか指定できるようにする。
-            string fileName = item.Files[0];
-            Uri paperUri = new(fileName);
-
-            PapersList.Add(new Tuple<BibItem, Uri>(item, paperUri));
         }
 
         public void SaveLibrary()
@@ -197,24 +184,6 @@ namespace RonbunMatome
         public void Execute(object? parameter)
         {
             Vm.ExportToBibTex();
-        }
-    }
-
-    public class BibItemTupleConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            if (value is not Tuple<BibItem, Uri>)
-            {
-                return DependencyProperty.UnsetValue;
-            }
-
-            return ((Tuple<BibItem, Uri>)value).Item1;
         }
     }
 }
