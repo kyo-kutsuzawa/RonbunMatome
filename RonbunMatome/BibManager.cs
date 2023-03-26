@@ -35,9 +35,6 @@ namespace RonbunMatome
         public BibManager()
         {
             JsonString = File.ReadAllText(Properties.Settings.Default.libraryJsonDirectory);
-            //Dictionary<string, BibItem> bibDictionary = JsonSerializer.Deserialize<Dictionary<string, BibItem>>(JsonString) ?? new Dictionary<string, BibItem>();
-            //BibList = new ObservableCollection<BibItem>(bibDictionary.Values);
-            //List<BibItem> bibList = JsonSerializer.Deserialize<List<BibItem>>(JsonString) ?? new();
             BibList = JsonSerializer.Deserialize<ObservableCollection<BibItem>>(JsonString) ?? new();
         }
 
@@ -89,11 +86,6 @@ namespace RonbunMatome
         /// <returns></returns>
         public bool AddReference(BibItem item)
         {
-            // string key = item.Citationkey;
-
-            Guid guid = Guid.NewGuid();
-            string key = guid.ToString();
-
             BibList.Add(item);
 
             return true;
@@ -136,7 +128,6 @@ namespace RonbunMatome
                     processToInitialize.WaitForExit();
                     processToInitialize.Close();
                 }
-
             }
 
             // 差分を記録する
@@ -160,11 +151,6 @@ namespace RonbunMatome
             return true;
         }
 
-        public bool ExportToBibtex()
-        {
-            return this.ExportToBibtex(Properties.Settings.Default.libraryBibDirectory);
-        }
-
         public bool ExportToBibtex(string fileName)
         {
             // BibTeX文字列を作成する
@@ -177,13 +163,13 @@ namespace RonbunMatome
 
             return true;
         }
+        public bool ExportToBibtex() => ExportToBibtex(Properties.Settings.Default.libraryBibDirectory);
     }
 
     public class BibItem : INotifyPropertyChanged
     {
         public BibItem()
         {
-            Tags = new();
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
