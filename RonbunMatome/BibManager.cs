@@ -15,6 +15,7 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 
 namespace RonbunMatome
 {
@@ -35,8 +36,10 @@ namespace RonbunMatome
         public BibManager()
         {
             JsonString = File.ReadAllText(libraryFileName);
-            Dictionary<string, BibItem> bibDictionary = JsonSerializer.Deserialize<Dictionary<string, BibItem>>(JsonString) ?? new Dictionary<string, BibItem>();
-            BibList = new ObservableCollection<BibItem>(bibDictionary.Values);
+            //Dictionary<string, BibItem> bibDictionary = JsonSerializer.Deserialize<Dictionary<string, BibItem>>(JsonString) ?? new Dictionary<string, BibItem>();
+            //BibList = new ObservableCollection<BibItem>(bibDictionary.Values);
+            //List<BibItem> bibList = JsonSerializer.Deserialize<List<BibItem>>(JsonString) ?? new();
+            BibList = JsonSerializer.Deserialize<ObservableCollection<BibItem>>(JsonString) ?? new();
         }
 
         /// <summary>
@@ -99,13 +102,60 @@ namespace RonbunMatome
 
         public bool Save()
         {
-            JsonSerializerOptions options = new JsonSerializerOptions()
+            // 文献一覧を保存する
+            JsonSerializerOptions options = new()
             {
                 Encoder = JavaScriptEncoder.Create(UnicodeRanges.All),
                 WriteIndented = true
             };
             string text = JsonSerializer.Serialize(BibList, options);
             File.WriteAllText(libraryFileName, text, Encoding.UTF8);
+
+            string libraryDirName = System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(libraryFileName)) ?? ".";
+
+            // .gitフォルダが存在しなければ、gitレポジトリを初期化する
+            if (Directory.Exists(System.IO.Path.Join(libraryDirName, ".git")) == false)
+            {
+                ProcessStartInfo psInfoToInitialize = new("cmd")
+                {
+                    Arguments =
+                        "/c cd \"" + libraryDirName + "\" & " +
+                        "git init & " +
+                        "git commit --allow-empty -m \"initial commit\" & " +
+                        "git branch -m master main & " +
+                        "git add \"" + libraryFileName + "\" & " +
+                        "git commit -m \"Library added\"",
+                    CreateNoWindow = true,
+                    UseShellExecute = false,
+                };
+                Process? processToInitialize = Process.Start(psInfoToInitialize);
+
+                if (processToInitialize != null)
+                {
+                    processToInitialize.WaitForExit();
+                    processToInitialize.Close();
+                }
+
+            }
+
+            // 差分を記録する
+            ProcessStartInfo psInfoToSave = new("cmd")
+            {
+                Arguments =
+                    "/c cd \"" + libraryDirName + "\" & " +
+                    "git add \"" + libraryFileName + "\" & " +
+                    "git commit -m \"Library changed\"",
+                CreateNoWindow = true,
+                UseShellExecute = false
+            };
+            Process? processToSave = Process.Start(psInfoToSave);
+
+            if (processToSave != null)
+            {
+                processToSave.WaitForExit();
+                processToSave.Close();
+            }
+
             return true;
         }
 
