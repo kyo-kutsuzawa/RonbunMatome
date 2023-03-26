@@ -110,7 +110,7 @@ namespace RonbunMatome
 
         public void ExportToBibTex()
         {
-            bibManager.ExportToBibtex("library.bib");
+            bibManager.ExportToBibtex();
         }
     }
 

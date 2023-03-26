@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="RonbunMatome.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="libraryJsonDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Users\kyo\source\repos\RonbunMatome\RonbunMatome\bin\Debug\net6.0-windows\library.json</Value>
+    </Setting>
+    <Setting Name="libraryBibDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Users\kyo\source\repos\RonbunMatome\RonbunMatome\bin\Debug\net6.0-windows\library.bib</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

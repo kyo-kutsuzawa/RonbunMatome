@@ -21,8 +21,6 @@ namespace RonbunMatome
 {
     class BibManager
     {
-        private const string libraryFileName = "C:\\Users\\kyo\\source\\repos\\RonbunMatome\\RonbunMatome\\bin\\Debug\\net6.0-windows\\library.json";
-
         /// <summary>
         /// すべての文献データ
         /// </summary>
@@ -35,7 +33,7 @@ namespace RonbunMatome
 
         public BibManager()
         {
-            JsonString = File.ReadAllText(libraryFileName);
+            JsonString = File.ReadAllText(Properties.Settings.Default.libraryJsonDirectory);
             //Dictionary<string, BibItem> bibDictionary = JsonSerializer.Deserialize<Dictionary<string, BibItem>>(JsonString) ?? new Dictionary<string, BibItem>();
             //BibList = new ObservableCollection<BibItem>(bibDictionary.Values);
             //List<BibItem> bibList = JsonSerializer.Deserialize<List<BibItem>>(JsonString) ?? new();
@@ -102,6 +100,8 @@ namespace RonbunMatome
 
         public bool Save()
         {
+            string libraryFileName = Properties.Settings.Default.libraryJsonDirectory;
+
             // 文献一覧を保存する
             JsonSerializerOptions options = new()
             {
@@ -159,8 +159,14 @@ namespace RonbunMatome
             return true;
         }
 
+        public bool ExportToBibtex()
+        {
+            return this.ExportToBibtex(Properties.Settings.Default.libraryBibDirectory);
+        }
+
         public bool ExportToBibtex(string fileName)
         {
+            // BibTeX文字列を作成する
             string text = "";
             foreach (BibItem item in BibList)
             {
