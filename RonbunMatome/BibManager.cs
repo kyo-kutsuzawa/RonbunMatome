@@ -16,6 +16,7 @@ using System.Windows.Documents;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Text.Json.Serialization;
 
 namespace RonbunMatome
 {
@@ -182,61 +183,254 @@ namespace RonbunMatome
     {
         public BibItem()
         {
-            Authors = new List<string>();
-            Tags = new List<string>();
+            Tags = new();
         }
-
-        private List<string> _authors = new();
-        private List<string> _tags = new();
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        public string Citationkey { get; set; } = "";
-        public string EntryType { get; set; } = "";
-        public string Title { get; set; } = "";
+        private string _abstract = string.Empty;
+        [JsonPropertyName("abstract")]
+        public string Abstract
+        {
+            get { return _abstract; }
+            set { _abstract = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Abstract))); }
+        }
+
+        private string _address = string.Empty;
+        [JsonPropertyName("address")]
+        public string Address
+        {
+            get { return _address; }
+            set { _address = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Address))); }
+        }
+
+        private string _arxivid = string.Empty;
+        [JsonPropertyName("arxivid")]
+        public string Arxivid
+        {
+            get { return _arxivid; }
+            set { _arxivid = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Arxivid))); }
+        }
+
+        private List<string> _authors = new();
+        [JsonPropertyName("author")]
         public List<string> Authors
         {
-            get
-            {
-                return _authors;
-            }
-            set
-            {
-                _authors = value;
-
-                // 著者名が変更されたときは AuthorSummary も合わせて変更する
-                AuthorSummary = ConvertAuthorSummary(_authors);
-
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Authors)));
-            }
+            get { return _authors; }
+            set { _authors = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Authors))); }
         }
+
+        private string _booktitle = string.Empty;
+        [JsonPropertyName("booktitle")]
+        public string BookTitle
+        {
+            get { return _booktitle; }
+            set { _booktitle = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BookTitle))); }
+        }
+
+        private string _chapter = string.Empty;
+        [JsonPropertyName("chapter")]
+        public string Chapter
+        {
+            get { return _chapter; }
+            set { _chapter = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Chapter))); }
+        }
+
+        private string _citationKey = string.Empty;
+        [JsonPropertyName("ID")]  public string CitationKey
+        {
+            get { return _citationKey; }
+            set { _citationKey = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CitationKey))); }
+        }
+
+        private string _crossref = string.Empty;
+        [JsonPropertyName("crossref")]
+        public string CrossRef
+        {
+            get { return _crossref; }
+            set { _crossref = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CrossRef))); }
+        }
+
+        private string _comment = string.Empty;
+        [JsonPropertyName("comment")]
+        public string Comment
+        {
+            get { return _comment; }
+            set { _comment = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Comment))); }
+        }
+
+        private string _doi = string.Empty;
+        [JsonPropertyName("doi")]
+        public string Doi
+        {
+            get { return _doi; }
+            set { _doi = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Doi))); }
+        }
+
+        private string _edition = string.Empty;
+        [JsonPropertyName("edition")]
+        public string Edition
+        {
+            get { return _edition; }
+            set { _edition = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Edition))); }
+        }
+
+        private string _editor = string.Empty;
+        [JsonPropertyName("editor")]
+        public string Editor
+        {
+            get { return _editor; }
+            set { _editor = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Editor))); }
+        }
+
+        private string _entryType = string.Empty;
+        [JsonPropertyName("ENTRYTYPE")] public string EntryType
+        {
+            get { return _entryType; }
+            set { _entryType = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EntryType))); }
+        }
+
+        private string _eprint = string.Empty;
+        [JsonPropertyName("eprint")]
+        public string Eprint
+        {
+            get { return _eprint; }
+            set { _eprint = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Eprint))); }
+        }
+
+        private List<string> _files = new();
+        [JsonPropertyName("file")]
+        public List<string> Files
+        {
+            get { return _files; }
+            set { _files = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Files))); }
+        }
+
+        private string _isbn = string.Empty;
+        [JsonPropertyName("isbn")]
+        public string Isbn
+        {
+            get { return _isbn; }
+            set { _isbn = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Isbn))); }
+        }
+
+        private string _issn = string.Empty;
+        [JsonPropertyName("issn")]
+        public string Issn
+        {
+            get { return _issn; }
+            set { _issn = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Issn))); }
+        }
+
+        private string _journal = string.Empty;
+        [JsonPropertyName("journal")]
+        public string Journal
+        {
+            get { return _journal; }
+            set { _journal = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Journal))); }
+        }
+
+        private string _keywords = string.Empty;
+        [JsonPropertyName("keywords")]
+        public string Keywords
+        {
+            get { return _keywords; }
+            set { _keywords = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Keywords))); }
+        }
+
+        private string _month = string.Empty;
+        [JsonPropertyName("month")]
+        public string Month
+        {
+            get { return _month; }
+            set { _month = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Month))); }
+        }
+
+        private string _number = string.Empty;
+        [JsonPropertyName("number")]
+        public string Number
+        {
+            get { return _number; }
+            set { _number = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Number))); }
+        }
+
+        private string _pages = string.Empty;
+        [JsonPropertyName("pages")]
+        public string Pages
+        {
+            get { return _pages; }
+            set { _pages = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Pages))); }
+        }
+
+        private string _pmid = string.Empty;
+        [JsonPropertyName("pmid")]
+        public string Pmid
+        {
+            get { return _pmid; }
+            set { _pmid = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Pmid))); }
+        }
+
+        private string _publisher = string.Empty;
+        [JsonPropertyName("publisher")]
+        public string Publisher
+        {
+            get { return _publisher; }
+            set { _publisher = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Publisher))); }
+        }
+
+        private string _school = string.Empty;
+        [JsonPropertyName("school")]
+        public string School
+        {
+            get { return _school; }
+            set { _school = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(School))); }
+        }
+
+        private string _series = string.Empty;
+        [JsonPropertyName("series")]
+        public string Series
+        {
+            get { return _series; }
+            set { _series = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Series))); }
+        }
+
+        private List<string> _tags = new();
+        [JsonPropertyName("tag")]
         public List<string> Tags
         {
-            get
-            {
-                return _tags;
-            }
-            set
-            {
-                _tags = value;
-
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Tags)));
-            }
+            get { return _tags; }
+            set { _tags = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(string.Empty)); }
         }
-        public string Year { get; set; } = "";
-        public string Month { get; set; } = "";
-        public string Doi { get; set; } = "";
-        public string Journal { get; set; } = "";
-        public string Abstract { get; set; } = "";
-        public string Arxivid { get; set; } = "";
-        public List<string> Urls { get; set; } = new List<string>();
-        public string Comment { get; set; } = "";
-        public string Keywords { get; set; } = "";
-        public List<string> Files { get; set; } = new List<string>();
-        public string Eprint { get; set; } = "";
-        public string Archiveprefix { get; set; } = "";
 
-        public string AuthorSummary { get; private set; } = "";
+        private string _title = string.Empty;
+        [JsonPropertyName("title")] public string Title
+        {
+            get { return _title; }
+            set { _title = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Title))); }
+        }
+
+        private List<string> _urls = new();
+        [JsonPropertyName("url")]
+        public List<string> Urls
+        {
+            get { return _urls; }
+            set { _urls = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Urls))); }
+        }
+
+        private string _volume = string.Empty;
+        [JsonPropertyName("volume")]
+        public string Volume
+        {
+            get { return _volume; }
+            set { _volume = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Volume))); }
+        }
+
+        private string _year = string.Empty;
+        [JsonPropertyName("year")] public string Year
+        {
+            get { return _year; }
+            set { _year = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Year))); }
+        }
 
         /// <summary>
         /// BibTeX形式の文字列に変換する
@@ -244,55 +438,25 @@ namespace RonbunMatome
         /// <returns>BibTeX形式の文字列</returns>
         public string ToBibtexString()
         {
-            string content = "";
+            string content = String.Empty;
 
-            switch (EntryType)
-            {
-                case "Journal":
-                    content += "@article{";
-                    break;
-
-                case "InProceedings":
-                    content += "@inproceedings{";
-                    break;
-
-                default:
-                    content += "@misc{";
-                    break;
-            }
-
-            content += Citationkey + "\n";
+            content += "@" + EntryType + "{";
+            content += CitationKey + "\n";
             content += (Authors.Count != 0) ? "author = {" + string.Join(" and ", Authors) + "},\n" : "";
-            content += (Title != "") ? "journal = {" + Title + "},\n" : "";
+            content += (Title != "") ? "title = {" + Title + "},\n" : "";
+            content += (Journal != "") ? "journal = {" + Journal + "},\n" : "";
+            content += (BookTitle != "") ? "booktitle = {" + BookTitle + "},\n" : "";
+            content += (School != "") ? "school = {" + School + "},\n" : "";
+            content += (Volume!= "") ? "volume = {" + Volume + "},\n" : "";
+            content += (Number != "") ? "number = {" + Number + "},\n" : "";
+            content += (Pages != "") ? "pages = {" + Pages + "},\n" : "";
+            content += (Publisher != "") ? "publisher = {" + Publisher + "},\n" : "";
             content += (Year != "") ? "year = {" + Year + "},\n" : "";
             content += (Month != "") ? "month = {" + Month + "},\n" : "";
             content += (Doi != "") ? "doi = {" + Doi + "},\n" : "";
-
             content += "}";
 
             return content;
-        }
-
-        /// <summary>
-        /// 著者名のリストを文字列に変換する。
-        /// 著者が2人以上なら "First Author et al." のように省略する。
-        /// </summary>
-        /// <param name="authors">List of author names</param>
-        /// <returns></returns>
-        static string ConvertAuthorSummary(List<string> authors)
-        {
-            if (authors.Count >= 2)
-            {
-                return authors[0] + " et al.";
-            }
-            else if (authors.Count == 1)
-            {
-                return authors[0];
-            }
-            else
-            {
-                return "";
-            }
         }
     }
 
@@ -325,6 +489,37 @@ namespace RonbunMatome
             List<string> newAuthors = ((string)value).Split("; ").ToList();
 
             return newAuthors;
+        }
+    }
+
+    public class AuthorSummaryConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is not List<string>)
+            {
+                return DependencyProperty.UnsetValue;
+            }
+
+            List<string> authors = (List<string>)value;
+
+            if (authors.Count >= 2)
+            {
+                return authors[0] + " et al.";
+            }
+            else if (authors.Count == 1)
+            {
+                return authors[0];
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 

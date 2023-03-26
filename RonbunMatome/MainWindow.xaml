@@ -13,6 +13,7 @@
     <Window.Resources>
         <local:LongStringConverter x:Key="LongStringConverter"></local:LongStringConverter>
         <local:FilenamesConverter x:Key="FilenamesConverter"></local:FilenamesConverter>
+        <local:AuthorSummaryConverter x:Key="AuthorSummaryConverter"></local:AuthorSummaryConverter>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -55,10 +56,10 @@
                         </ListView.Resources>
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn DisplayMemberBinding="{Binding Citationkey}">
+                                <GridViewColumn DisplayMemberBinding="{Binding CitationKey}">
                                     <GridViewColumnHeader Content="Citation Key" Tag="Citationkey"></GridViewColumnHeader>
                                 </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding AuthorSummary}">
+                                <GridViewColumn DisplayMemberBinding="{Binding Authors, Converter={StaticResource AuthorSummaryConverter}}">
                                     <GridViewColumnHeader Content="Authors" Tag="AuthorSummary"></GridViewColumnHeader>
                                 </GridViewColumn>
                                 <GridViewColumn DisplayMemberBinding="{Binding Year}">
