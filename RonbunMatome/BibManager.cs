@@ -543,7 +543,15 @@ namespace RonbunMatome
                 return new Uri("about:blank");
             }
 
-            return new Uri(((List<string>)value)[0]);
+            try
+            {
+                Uri uri = new(((List<string>)value)[0]);
+                return uri;
+            }
+            catch
+            {
+                return new Uri("about:blank");
+            }
         }
 
         object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
