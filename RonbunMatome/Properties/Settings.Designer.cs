@@ -25,8 +25,7 @@ namespace RonbunMatome.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\kyo\\source\\repos\\RonbunMatome\\RonbunMatome\\bin\\Debug\\net6.0-windows\\libr" +
-            "ary.json")]
+        [global::System.Configuration.DefaultSettingValueAttribute("library.json")]
         public string libraryJsonDirectory {
             get {
                 return ((string)(this["libraryJsonDirectory"]));
@@ -38,14 +37,25 @@ namespace RonbunMatome.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Users\\kyo\\source\\repos\\RonbunMatome\\RonbunMatome\\bin\\Debug\\net6.0-windows\\libr" +
-            "ary.bib")]
+        [global::System.Configuration.DefaultSettingValueAttribute("library.bib")]
         public string libraryBibDirectory {
             get {
                 return ((string)(this["libraryBibDirectory"]));
             }
             set {
                 this["libraryBibDirectory"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("settings.json")]
+        public string SettingFileDirectory {
+            get {
+                return ((string)(this["SettingFileDirectory"]));
+            }
+            set {
+                this["SettingFileDirectory"] = value;
             }
         }
     }

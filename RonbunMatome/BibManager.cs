@@ -34,8 +34,33 @@ namespace RonbunMatome
 
         public BibManager()
         {
+            LoadSettings();
+
             JsonString = File.ReadAllText(Properties.Settings.Default.libraryJsonDirectory);
             BibList = JsonSerializer.Deserialize<ObservableCollection<BibItem>>(JsonString) ?? new();
+        }
+
+        private static bool LoadSettings()
+        {
+            string jsonString = File.ReadAllText(Properties.Settings.Default.SettingFileDirectory);
+            Dictionary<string, string>? settingDictionary = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonString);
+
+            if (settingDictionary == null)
+            {
+                return false;
+            }
+
+            if (settingDictionary.ContainsKey("libraryJsonDirectory"))
+            {
+                Properties.Settings.Default.libraryJsonDirectory = settingDictionary["libraryJsonDirectory"];
+            }
+
+            if (settingDictionary.ContainsKey("libraryBibDirectory"))
+            {
+                Properties.Settings.Default.libraryBibDirectory = settingDictionary["libraryBibDirectory"];
+            }
+
+            return true;
         }
 
         /// <summary>
