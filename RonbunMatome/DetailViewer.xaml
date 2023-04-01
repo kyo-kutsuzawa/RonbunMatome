@@ -8,6 +8,7 @@
              d:DesignHeight="450" d:DesignWidth="800" Background="White">
     <UserControl.Resources>
         <local:ListStringConverter x:Key="ListString"></local:ListStringConverter>
+        <local:TitleFontSizeConverter x:Key="TitleFontSizeConverter"></local:TitleFontSizeConverter>
     </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
@@ -44,7 +45,7 @@
                 </Style>
             </ScrollViewer.Resources>
             <StackPanel Orientation="Vertical">
-                <TextBox x:Name="Title" TextWrapping="WrapWithOverflow" FontWeight="Bold" Text="{Binding Title}"></TextBox>
+                <TextBox x:Name="Title" TextWrapping="WrapWithOverflow" FontWeight="Bold" FontSize="{Binding Path=FontSize, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Converter={StaticResource TitleFontSizeConverter}}" Text="{Binding Title}"></TextBox>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
