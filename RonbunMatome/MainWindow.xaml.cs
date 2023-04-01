@@ -87,6 +87,31 @@ namespace RonbunMatome
             LibraryListView.Items.SortDescriptions.Add(new SortDescription(propertyName, sortDirection));
         }
 
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            BibItem bibItem = new();
+
+            // 新規文献追加のダイアログを出す
+            AddReferenceDialog addReferenceDialog = new()
+            {
+                DataContext = bibItem,
+                FontSize = Properties.Settings.Default.FontSize
+            };
+            bool? diaogResult = addReferenceDialog.ShowDialog();
+
+            switch (diaogResult)
+            {
+                case true:
+                    // 文献をデータベースに追加する
+                    ((MainWindowViewModel)DataContext).AddBibItem(bibItem);
+                    break;
+                case false:
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private void Window_Initialized(object sender, EventArgs e)
         {
             string jsonString = File.ReadAllText(Properties.Settings.Default.SettingFileDirectory);

@@ -103,15 +103,11 @@ namespace RonbunMatome
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TagList)));
         }
 
-        public void SaveLibrary()
-        {
-            bibManager.Save();
-        }
+        public bool AddBibItem(BibItem bibItem) => bibManager.AddReference(bibItem);
 
-        public void ExportToBibTex()
-        {
-            bibManager.ExportToBibtex();
-        }
+        public void SaveLibrary() => bibManager.Save();
+
+        public void ExportToBibTex() => bibManager.ExportToBibtex();
     }
 
     internal class AddBibItemCommand : ICommand

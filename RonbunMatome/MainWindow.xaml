@@ -26,7 +26,7 @@
         </Grid.RowDefinitions>
         <Menu Grid.ColumnSpan="2" Margin="0,0,0,0" VerticalAlignment="Top">
             <MenuItem Header="File">
-                <MenuItem Header="Add" Command="{Binding AddBibItemCommand}"></MenuItem>
+                <MenuItem Header="Add" Command="{Binding AddBibItemCommand}" Click="MenuItem_Click"></MenuItem>
                 <MenuItem Header="Save" Command="{Binding SaveBibListCommand}"></MenuItem>
                 <MenuItem Header="Export" Command="{Binding ExportBibListCommand}"></MenuItem>
             </MenuItem>
@@ -55,28 +55,28 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <ListView x:Name="LibraryListView" Margin="0,0,0,0" Grid.Row="1" ItemsSource="{Binding DisplayedBibList}" SelectedItem="{Binding SelectedBibItem}" FontSize="{Binding Path=FontSize, Source={x:Static properties:Settings.Default}}">
-                        <ListView.Resources>
-                            <Style TargetType="GridViewColumnHeader">
-                                <EventSetter Event="Click" Handler="GridViewColumnHeader_Click"></EventSetter>
-                            </Style>
-                        </ListView.Resources>
-                        <ListView.View>
-                            <GridView>
-                                <GridViewColumn DisplayMemberBinding="{Binding CitationKey}">
-                                    <GridViewColumnHeader Content="Citation Key" Tag="Citationkey"></GridViewColumnHeader>
-                                </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding Authors, Converter={StaticResource AuthorSummaryConverter}}">
-                                    <GridViewColumnHeader Content="Authors" Tag="AuthorSummary"></GridViewColumnHeader>
-                                </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding Year}">
-                                    <GridViewColumnHeader Content="Year" Tag="Year"></GridViewColumnHeader>
-                                </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding Title}">
-                                    <GridViewColumnHeader Content="Title" Tag="Title"></GridViewColumnHeader>
-                                </GridViewColumn>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
+                            <ListView.Resources>
+                                <Style TargetType="GridViewColumnHeader">
+                                    <EventSetter Event="Click" Handler="GridViewColumnHeader_Click"></EventSetter>
+                                </Style>
+                            </ListView.Resources>
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn DisplayMemberBinding="{Binding CitationKey}">
+                                        <GridViewColumnHeader Content="Citation Key" Tag="Citationkey"></GridViewColumnHeader>
+                                    </GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding Authors, Converter={StaticResource AuthorSummaryConverter}}">
+                                        <GridViewColumnHeader Content="Authors" Tag="AuthorSummary"></GridViewColumnHeader>
+                                    </GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding Year}">
+                                        <GridViewColumnHeader Content="Year" Tag="Year"></GridViewColumnHeader>
+                                    </GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding Title}">
+                                        <GridViewColumnHeader Content="Title" Tag="Title"></GridViewColumnHeader>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
                         <TextBox Margin="0,0,0,0" Grid.Row="0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" FontSize="{Binding Path=FontSize, Source={x:Static properties:Settings.Default}}"/>
                     </Grid>
                     <ListBox Margin="0,0,5,0" ItemsSource="{Binding TagList}" FontSize="{Binding Path=FontSize, Source={x:Static properties:Settings.Default}}">

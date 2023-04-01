@@ -111,7 +111,7 @@ namespace RonbunMatome
         /// <returns></returns>
         public bool AddReference(BibItem item)
         {
-            BibList.Add(item);
+            BibList.Insert(0, item);
 
             return true;
         }
