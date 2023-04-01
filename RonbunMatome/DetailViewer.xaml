@@ -44,7 +44,7 @@
                 </Style>
             </ScrollViewer.Resources>
             <StackPanel Orientation="Vertical">
-                <TextBox x:Name="Title" TextWrapping="WrapWithOverflow" FontWeight="Bold" FontSize="16" Text="{Binding Title}"></TextBox>
+                <TextBox x:Name="Title" TextWrapping="WrapWithOverflow" FontWeight="Bold" Text="{Binding Title}"></TextBox>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>

@@ -2,10 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -83,6 +85,22 @@ namespace RonbunMatome
 
             // BiblioListViewを並び替える
             LibraryListView.Items.SortDescriptions.Add(new SortDescription(propertyName, sortDirection));
+        }
+
+        private void Window_Initialized(object sender, EventArgs e)
+        {
+            string jsonString = File.ReadAllText(Properties.Settings.Default.SettingFileDirectory);
+            Dictionary<string, string>? settingDictionary = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonString);
+
+            if (settingDictionary == null)
+            {
+                return;
+            }
+
+            if (settingDictionary.ContainsKey("FontSize"))
+            {
+                Properties.Settings.Default.FontSize = int.Parse(settingDictionary["FontSize"]);
+            }
         }
     }
 }
