@@ -10,7 +10,7 @@
     <Window.Resources>
         <local:ListStringConverter x:Key="ListString"></local:ListStringConverter>
     </Window.Resources>
-    <Grid>
+    <Grid Margin="5,5,5,5">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
@@ -101,15 +101,14 @@
                 </Grid.ColumnDefinitions>
                 <Label Content="DOI:" Grid.Column="0"></Label>
                 <TextBox x:Name="Doi" Grid.Column="1" Text="{Binding Doi}"></TextBox>
-                <Button x:Name="DoiButton" Grid.Column="2" Click="DoiButton_Click">Search</Button>
+                <Button x:Name="DoiButton" Grid.Column="2" Click="DoiButton_Click" Padding="5,0,5,0">Search</Button>
             </Grid>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
             <StackPanel.Resources>
                 <Style TargetType="{x:Type Button}">
-                    <Setter Property="Width" Value="70" />
-                    <Setter Property="Height" Value="25" />
                     <Setter Property="Margin" Value="5,0,0,0" />
+                    <Setter Property="Padding" Value="5,2,5,2" />
                 </Style>
             </StackPanel.Resources>
             <Button Name="okButton" IsDefault="True" Click="OkButton_Click">Add</Button>
