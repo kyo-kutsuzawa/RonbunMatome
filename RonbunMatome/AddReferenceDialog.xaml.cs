@@ -19,24 +19,27 @@ namespace RonbunMatome
     /// </summary>
     public partial class AddReferenceDialog : Window
     {
-        public BibItem bibItem;
-
         public AddReferenceDialog()
         {
-            bibItem = new BibItem
-            {
-                Doi = "aaaaa"
-            };
-            DataContext = bibItem;
-
             InitializeComponent();
         }
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            ((BibItem)DataContext).Journal = "test";
-            bibItem = (BibItem)DataContext;
-            DialogResult = true;
+            if (DataContext is BibItem)
+            {
+                DialogResult = true;
+            }
+        }
+
+        private void DoiButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not BibItem)
+            {
+                return;
+            }
+
+            DoiApi.FillInFromDoi(((BibItem)DataContext));
         }
     }
 }

@@ -101,7 +101,7 @@
                 </Grid.ColumnDefinitions>
                 <Label Content="DOI:" Grid.Column="0"></Label>
                 <TextBox x:Name="Doi" Grid.Column="1" Text="{Binding Doi}"></TextBox>
-                <Button x:Name="DoiButton" Grid.Column="2">Search</Button>
+                <Button x:Name="DoiButton" Grid.Column="2" Click="DoiButton_Click">Search</Button>
             </Grid>
         </StackPanel>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
