@@ -77,9 +77,20 @@
                                 </GridView>
                             </ListView.View>
                         </ListView>
-                        <TextBox Margin="0,0,0,0" Grid.Row="0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" FontSize="{Binding Path=FontSize, Source={x:Static properties:Settings.Default}}"/>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="SearchTextBox" Grid.Column="0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="{Binding Path=FontSize, Source={x:Static properties:Settings.Default}}">
+                                <TextBox.InputBindings>
+                                    <KeyBinding Key="Enter" Command="{Binding SearchCommand}" CommandParameter="{Binding ElementName=SearchTextBox, Path=Text}"/>
+                                </TextBox.InputBindings>
+                            </TextBox>
+                            <Button Grid.Column="1" Command="{Binding SearchCommand}" CommandParameter="{Binding ElementName=SearchTextBox, Path=Text}">Search</Button>
+                        </Grid>
                     </Grid>
-                    <ListBox Margin="0,0,5,0" ItemsSource="{Binding TagList}" FontSize="{Binding Path=FontSize, Source={x:Static properties:Settings.Default}}">
+                    <ListBox Margin="0,0,5,0" ItemsSource="{Binding TagList}" SelectedItem="{Binding SelectedTag}" FontSize="{Binding Path=FontSize, Source={x:Static properties:Settings.Default}}">
                         <ListBox.Resources>
                             <Style TargetType="ListBoxItem">
                                 <EventSetter Event="Selected" Handler="ListBoxItem_Selected"></EventSetter>

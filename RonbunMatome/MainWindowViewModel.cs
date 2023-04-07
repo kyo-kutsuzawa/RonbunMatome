@@ -18,6 +18,7 @@ namespace RonbunMatome
     {
         private readonly BibManager bibManager;
         private BibItem selectedBibItem;
+        private string selectedTag;
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -29,6 +30,7 @@ namespace RonbunMatome
         public AddBibItemCommand AddBibItemCommand { get; private set; }
         public SaveBibListCommand SaveBibListCommand { get; private set; }
         public ExportBibListCommand ExportBibListCommand { get; private set; }
+        public SearchCommand SearchCommand { get; private set; }
 
         /// <summary>
         /// 選択中の文献データ
@@ -55,6 +57,26 @@ namespace RonbunMatome
 
         public List<string> TagList { get; private set; }
 
+        public string SelectedTag
+        {
+            get
+            {
+                return selectedTag;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    return;
+                }
+
+                selectedTag = value;
+
+                // SelectedTagの変更をUIに通知する
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SelectedTag)));
+            }
+        }
+
         public MainWindowViewModel()
         {
             bibManager = new BibManager();
@@ -67,6 +89,7 @@ namespace RonbunMatome
 
             DisplayedBibList = bibManager.BibList;
             TagList = bibManager.ExtractTags();
+            selectedTag = TagList[0];
             selectedBibItem = new();
 
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TagList)));
@@ -74,6 +97,7 @@ namespace RonbunMatome
             AddBibItemCommand = new(this);
             SaveBibListCommand = new(this);
             ExportBibListCommand = new(this);
+            SearchCommand = new(this);
         }
 
         private void BibItem_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -108,6 +132,63 @@ namespace RonbunMatome
         public void SaveLibrary() => bibManager.Save();
 
         public void ExportToBibTex() => bibManager.ExportToBibtex();
+
+        public void Search(string searchText)
+        {
+            DisplayedBibList = bibManager.NarrowDownWithTag(SelectedTag);
+
+            // 文字列が空だったら検索文字列での絞り込みを解除する
+            if (searchText == string.Empty)
+            {
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DisplayedBibList)));
+                return;
+            }
+
+            ObservableCollection<BibItem> tmp = new();
+
+            foreach (BibItem bibItem in DisplayedBibList)
+            {
+                if (bibItem.Title.Contains(searchText))
+                {
+                    tmp.Add(bibItem);
+                    continue;
+                }
+
+                if (bibItem.CitationKey.Contains(searchText))
+                {
+                    tmp.Add(bibItem);
+                    continue;
+                }
+
+                if (ListStringConverter.Convert(bibItem.Authors).Contains(searchText))
+                {
+                    tmp.Add(bibItem);
+                    continue;
+                }
+
+                if (bibItem.Journal.Contains(searchText))
+                {
+                    tmp.Add(bibItem);
+                    continue;
+                }
+
+                if (bibItem.Abstract.Contains(searchText))
+                {
+                    tmp.Add(bibItem);
+                    continue;
+                }
+
+                if (bibItem.Comment.Contains(searchText))
+                {
+                    tmp.Add(bibItem);
+                    continue;
+                }
+            }
+
+            DisplayedBibList = tmp;
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DisplayedBibList)));
+        }
     }
 
     internal class AddBibItemCommand : ICommand
@@ -202,6 +283,45 @@ namespace RonbunMatome
         public void Execute(object? parameter)
         {
             Vm.ExportToBibTex();
+        }
+    }
+    internal class SearchCommand : ICommand
+    {
+        private MainWindowViewModel Vm { get; set; }
+
+        public SearchCommand(MainWindowViewModel vm)
+        {
+            Vm = vm;
+        }
+
+        public event EventHandler? CanExecuteChanged
+        {
+            add
+            {
+                CommandManager.RequerySuggested += value;
+            }
+            remove
+            {
+                CommandManager.RequerySuggested -= value;
+            }
+        }
+
+        public bool CanExecute(object? parameter)
+        {
+            return true;
+        }
+
+        public void Execute(object? parameter)
+        {
+            if (parameter != null)
+            {
+                if (parameter is not string)
+                {
+                    return;
+                }
+
+                Vm.Search((string)parameter);
+            }
         }
     }
 }

@@ -478,6 +478,18 @@ namespace RonbunMatome
     /// </summary>
     public class ListStringConverter : IValueConverter
     {
+        public static string Convert(List<string> stringList)
+        {
+            if (stringList.Count < 1)
+            {
+                return "";
+            }
+
+            string concatString = stringList.Aggregate((x, y) => x + "; " + y);
+
+            return concatString;
+        }
+
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is not List<string>)
@@ -485,14 +497,7 @@ namespace RonbunMatome
                 return DependencyProperty.UnsetValue;
             }
 
-            if (((List<string>)value).Count < 1)
-            {
-                return "";
-            }
-
-            string concatAuthors = ((List<string>)value).Aggregate((x, y) => x + "; " + y);
-
-            return concatAuthors;
+            return Convert((List<string>)value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
