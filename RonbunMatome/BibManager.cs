@@ -123,7 +123,12 @@ namespace RonbunMatome
             return true;
         }
 
-        public bool Save()
+        /// <summary>
+        /// 文献データベースを保存する
+        /// </summary>
+        /// <param name="saveDiff">trueならGitで差分を保存する</param>
+        /// <returns></returns>
+        public bool Save(bool saveDiff)
         {
             string libraryFileName = Properties.Settings.Default.libraryJsonDirectory;
 
@@ -136,53 +141,61 @@ namespace RonbunMatome
             string text = JsonSerializer.Serialize(BibList, options);
             File.WriteAllText(libraryFileName, text, Encoding.UTF8);
 
-            string libraryDirName = System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(libraryFileName)) ?? ".";
-
-            // .gitフォルダが存在しなければ、gitレポジトリを初期化する
-            if (Directory.Exists(System.IO.Path.Join(libraryDirName, ".git")) == false)
+            if (saveDiff)
             {
-                ProcessStartInfo psInfoToInitialize = new("cmd")
+                string libraryDirName = System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(libraryFileName)) ?? ".";
+
+                // .gitフォルダが存在しなければ、gitレポジトリを初期化する
+                if (Directory.Exists(System.IO.Path.Join(libraryDirName, ".git")) == false)
+                {
+                    ProcessStartInfo psInfoToInitialize = new("cmd")
+                    {
+                        Arguments =
+                            "/c cd \"" + libraryDirName + "\" & " +
+                            "git init & " +
+                            "git commit --allow-empty -m \"initial commit\" & " +
+                            "git branch -m master main & " +
+                            "git add \"" + libraryFileName + "\" & " +
+                            "git commit -m \"Library added\"",
+                        CreateNoWindow = true,
+                        UseShellExecute = false,
+                    };
+                    Process? processToInitialize = Process.Start(psInfoToInitialize);
+
+                    if (processToInitialize != null)
+                    {
+                        processToInitialize.WaitForExit();
+                        processToInitialize.Close();
+                    }
+                }
+
+                // 差分を記録する
+                ProcessStartInfo psInfoToSave = new("cmd")
                 {
                     Arguments =
                         "/c cd \"" + libraryDirName + "\" & " +
-                        "git init & " +
-                        "git commit --allow-empty -m \"initial commit\" & " +
-                        "git branch -m master main & " +
                         "git add \"" + libraryFileName + "\" & " +
-                        "git commit -m \"Library added\"",
+                        "git commit -m \"Library changed\"",
                     CreateNoWindow = true,
-                    UseShellExecute = false,
+                    UseShellExecute = false
                 };
-                Process? processToInitialize = Process.Start(psInfoToInitialize);
+                Process? processToSave = Process.Start(psInfoToSave);
 
-                if (processToInitialize != null)
+                if (processToSave != null)
                 {
-                    processToInitialize.WaitForExit();
-                    processToInitialize.Close();
+                    processToSave.WaitForExit();
+                    processToSave.Close();
                 }
-            }
-
-            // 差分を記録する
-            ProcessStartInfo psInfoToSave = new("cmd")
-            {
-                Arguments =
-                    "/c cd \"" + libraryDirName + "\" & " +
-                    "git add \"" + libraryFileName + "\" & " +
-                    "git commit -m \"Library changed\"",
-                CreateNoWindow = true,
-                UseShellExecute = false
-            };
-            Process? processToSave = Process.Start(psInfoToSave);
-
-            if (processToSave != null)
-            {
-                processToSave.WaitForExit();
-                processToSave.Close();
             }
 
             return true;
         }
 
+        /// <summary>
+        /// 文献データをBibTeX形式で出力する
+        /// </summary>
+        /// <param name="fileName">出力先のディレクトリ</param>
+        /// <returns></returns>
         public bool ExportToBibtex(string fileName)
         {
             // BibTeX文字列を作成する

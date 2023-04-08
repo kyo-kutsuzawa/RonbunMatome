@@ -111,11 +111,13 @@ namespace RonbunMatome
         private void BibItem_PropertyChanged(object? sender, PropertyChangedEventArgs e)
         {
             UpdateTagList();
+            SaveLibrary(false);
         }
 
         private void BibList_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             UpdateTagList();
+            SaveLibrary(false);
         }
 
         /// <summary>
@@ -196,7 +198,7 @@ namespace RonbunMatome
 
         public bool AddBibItem(BibItem bibItem) => bibManager.AddReference(bibItem);
 
-        public void SaveLibrary() => bibManager.Save();
+        public void SaveLibrary(bool saveDiff) => bibManager.Save(saveDiff);
 
         public void ExportToBibTex() => bibManager.ExportToBibtex();
     }
@@ -260,7 +262,7 @@ namespace RonbunMatome
 
         public void Execute(object? parameter)
         {
-            Vm.SaveLibrary();
+            Vm.SaveLibrary(true);
         }
     }
 
