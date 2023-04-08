@@ -314,8 +314,8 @@ namespace RonbunMatome
             set { _editor = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Editor))); }
         }
 
-        private string _entryType = string.Empty;
-        [JsonPropertyName("ENTRYTYPE")] public string EntryType
+        private EntryType _entryType = EntryType.Misc;
+        [JsonPropertyName("ENTRYTYPE")] public EntryType EntryType
         {
             get { return _entryType; }
             set { _entryType = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EntryType))); }

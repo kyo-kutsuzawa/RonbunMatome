@@ -69,13 +69,13 @@ namespace RonbunMatome
                 switch (entryTypeNode.GetValue<string>())
                 {
                     case "journal-article":
-                        bibItem.EntryType = "article";
+                        bibItem.EntryType = EntryType.Article;
                         break;
                     case "proceedings-article":
-                        bibItem.EntryType = "inproceedings";
+                        bibItem.EntryType = EntryType.InProceedings;
                         break;
                     default:
-                        bibItem.EntryType = "misc";
+                        bibItem.EntryType = EntryType.Misc;
                         break;
                 }
             }
@@ -98,7 +98,7 @@ namespace RonbunMatome
                 bibItem.Authors = authorsList;
             }
 
-            if (bibItem.EntryType == "inproceedings")
+            if (bibItem.EntryType == EntryType.InProceedings)
             {
                 bibItem.BookTitle = GetValueFromNode(BibInfo, "container-title");
             }
@@ -128,7 +128,7 @@ namespace RonbunMatome
             bibItem.Isbn = string.Empty;
             bibItem.Issn = GetValueFromNode(BibInfo, "issn");
 
-            if (bibItem.EntryType == "article")
+            if (bibItem.EntryType == EntryType.Article)
             {
                 bibItem.Journal = GetValueFromNode(BibInfo, "container-title");
             }
