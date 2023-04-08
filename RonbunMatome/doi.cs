@@ -98,14 +98,10 @@ namespace RonbunMatome
                 bibItem.Authors = authorsList;
             }
 
-            if (bibItem.EntryType == EntryType.InProceedings)
-            {
-                bibItem.BookTitle = GetValueFromNode(BibInfo, "container-title");
-            }
-
             bibItem.Chapter = string.Empty;
             bibItem.CitationKey = string.Empty;
             bibItem.Comment = string.Empty;
+            bibItem.Container = GetValueFromNode(BibInfo, "container-title");
             bibItem.CrossRef = string.Empty;
             bibItem.Edition = string.Empty;
 
@@ -127,11 +123,6 @@ namespace RonbunMatome
             bibItem.Files = new();
             bibItem.Isbn = string.Empty;
             bibItem.Issn = GetValueFromNode(BibInfo, "issn");
-
-            if (bibItem.EntryType == EntryType.Article)
-            {
-                bibItem.Journal = GetValueFromNode(BibInfo, "container-title");
-            }
 
             bibItem.Keywords = string.Empty;
 

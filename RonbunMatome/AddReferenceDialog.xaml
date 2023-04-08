@@ -66,8 +66,8 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Label Content="Journal:" Grid.Column="0"></Label>
-                <TextBox x:Name="Journal" Grid.Column="1" Text="{Binding Journal}"></TextBox>
+                <Label Content="Container:" Grid.Column="0"></Label>
+                <TextBox x:Name="Container" Grid.Column="1" Text="{Binding Container}"></TextBox>
             </Grid>
             <Grid>
                 <Grid.ColumnDefinitions>

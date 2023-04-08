@@ -172,7 +172,7 @@ namespace RonbunMatome
                     continue;
                 }
 
-                if (bibItem.Journal.Contains(searchText))
+                if (bibItem.Container.Contains(searchText))
                 {
                     tmp.Add(bibItem);
                     continue;

@@ -74,6 +74,9 @@
                                     <GridViewColumn DisplayMemberBinding="{Binding Title}">
                                         <GridViewColumnHeader Content="Title" Tag="Title"></GridViewColumnHeader>
                                     </GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding Container}">
+                                        <GridViewColumnHeader Content="Container" Tag="Container"></GridViewColumnHeader>
+                                    </GridViewColumn>
                                 </GridView>
                             </ListView.View>
                         </ListView>

@@ -37,8 +37,16 @@ namespace RonbunMatome
             LoadSettings();
 
             // 文献データを読み込む
+            JsonSerializerOptions options = new ()
+            {
+                Converters =
+                {
+                    new JsonStringEnumConverter(JsonNamingPolicy.CamelCase)
+                },
+                PropertyNameCaseInsensitive = true
+            };
             JsonString = File.ReadAllText(Properties.Settings.Default.libraryJsonDirectory);
-            BibList = JsonSerializer.Deserialize<ObservableCollection<BibItem>>(JsonString) ?? new();
+            BibList = JsonSerializer.Deserialize<ObservableCollection<BibItem>>(JsonString, options) ?? new();
         }
 
         /// <summary>
@@ -251,14 +259,6 @@ namespace RonbunMatome
             set { _authors = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Authors))); }
         }
 
-        private string _booktitle = string.Empty;
-        [JsonPropertyName("booktitle")]
-        public string BookTitle
-        {
-            get { return _booktitle; }
-            set { _booktitle = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BookTitle))); }
-        }
-
         private string _chapter = string.Empty;
         [JsonPropertyName("chapter")]
         public string Chapter
@@ -268,7 +268,7 @@ namespace RonbunMatome
         }
 
         private string _citationKey = string.Empty;
-        [JsonPropertyName("ID")]  public string CitationKey
+        [JsonPropertyName("id")]  public string CitationKey
         {
             get { return _citationKey; }
             set { _citationKey = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CitationKey))); }
@@ -288,6 +288,14 @@ namespace RonbunMatome
         {
             get { return _comment; }
             set { _comment = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Comment))); }
+        }
+
+        private string _container = string.Empty;
+        [JsonPropertyName("container")]
+        public string Container
+        {
+            get { return _container; }
+            set { _container = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Container))); }
         }
 
         private string _doi = string.Empty;
@@ -315,7 +323,7 @@ namespace RonbunMatome
         }
 
         private EntryType _entryType = EntryType.Misc;
-        [JsonPropertyName("ENTRYTYPE")] public EntryType EntryType
+        [JsonPropertyName("entrytype")] public EntryType EntryType
         {
             get { return _entryType; }
             set { _entryType = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EntryType))); }
@@ -351,14 +359,6 @@ namespace RonbunMatome
         {
             get { return _issn; }
             set { _issn = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Issn))); }
-        }
-
-        private string _journal = string.Empty;
-        [JsonPropertyName("journal")]
-        public string Journal
-        {
-            get { return _journal; }
-            set { _journal = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Journal))); }
         }
 
         private string _keywords = string.Empty;
@@ -469,14 +469,30 @@ namespace RonbunMatome
         /// <returns>BibTeX形式の文字列</returns>
         public string ToBibtexString()
         {
-            string content = String.Empty;
+            string content = string.Empty;
 
-            content += "@" + EntryType + "{";
+            string containerType = string.Empty;
+
+            switch (EntryType)
+            {
+                case EntryType.Article:
+                    content += "@article{";
+                    containerType = "journal";
+                    break;
+                case EntryType.InProceedings:
+                    content += "@inproceedings{";
+                    containerType = "booktitle";
+                    break;
+                case EntryType.Misc:
+                    content += "@misc{";
+                    containerType = "journal";
+                    break;
+            }
+
             content += CitationKey + "\n";
             content += (Authors.Count != 0) ? "author = {" + string.Join(" and ", Authors) + "},\n" : "";
             content += (Title != "") ? "title = {" + Title + "},\n" : "";
-            content += (Journal != "") ? "journal = {" + Journal + "},\n" : "";
-            content += (BookTitle != "") ? "booktitle = {" + BookTitle + "},\n" : "";
+            content += (Container != "") ? containerType + " = {" + Container + "},\n" : "";
             content += (School != "") ? "school = {" + School + "},\n" : "";
             content += (Volume!= "") ? "volume = {" + Volume + "},\n" : "";
             content += (Number != "") ? "number = {" + Number + "},\n" : "";
