@@ -27,10 +27,10 @@ namespace RonbunMatome
         /// </summary>
         public ObservableCollection<BibItem> DisplayedBibList { get; private set; }
 
-        public AddBibItemCommand AddBibItemCommand { get; private set; }
-        public SaveBibListCommand SaveBibListCommand { get; private set; }
-        public ExportBibListCommand ExportBibListCommand { get; private set; }
-        public SearchCommand SearchCommand { get; private set; }
+        /// <summary>
+        /// タグ一覧
+        /// </summary>
+        public List<string> TagList { get; private set; }
 
         /// <summary>
         /// 選択中の文献データ
@@ -55,8 +55,9 @@ namespace RonbunMatome
             }
         }
 
-        public List<string> TagList { get; private set; }
-
+        /// <summary>
+        /// 選択中のタグ
+        /// </summary>
         public string SelectedTag
         {
             get
@@ -77,27 +78,34 @@ namespace RonbunMatome
             }
         }
 
+        public AddBibItemCommand AddBibItemCommand { get; private set; }
+        public SaveBibListCommand SaveBibListCommand { get; private set; }
+        public ExportBibListCommand ExportBibListCommand { get; private set; }
+        public SearchCommand SearchCommand { get; private set; }
+
         public MainWindowViewModel()
         {
             bibManager = new BibManager();
-            bibManager.BibList.CollectionChanged += BibList_CollectionChanged;
 
+            // 文献データに変更があればイベントを起こす
+            bibManager.BibList.CollectionChanged += BibList_CollectionChanged;
             foreach (var bibItem in bibManager.BibList)
             {
                 bibItem.PropertyChanged += BibItem_PropertyChanged;
             }
 
+            // 変数を初期化する
             DisplayedBibList = bibManager.BibList;
             TagList = bibManager.ExtractTags();
             selectedTag = TagList[0];
             selectedBibItem = new();
-
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TagList)));
-
             AddBibItemCommand = new(this);
             SaveBibListCommand = new(this);
             ExportBibListCommand = new(this);
             SearchCommand = new(this);
+
+            // タグ一覧を更新する。これがないと、なぜかタグ一覧が表示されない
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TagList)));
         }
 
         private void BibItem_PropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -127,25 +135,21 @@ namespace RonbunMatome
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TagList)));
         }
 
-        public bool AddBibItem(BibItem bibItem) => bibManager.AddReference(bibItem);
-
-        public void SaveLibrary() => bibManager.Save();
-
-        public void ExportToBibTex() => bibManager.ExportToBibtex();
-
         public void Search(string searchText)
         {
             DisplayedBibList = bibManager.NarrowDownWithTag(SelectedTag);
 
-            // 文字列が空だったら検索文字列での絞り込みを解除する
+            // 文字列が空だったら、検索文字列での絞り込みを解除する
             if (searchText == string.Empty)
             {
                 PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DisplayedBibList)));
                 return;
             }
 
+            // 絞り込まれた文献を入れる一次的な変数
             ObservableCollection<BibItem> tmp = new();
 
+            // 各文献について、検索条件に合うか調べる
             foreach (BibItem bibItem in DisplayedBibList)
             {
                 if (bibItem.Title.Contains(searchText))
@@ -185,10 +189,16 @@ namespace RonbunMatome
                 }
             }
 
+            // 表示する文献一覧を更新する
             DisplayedBibList = tmp;
-
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DisplayedBibList)));
         }
+
+        public bool AddBibItem(BibItem bibItem) => bibManager.AddReference(bibItem);
+
+        public void SaveLibrary() => bibManager.Save();
+
+        public void ExportToBibTex() => bibManager.ExportToBibtex();
     }
 
     internal class AddBibItemCommand : ICommand

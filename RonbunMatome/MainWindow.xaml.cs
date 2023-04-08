@@ -31,6 +31,11 @@ namespace RonbunMatome
             InitializeComponent();
         }
 
+        /// <summary>
+        /// タグで文献一覧を絞り込む
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ListBoxItem_Selected(object sender, RoutedEventArgs e)
         {
             if (sender is not ListBoxItem)
@@ -43,6 +48,11 @@ namespace RonbunMatome
             ((MainWindowViewModel)DataContext).NarrowDownWithTag(tagName);
         }
 
+        /// <summary>
+        /// 文献一覧をソートする
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
         {
             if (sender is not GridViewColumnHeader)
@@ -87,6 +97,11 @@ namespace RonbunMatome
             LibraryListView.Items.SortDescriptions.Add(new SortDescription(propertyName, sortDirection));
         }
 
+        /// <summary>
+        /// ダイアログを介して新規文献を追加する
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             BibItem bibItem = new();
@@ -99,19 +114,18 @@ namespace RonbunMatome
             };
             bool? diaogResult = addReferenceDialog.ShowDialog();
 
-            switch (diaogResult)
+            if (diaogResult == true)
             {
-                case true:
-                    // 文献をデータベースに追加する
-                    ((MainWindowViewModel)DataContext).AddBibItem(bibItem);
-                    break;
-                case false:
-                    break;
-                default:
-                    break;
+                // 文献をデータベースに追加する
+                ((MainWindowViewModel)DataContext).AddBibItem(bibItem);
             }
         }
 
+        /// <summary>
+        /// ウィンドウの初期化後にフォントサイズの設定を読み込む
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Window_Initialized(object sender, EventArgs e)
         {
             string jsonString = File.ReadAllText(Properties.Settings.Default.SettingFileDirectory);

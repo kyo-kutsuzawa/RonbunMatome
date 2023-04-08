@@ -36,10 +36,15 @@ namespace RonbunMatome
         {
             LoadSettings();
 
+            // 文献データを読み込む
             JsonString = File.ReadAllText(Properties.Settings.Default.libraryJsonDirectory);
             BibList = JsonSerializer.Deserialize<ObservableCollection<BibItem>>(JsonString) ?? new();
         }
 
+        /// <summary>
+        /// 設定を読み込む
+        /// </summary>
+        /// <returns>設定ファイルが読み込めたらtrue、読み込めなかったらfalse</returns>
         private static bool LoadSettings()
         {
             string jsonString = File.ReadAllText(Properties.Settings.Default.SettingFileDirectory);
@@ -50,11 +55,13 @@ namespace RonbunMatome
                 return false;
             }
 
+            // 文献データのあるディレクトリを読み込む
             if (settingDictionary.ContainsKey("libraryJsonDirectory"))
             {
                 Properties.Settings.Default.libraryJsonDirectory = settingDictionary["libraryJsonDirectory"];
             }
 
+            // BibTeXの出力先しディレクトリを読み込む
             if (settingDictionary.ContainsKey("libraryBibDirectory"))
             {
                 Properties.Settings.Default.libraryBibDirectory = settingDictionary["libraryBibDirectory"];
@@ -508,6 +515,10 @@ namespace RonbunMatome
         }
     }
 
+    /// <summary>
+    /// 著者名をひとつの文字列につなげる。
+    /// 1人なら"Author"、2人以上なら"Author et al."の形式とする。
+    /// </summary>
     public class AuthorSummaryConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -521,14 +532,17 @@ namespace RonbunMatome
 
             if (authors.Count >= 2)
             {
+                // 2人以上なら"Author et al."の形式
                 return authors[0] + " et al.";
             }
             else if (authors.Count == 1)
             {
+                // 1人なら"Author"の形式
                 return authors[0];
             }
             else
             {
+                // 0人なら空文字列
                 return "";
             }
         }
@@ -539,10 +553,15 @@ namespace RonbunMatome
         }
     }
 
+    /// <summary>
+    /// ファイル名のリストをURLに変換する。
+    /// リストの最初の要素をURLにして返すか、それが無理だったら空タブのURLを返す
+    /// </summary>
     public class FilenamesConverter : IValueConverter
     {
         object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+            // リストが空なら空タブのURLを返す
             if (((List<string>)value).Count < 1)
             {
                 return new Uri("about:blank");
@@ -550,11 +569,13 @@ namespace RonbunMatome
 
             try
             {
+                // リストの最初の要素をURLにして返す
                 Uri uri = new(((List<string>)value)[0]);
                 return uri;
             }
             catch
             {
+                // リストの最初の要素がURLとして不正なら、空タブのURLを返す
                 return new Uri("about:blank");
             }
         }
@@ -565,6 +586,9 @@ namespace RonbunMatome
         }
     }
 
+    /// <summary>
+    /// 長い文字列の後半を"..."に省略する
+    /// </summary>
     public class LongStringConverter : IValueConverter
     {
         const int titleLength = 30;
