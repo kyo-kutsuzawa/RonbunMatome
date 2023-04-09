@@ -298,6 +298,14 @@ namespace RonbunMatome
             set { _container = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Container))); }
         }
 
+        private string _containerShort = string.Empty;
+        [JsonPropertyName("container-short")]
+        public string ContainerShort
+        {
+            get { return _containerShort; }
+            set { _containerShort = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ContainerShort))); }
+        }
+
         private string _doi = string.Empty;
         [JsonPropertyName("doi")]
         public string Doi
