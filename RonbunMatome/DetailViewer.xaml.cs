@@ -25,6 +25,16 @@ namespace RonbunMatome
         {
             InitializeComponent();
         }
+
+        private void DoiButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is not BibItem)
+            {
+                return;
+            }
+
+            DoiApi.FillInFromDoi(((BibItem)DataContext));
+        }
     }
 
     public class TitleFontSizeConverter : IValueConverter

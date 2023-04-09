@@ -80,11 +80,11 @@ namespace RonbunMatome
                 }
             }
 
-            bibItem.Abstract = GetValueFromNode(BibInfo, "abstract");
-            bibItem.Address = string.Empty;
-            bibItem.Arxivid = string.Empty;
+            bibItem.Abstract = GetValueFromNode(BibInfo, "abstract") ?? bibItem.Abstract;
+            //bibItem.Address = string.Empty;
+            //bibItem.Arxivid = string.Empty;
 
-            JsonNode ? authorsNode = BibInfo["author"];
+            JsonNode? authorsNode = BibInfo["author"];
             if (authorsNode != null)
             {
                 JsonArray authorsArray = authorsNode.AsArray();
@@ -98,12 +98,12 @@ namespace RonbunMatome
                 bibItem.Authors = authorsList;
             }
 
-            bibItem.Chapter = string.Empty;
-            bibItem.CitationKey = string.Empty;
-            bibItem.Comment = string.Empty;
-            bibItem.Container = GetValueFromNode(BibInfo, "container-title");
-            bibItem.CrossRef = string.Empty;
-            bibItem.Edition = string.Empty;
+            //bibItem.Chapter = string.Empty;
+            //bibItem.CitationKey = string.Empty;
+            //bibItem.Comment = string.Empty;
+            bibItem.Container = GetValueFromNode(BibInfo, "container-title") ?? bibItem.Container;
+            //bibItem.CrossRef = string.Empty;
+            //bibItem.Edition = string.Empty;
 
             JsonNode? editorNode = BibInfo["editor"];
             if (editorNode != null)
@@ -119,12 +119,12 @@ namespace RonbunMatome
                 //}
             }
 
-            bibItem.Eprint = string.Empty;
-            bibItem.Files = new();
-            bibItem.Isbn = string.Empty;
-            bibItem.Issn = GetValueFromNode(BibInfo, "issn");
+            //bibItem.Eprint = string.Empty;
+            //bibItem.Files = new();
+            //bibItem.Isbn = string.Empty;
+            bibItem.Issn = GetValueFromNode(BibInfo, "issn") ?? bibItem.Issn;
 
-            bibItem.Keywords = string.Empty;
+            //bibItem.Keywords = string.Empty;
 
             JsonNode? publishedNode = BibInfo["published"];
             if (publishedNode != null)
@@ -162,15 +162,15 @@ namespace RonbunMatome
                 }
             }
 
-            bibItem.Number = GetValueFromNode(BibInfo, "issue");
-            bibItem.Pages = GetValueFromNode(BibInfo, "page");
-            bibItem.Pmid = string.Empty;
-            bibItem.Publisher = GetValueFromNode(BibInfo, "publisher");
-            bibItem.School = string.Empty;
-            bibItem.Series = string.Empty;
-            bibItem.Title = GetValueFromNode(BibInfo, "title");
-            bibItem.Urls = new();  // resource/primary/URL
-            bibItem.Volume = GetValueFromNode(BibInfo, "volume");
+            bibItem.Number = GetValueFromNode(BibInfo, "issue") ?? bibItem.Number;
+            bibItem.Pages = GetValueFromNode(BibInfo, "page") ?? bibItem.Pages;
+            //bibItem.Pmid = string.Empty;
+            bibItem.Publisher = GetValueFromNode(BibInfo, "publisher") ?? bibItem.Publisher;
+            //bibItem.School = string.Empty;
+            //bibItem.Series = string.Empty;
+            bibItem.Title = GetValueFromNode(BibInfo, "title") ?? bibItem.Title;
+            //bibItem.Urls = new();  // resource/primary/URL
+            bibItem.Volume = GetValueFromNode(BibInfo, "volume") ?? bibItem.Volume;
 
             return true;
         }
@@ -181,30 +181,35 @@ namespace RonbunMatome
         /// <param name="node">JSONノード</param>
         /// <param name="nodeName">取得したいノードの名前</param>
         /// <returns>指定されたノードの中身の文字列。ノードが配列なら、その最初の要素を返す。</returns>
-        private static string GetValueFromNode(JsonNode node, string nodeName)
+        private static string? GetValueFromNode(JsonNode node, string nodeName)
         {
             JsonNode? targetNode = node[nodeName];
 
             // 対象ノードがなければ空文字列を返す
             if (targetNode == null)
             {
-                return string.Empty;
+                return null;
             }
 
-            // 対象ノードが配列なら、その最初の要素を文字列化して返す
+            // 対象ノードが配列なら、その最初の要素を対象ノードに設定し直す
             if (targetNode is JsonArray)
             {
                 JsonNode? element = targetNode[0];
                 if (element == null)
                 {
-                    return string.Empty;
+                    return null;
                 }
 
-                return element.GetValue<string>();
+                targetNode = element;
             }
 
             // 対象ノードを文字列化して返す
-            return targetNode.GetValue<string>();
+            string elementString = targetNode.GetValue<string>();
+            if (elementString == string.Empty)
+            {
+                return null;
+            }
+            return elementString;
         }
     }
 }

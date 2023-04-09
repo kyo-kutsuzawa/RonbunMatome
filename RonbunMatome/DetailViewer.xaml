@@ -19,7 +19,7 @@
             <ScrollViewer.Resources>
                 <Style TargetType="Label">
                     <Setter Property="FontWeight" Value="Bold"></Setter>
-                    <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                    <Setter Property="VerticalAlignment" Value="Top"></Setter>
                 </Style>
                 <Style TargetType="TextBox">
                     <Setter Property="BorderBrush" Value="Transparent"></Setter>
@@ -90,9 +90,11 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Label Content="DOI:" Grid.Column="0"></Label>
                     <TextBox x:Name="Doi" Grid.Column="1" Text="{Binding Doi}"></TextBox>
+                    <Button x:Name="DoiButton" Grid.Column="2" Click="DoiButton_Click" Padding="5,0,5,0">Search</Button>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
