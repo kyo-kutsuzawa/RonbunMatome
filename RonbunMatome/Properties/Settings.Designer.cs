@@ -26,24 +26,24 @@ namespace RonbunMatome.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("library.json")]
-        public string libraryJsonDirectory {
+        public string LibraryJsonDirectory {
             get {
-                return ((string)(this["libraryJsonDirectory"]));
+                return ((string)(this["LibraryJsonDirectory"]));
             }
             set {
-                this["libraryJsonDirectory"] = value;
+                this["LibraryJsonDirectory"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("library.bib")]
-        public string libraryBibDirectory {
+        public string LibraryBibDirectory {
             get {
-                return ((string)(this["libraryBibDirectory"]));
+                return ((string)(this["LibraryBibDirectory"]));
             }
             set {
-                this["libraryBibDirectory"] = value;
+                this["LibraryBibDirectory"] = value;
             }
         }
         
@@ -68,6 +68,18 @@ namespace RonbunMatome.Properties {
             }
             set {
                 this["FontSize"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:/PaperLibrary/")]
+        public string FilesDirectory {
+            get {
+                return ((string)(this["FilesDirectory"]));
+            }
+            set {
+                this["FilesDirectory"] = value;
             }
         }
     }

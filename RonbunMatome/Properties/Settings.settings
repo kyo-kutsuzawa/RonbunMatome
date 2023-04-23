@@ -2,10 +2,10 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="RonbunMatome.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="libraryJsonDirectory" Type="System.String" Scope="User">
+    <Setting Name="LibraryJsonDirectory" Type="System.String" Scope="User">
       <Value Profile="(Default)">library.json</Value>
     </Setting>
-    <Setting Name="libraryBibDirectory" Type="System.String" Scope="User">
+    <Setting Name="LibraryBibDirectory" Type="System.String" Scope="User">
       <Value Profile="(Default)">library.bib</Value>
     </Setting>
     <Setting Name="SettingFileDirectory" Type="System.String" Scope="User">
@@ -13,6 +13,9 @@
     </Setting>
     <Setting Name="FontSize" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">12</Value>
+    </Setting>
+    <Setting Name="FilesDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:/PaperLibrary/</Value>
     </Setting>
   </Settings>
 </SettingsFile>

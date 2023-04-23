@@ -45,7 +45,7 @@ namespace RonbunMatome
                 },
                 PropertyNameCaseInsensitive = true
             };
-            JsonString = File.ReadAllText(Properties.Settings.Default.libraryJsonDirectory);
+            JsonString = File.ReadAllText(Properties.Settings.Default.LibraryJsonDirectory);
             BibList = JsonSerializer.Deserialize<ObservableCollection<BibItem>>(JsonString, options) ?? new();
         }
 
@@ -64,15 +64,21 @@ namespace RonbunMatome
             }
 
             // 文献データのあるディレクトリを読み込む
-            if (settingDictionary.ContainsKey("libraryJsonDirectory"))
+            if (settingDictionary.ContainsKey("LibraryJsonDirectory"))
             {
-                Properties.Settings.Default.libraryJsonDirectory = settingDictionary["libraryJsonDirectory"];
+                Properties.Settings.Default.LibraryJsonDirectory = settingDictionary["LibraryJsonDirectory"];
             }
 
             // BibTeXの出力先しディレクトリを読み込む
-            if (settingDictionary.ContainsKey("libraryBibDirectory"))
+            if (settingDictionary.ContainsKey("LibraryBibDirectory"))
             {
-                Properties.Settings.Default.libraryBibDirectory = settingDictionary["libraryBibDirectory"];
+                Properties.Settings.Default.LibraryBibDirectory = settingDictionary["LibraryBibDirectory"];
+            }
+
+            // 文献PDFのフォルダを読み込む
+            if (settingDictionary.ContainsKey("FilesDirectory"))
+            {
+                Properties.Settings.Default.FilesDirectory = settingDictionary["FilesDirectory"];
             }
 
             return true;
@@ -138,7 +144,7 @@ namespace RonbunMatome
         /// <returns></returns>
         public bool Save(bool saveDiff)
         {
-            string libraryFileName = Properties.Settings.Default.libraryJsonDirectory;
+            string libraryFileName = Properties.Settings.Default.LibraryJsonDirectory;
 
             // 文献一覧を保存する
             JsonSerializerOptions options = new()
@@ -216,7 +222,7 @@ namespace RonbunMatome
 
             return true;
         }
-        public bool ExportToBibtex() => ExportToBibtex(Properties.Settings.Default.libraryBibDirectory);
+        public bool ExportToBibtex() => ExportToBibtex(Properties.Settings.Default.LibraryBibDirectory);
     }
 
     public class BibItem : INotifyPropertyChanged
@@ -607,7 +613,8 @@ namespace RonbunMatome
             try
             {
                 // リストの最初の要素をURLにして返す
-                Uri uri = new(((List<string>)value)[0]);
+                string pdfUriString = System.IO.Path.Join(Properties.Settings.Default.FilesDirectory, ((List<string>)value)[0]);
+                Uri uri = new(pdfUriString);
                 return uri;
             }
             catch
