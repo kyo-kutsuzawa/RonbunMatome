@@ -51,46 +51,46 @@
             </ScrollViewer.Resources>
             <StackPanel Orientation="Vertical">
                 <ComboBox ItemsSource="{Binding Source={StaticResource EntryTypeEnum}}" SelectedItem="{Binding EntryType}"/>
-                <TextBox x:Name="Title" TextWrapping="WrapWithOverflow" FontWeight="Bold" FontSize="{Binding Path=FontSize, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Converter={StaticResource TitleFontSizeConverter}}" Text="{Binding Title}"></TextBox>
+                <TextBox x:Name="Title" TextWrapping="WrapWithOverflow" FontWeight="Bold" FontSize="{Binding Path=FontSize, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Converter={StaticResource TitleFontSizeConverter}}" Text="{Binding Title}"/>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Content="Authors:" Grid.Column="0"></Label>
-                    <TextBox x:Name="Authors" Grid.Column="1" Text="{Binding Authors, Converter={StaticResource ListString}}"></TextBox>
+                    <Label Content="Authors:" Grid.Column="0"/>
+                    <TextBox x:Name="Authors" Grid.Column="1" Text="{Binding Authors, Converter={StaticResource ListString}}"/>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Content="Container:" Grid.Column="0"></Label>
-                    <TextBox x:Name="Container" Grid.Column="1" Text="{Binding Container}"></TextBox>
+                    <Label Grid.Column="0">Container:</Label>
+                    <TextBox x:Name="Container" Grid.Column="1" Text="{Binding Container}"/>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Content="Year:" Grid.Column="0"></Label>
-                    <TextBox x:Name="Year" Grid.Column="1" Text="{Binding Year}"></TextBox>
+                    <Label Grid.Column="0">Year:</Label>
+                    <TextBox x:Name="Year" Grid.Column="1" Text="{Binding Year}"/>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Content="Citation Key:" Grid.Column="0"></Label>
-                    <TextBox x:Name="Citationkey" Grid.Column="1" Text="{Binding CitationKey}"></TextBox>
+                    <Label Grid.Column="0">Citation Key:</Label>
+                    <TextBox x:Name="Citationkey" Grid.Column="1" Text="{Binding CitationKey}"/>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Content="Tags:" Grid.Column="0"></Label>
-                    <TextBox x:Name="Tags" Grid.Column="1" Text="{Binding Tags, Converter={StaticResource ListString}}"></TextBox>
+                    <Label Grid.Column="0">Tags:</Label>
+                    <TextBox x:Name="Tags" Grid.Column="1" Text="{Binding Tags, Converter={StaticResource ListString}}"/>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -98,8 +98,8 @@
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Label Content="DOI:" Grid.Column="0"></Label>
-                    <TextBox x:Name="Doi" Grid.Column="1" Text="{Binding Doi}"></TextBox>
+                    <Label Grid.Column="0">DOI:</Label>
+                    <TextBox x:Name="Doi" Grid.Column="1" Text="{Binding Doi}"/>
                     <Button x:Name="DoiButton" Grid.Column="2" Click="DoiButton_Click" Padding="5,0,5,0">Search</Button>
                 </Grid>
                 <Grid>
@@ -107,8 +107,8 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Content="Files:" Grid.Column="0"></Label>
-                    <TextBox x:Name="Files" Grid.Column="1" Text="{Binding Files, Converter={StaticResource ListString}}" AcceptsReturn="True"></TextBox>
+                    <Label Grid.Column="0">Files:</Label>
+                    <TextBox x:Name="Files" Grid.Column="1" Text="{Binding Files, Converter={StaticResource ListString}}" AcceptsReturn="True"/>
                 </Grid>
             </StackPanel>
         </ScrollViewer>
