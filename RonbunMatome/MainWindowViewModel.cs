@@ -154,37 +154,37 @@ namespace RonbunMatome
             // 各文献について、検索条件に合うか調べる
             foreach (BibItem bibItem in DisplayedBibList)
             {
-                if (bibItem.Title.Contains(searchText))
+                if (bibItem.Title.Contains(searchText, StringComparison.OrdinalIgnoreCase))
                 {
                     tmp.Add(bibItem);
                     continue;
                 }
 
-                if (bibItem.CitationKey.Contains(searchText))
+                if (bibItem.CitationKey.Contains(searchText, StringComparison.OrdinalIgnoreCase))
                 {
                     tmp.Add(bibItem);
                     continue;
                 }
 
-                if (ListStringConverter.Convert(bibItem.Authors).Contains(searchText))
+                if (ListStringConverter.Convert(bibItem.Authors).Contains(searchText, StringComparison.OrdinalIgnoreCase))
                 {
                     tmp.Add(bibItem);
                     continue;
                 }
 
-                if (bibItem.Container.Contains(searchText))
+                if (bibItem.Container.Contains(searchText, StringComparison.OrdinalIgnoreCase))
                 {
                     tmp.Add(bibItem);
                     continue;
                 }
 
-                if (bibItem.Abstract.Contains(searchText))
+                if (bibItem.Abstract.Contains(searchText, StringComparison.OrdinalIgnoreCase))
                 {
                     tmp.Add(bibItem);
                     continue;
                 }
 
-                if (bibItem.Comment.Contains(searchText))
+                if (bibItem.Comment.Contains(searchText, StringComparison.OrdinalIgnoreCase))
                 {
                     tmp.Add(bibItem);
                     continue;
