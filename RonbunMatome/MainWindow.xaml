@@ -63,19 +63,19 @@
                             <ListView.View>
                                 <GridView>
                                     <GridViewColumn DisplayMemberBinding="{Binding CitationKey}">
-                                        <GridViewColumnHeader Content="Citation Key" Tag="Citationkey"></GridViewColumnHeader>
+                                        <GridViewColumnHeader Content="Citation Key 　" Tag="Citationkey"></GridViewColumnHeader>
                                     </GridViewColumn>
                                     <GridViewColumn DisplayMemberBinding="{Binding Authors, Converter={StaticResource AuthorSummaryConverter}}">
-                                        <GridViewColumnHeader Content="Authors" Tag="AuthorSummary"></GridViewColumnHeader>
+                                        <GridViewColumnHeader Content="Authors 　" Tag="AuthorSummary"></GridViewColumnHeader>
                                     </GridViewColumn>
                                     <GridViewColumn DisplayMemberBinding="{Binding Year}">
-                                        <GridViewColumnHeader Content="Year" Tag="Year"></GridViewColumnHeader>
+                                        <GridViewColumnHeader Content="Year 　" Tag="Year"></GridViewColumnHeader>
                                     </GridViewColumn>
                                     <GridViewColumn DisplayMemberBinding="{Binding Title}">
-                                        <GridViewColumnHeader Content="Title" Tag="Title"></GridViewColumnHeader>
+                                        <GridViewColumnHeader Content="Title 　" Tag="Title"></GridViewColumnHeader>
                                     </GridViewColumn>
                                     <GridViewColumn DisplayMemberBinding="{Binding Container}">
-                                        <GridViewColumnHeader Content="Container" Tag="Container"></GridViewColumnHeader>
+                                        <GridViewColumnHeader Content="Container 　" Tag="Container"></GridViewColumnHeader>
                                     </GridViewColumn>
                                 </GridView>
                             </ListView.View>

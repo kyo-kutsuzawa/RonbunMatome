@@ -131,12 +131,20 @@ namespace RonbunMatome
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DisplayedBibList)));
         }
 
+        /// <summary>
+        /// タグ一覧を更新する
+        /// </summary>
         public void UpdateTagList()
         {
             TagList = bibManager.ExtractTags();
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(TagList)));
         }
 
+        /// <summary>
+        /// 文字列で文献を絞り込む。
+        /// AND検索やOR検索は未対応。
+        /// </summary>
+        /// <param name="searchText">検索文字列</param>
         public void Search(string searchText)
         {
             DisplayedBibList = bibManager.NarrowDownWithTag(SelectedTag);
