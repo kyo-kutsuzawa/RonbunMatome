@@ -613,7 +613,14 @@ namespace RonbunMatome
             try
             {
                 // リストの最初の要素をURLにして返す
-                string pdfUriString = System.IO.Path.Join(Properties.Settings.Default.FilesDirectory, ((List<string>)value)[0]);
+                string pdfUriString = ((List<string>)value)[0];
+
+                // URL文字列が相対パスだったら、FilesDirectory を頭に付ける
+                if (!System.IO.Path.IsPathRooted(pdfUriString))
+                {
+                    pdfUriString = System.IO.Path.Join(Properties.Settings.Default.FilesDirectory, pdfUriString);
+                }
+
                 Uri uri = new(pdfUriString);
                 return uri;
             }
