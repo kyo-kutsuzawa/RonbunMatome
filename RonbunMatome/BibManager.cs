@@ -158,6 +158,7 @@ namespace RonbunMatome
             if (saveDiff)
             {
                 string libraryDirName = System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(libraryFileName)) ?? ".";
+                string libraryBaseName = System.IO.Path.GetFileName(System.IO.Path.GetFullPath(libraryFileName)) ?? ".";
 
                 // .gitフォルダが存在しなければ、gitレポジトリを初期化する
                 if (Directory.Exists(System.IO.Path.Join(libraryDirName, ".git")) == false)
@@ -169,7 +170,7 @@ namespace RonbunMatome
                             "git init & " +
                             "git commit --allow-empty -m \"initial commit\" & " +
                             "git branch -m master main & " +
-                            "git add \"" + libraryFileName + "\" & " +
+                            "git add \"" + libraryBaseName + "\" & " +
                             "git commit -m \"Library added\"",
                         CreateNoWindow = true,
                         UseShellExecute = false,
@@ -188,7 +189,7 @@ namespace RonbunMatome
                 {
                     Arguments =
                         "/c cd \"" + libraryDirName + "\" & " +
-                        "git add \"" + libraryFileName + "\" & " +
+                        "git add \"" + libraryBaseName + "\" & " +
                         "git commit -m \"Library changed\"",
                     CreateNoWindow = true,
                     UseShellExecute = false

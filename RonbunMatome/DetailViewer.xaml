@@ -110,6 +110,14 @@
                     <Label Grid.Column="0">Files:</Label>
                     <TextBox x:Name="Files" Grid.Column="1" Text="{Binding Files, Converter={StaticResource ListString}}" AcceptsReturn="True"/>
                 </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">URLs:</Label>
+                    <TextBox x:Name="URLs" Grid.Column="1" Text="{Binding Urls, Converter={StaticResource ListString}}" AcceptsReturn="True"/>
+                </Grid>
             </StackPanel>
         </ScrollViewer>
         <GridSplitter HorizontalAlignment="Stretch" Margin="0,0,0,0" Height="5" VerticalAlignment="Bottom"/>
