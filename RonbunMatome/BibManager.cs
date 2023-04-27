@@ -166,7 +166,7 @@ namespace RonbunMatome
                     ProcessStartInfo psInfoToInitialize = new("cmd")
                     {
                         Arguments =
-                            "/c cd \"" + libraryDirName + "\" & " +
+                            "/c cd /d \"" + libraryDirName + "\" & " +
                             "git init & " +
                             "git commit --allow-empty -m \"initial commit\" & " +
                             "git branch -m master main & " +
@@ -188,7 +188,7 @@ namespace RonbunMatome
                 ProcessStartInfo psInfoToSave = new("cmd")
                 {
                     Arguments =
-                        "/c cd \"" + libraryDirName + "\" & " +
+                        "/c cd /d \"" + libraryDirName + "\" & " +
                         "git add \"" + libraryBaseName + "\" & " +
                         "git commit -m \"Library changed\"",
                     CreateNoWindow = true,
