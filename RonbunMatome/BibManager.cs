@@ -504,18 +504,18 @@ namespace RonbunMatome
                     break;
             }
 
-            content += CitationKey + "\n";
-            content += (Authors.Count != 0) ? "author = {" + string.Join(" and ", Authors) + "},\n" : "";
-            content += (Title != "") ? "title = {" + Title + "},\n" : "";
-            content += (Container != "") ? containerType + " = {" + Container + "},\n" : "";
-            content += (School != "") ? "school = {" + School + "},\n" : "";
-            content += (Volume!= "") ? "volume = {" + Volume + "},\n" : "";
-            content += (Number != "") ? "number = {" + Number + "},\n" : "";
-            content += (Pages != "") ? "pages = {" + Pages + "},\n" : "";
-            content += (Publisher != "") ? "publisher = {" + Publisher + "},\n" : "";
-            content += (Year != "") ? "year = {" + Year + "},\n" : "";
-            content += (Month != "") ? "month = {" + Month + "},\n" : "";
-            content += (Doi != "") ? "doi = {" + Doi + "},\n" : "";
+            content += (CitationKey != string.Empty) ? CitationKey + ",\n" : "NULL,\n";
+            content += (Authors.Count != 0) ? "author = {" + string.Join(" and ", Authors) + "},\n" : string.Empty;
+            content += (Title != string.Empty) ? "title = {" + Title + "},\n" : string.Empty;
+            content += (Container != string.Empty) ? containerType + " = {" + Container + "},\n" : string.Empty;
+            content += (School != string.Empty) ? "school = {" + School + "},\n" : string.Empty;
+            content += (Volume!= string.Empty) ? "volume = {" + Volume + "},\n" : ""    ;
+            content += (Number != string.Empty) ? "number = {" + Number + "},\n" : string.Empty;
+            content += (Pages != string.Empty) ? "pages = {" + Pages + "},\n" : ""  ;
+            content += (Publisher != string.Empty) ? "publisher = {" + Publisher + "},\n" : string.Empty;
+            content += (Year != string.Empty) ? "year = {" + Year + "},\n" : string.Empty;
+            content += (Month != string.Empty) ? "month = {" + Month + "},\n" : string.Empty;
+            content += (Doi != string.Empty) ? "doi = {" + Doi + "},\n" : string.Empty;
             content += "}";
 
             return content;
