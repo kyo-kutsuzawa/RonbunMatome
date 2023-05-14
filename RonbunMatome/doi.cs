@@ -3,14 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.DirectoryServices.ActiveDirectory;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection.Metadata;
+using System.Runtime;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Xml;
 
 namespace RonbunMatome
 {
@@ -18,6 +22,12 @@ namespace RonbunMatome
     {
         // CrossRef APIのURL。この後にDOIをつなげると文献情報が得られる
         private static readonly string UrlPrefix = "https://api.crossref.org/works/";
+
+        // ArXiv APIのURL。この後にarXiv識別子をつなげると文献情報が得られる
+        private static readonly string arXivSearhPrefix = "https://export.arxiv.org/api/query?id_list=";
+
+        // ArXivの文献のDOI
+        private static readonly string arXivDoiPrefix = "10.48550/arXiv.";
 
         /// <summary>
         /// 文献のDOIから文献情報（メタデータ）を取得する。
@@ -29,9 +39,15 @@ namespace RonbunMatome
             JsonNode BibInfo;
 
             // DOIが空なら即戻る
-            if (bibItem.Doi == String.Empty)
+            if (bibItem.Doi == string.Empty)
             {
                 return false;
+            }
+
+            if (bibItem.Doi.StartsWith(arXivDoiPrefix))
+            {
+                bool retValue = await FillInFromArxivId(bibItem);
+                return retValue;
             }
 
             // 文献情報を問い合わせるURLをつくる
@@ -210,6 +226,84 @@ namespace RonbunMatome
                 return null;
             }
             return elementString;
+        }
+
+        private static async Task<bool> FillInFromArxivId(BibItem bibItem)
+        {
+            XmlDocument document = new();
+
+            // DOIからArXiv識別子を抽出する
+            string arXivId = bibItem.Doi.Substring(arXivDoiPrefix.Length);
+
+            // 文献情報を問い合わせるURLをつくる
+            Uri ReferenceUrl = new(arXivSearhPrefix + arXivId);
+
+            // 文献情報をJSON形式で取得する
+            using (HttpClient client = new())
+            {
+                HttpResponseMessage response = await client.GetAsync(ReferenceUrl);
+                response.EnsureSuccessStatusCode();
+                string xmlResponse = await response.Content.ReadAsStringAsync();
+
+                document.LoadXml(xmlResponse);
+                if (document.DocumentElement == null)
+                {
+                    return false;
+                }
+            }
+
+            XmlElement rootNode = document.DocumentElement;
+            XmlNamespaceManager nsManager = new(document.NameTable);
+            nsManager.AddNamespace("myns", "http://www.w3.org/2005/Atom");
+            XmlNode? entryNode = rootNode.SelectSingleNode("myns:entry", nsManager);
+
+            if (entryNode == null)
+            {
+                return false;
+            }
+
+            // 題名を抽出する
+            XmlNode? titleNode = entryNode.SelectSingleNode("myns:title", nsManager);
+            if (titleNode != null)
+            {
+                bibItem.Title = titleNode.InnerText;
+            }
+
+            // 著者名を抽出する
+            XmlNodeList? authorsNodeList = entryNode.SelectNodes("myns:author", nsManager);
+            if (authorsNodeList != null)
+            {
+                foreach (XmlNode authorNode in authorsNodeList)
+                {
+                    XmlNode? nameNode = authorNode.SelectSingleNode("myns:name", nsManager);
+                    if (nameNode != null)
+                    {
+                        string formattedName = string.Empty;
+
+                        string[] nameParts = nameNode.InnerText.Split(' ');
+                        if (nameParts.Length >= 2)
+                        {
+                            string familyName = nameParts[nameParts.Length - 1];
+                            formattedName = familyName + ", " + string.Join(' ', nameParts[..(nameParts.Length - 1)]);
+                        }
+                        else
+                        {
+                            formattedName = nameNode.InnerText;
+                        }
+
+                        bibItem.Authors.Add(formattedName);
+                    }
+                }
+            }
+
+            // 年（更新年）を抽出する
+            XmlNode? yearNode = entryNode.SelectSingleNode("myns:updated", nsManager);
+            if (yearNode != null)
+            {
+                bibItem.Year = yearNode.InnerText[..4];
+            }
+
+            return true;
         }
     }
 }
