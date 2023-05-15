@@ -30,6 +30,9 @@
                 <MenuItem Header="Save" Command="{Binding SaveBibListCommand}"></MenuItem>
                 <MenuItem Header="Export" Command="{Binding ExportBibListCommand}"></MenuItem>
             </MenuItem>
+            <MenuItem Header="Tool">
+                <MenuItem Header="Export comments with the selected tag" Command="{Binding ExportCommentsCommand}" CommandParameter="{Binding SelectedTag}"/>
+            </MenuItem>
         </Menu>
         <TabControl x:Name="BiblioTabControl" Margin="0,18,0,0" Grid.ColumnSpan="1">
             <TabControl.Resources>

@@ -81,6 +81,7 @@ namespace RonbunMatome
         public AddBibItemCommand AddBibItemCommand { get; private set; }
         public SaveBibListCommand SaveBibListCommand { get; private set; }
         public ExportBibListCommand ExportBibListCommand { get; private set; }
+        public ExportCommentsCommand ExportCommentsCommand { get; private set; }
         public SearchCommand SearchCommand { get; private set; }
 
         public MainWindowViewModel()
@@ -102,6 +103,7 @@ namespace RonbunMatome
             AddBibItemCommand = new(this);
             SaveBibListCommand = new(this);
             ExportBibListCommand = new(this);
+            ExportCommentsCommand = new(this);
             SearchCommand = new(this);
 
             // タグ一覧を更新する。これがないと、なぜかタグ一覧が表示されない
@@ -209,6 +211,8 @@ namespace RonbunMatome
         public void SaveLibrary(bool saveDiff) => bibManager.Save(saveDiff);
 
         public void ExportToBibTex() => bibManager.ExportToBibtex();
+
+        public void ExportComments(string tagName) => bibManager.ExportComments(tagName);
     }
 
     internal class AddBibItemCommand : ICommand
@@ -303,6 +307,41 @@ namespace RonbunMatome
         public void Execute(object? parameter)
         {
             Vm.ExportToBibTex();
+        }
+    }
+    internal class ExportCommentsCommand : ICommand
+    {
+        private MainWindowViewModel Vm { get; set; }
+
+        public ExportCommentsCommand(MainWindowViewModel vm)
+        {
+            Vm = vm;
+        }
+
+        public event EventHandler? CanExecuteChanged
+        {
+            add
+            {
+                CommandManager.RequerySuggested += value;
+            }
+            remove
+            {
+                CommandManager.RequerySuggested -= value;
+            }
+        }
+
+        public bool CanExecute(object? parameter)
+        {
+            return true;
+        }
+
+        public void Execute(object? parameter)
+        {
+            if (parameter is not string)
+            {
+                return;
+            }
+            Vm.ExportComments((string)parameter);
         }
     }
     internal class SearchCommand : ICommand

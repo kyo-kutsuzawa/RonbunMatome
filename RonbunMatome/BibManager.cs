@@ -224,6 +224,49 @@ namespace RonbunMatome
             return true;
         }
         public bool ExportToBibtex() => ExportToBibtex(Properties.Settings.Default.LibraryBibDirectory);
+
+        /// <summary>
+        /// 指定されたタグをもつ文献のコメントをひとつのtexファイルにまとめて出力する
+        /// </summary>
+        /// <param name="tagName">文献のタグ</param>
+        /// <returns></returns>
+        public bool ExportComments(string tagName)
+        {
+            ObservableCollection<BibItem> extractedRefs = NarrowDownWithTag(tagName);
+
+            string reviewString = "\\subsection{Papers on " + tagName + "}\n\n";
+
+            foreach (BibItem item in extractedRefs)
+            {
+                if (item.CitationKey == string.Empty)
+                {
+                    reviewString += AuthorSummaryConverter.Convert(item.Authors);
+
+                    if (item.Year != string.Empty)
+                    {
+                        reviewString += ", " + item.Year;
+                    }
+
+                    reviewString += " ";
+                }
+                else
+                {
+                    reviewString += "\\cite{" + item.CitationKey + "} ";
+                }
+
+                reviewString += item.Comment;
+
+                reviewString += "\n\n";
+            }
+
+            // コメント一覧をファイルに保存する
+            string libraryFileName = Properties.Settings.Default.LibraryJsonDirectory;
+            string libraryDirName = System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(libraryFileName)) ?? ".";
+            string fileName = System.IO.Path.Join(libraryDirName, "review_" + tagName + ".txt");
+            File.WriteAllText(fileName, reviewString, Encoding.UTF8);
+
+            return true;
+        }
     }
 
     public class BibItem : INotifyPropertyChanged
@@ -565,15 +608,8 @@ namespace RonbunMatome
     /// </summary>
     public class AuthorSummaryConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public static string Convert(List<string> authors)
         {
-            if (value is not List<string>)
-            {
-                return DependencyProperty.UnsetValue;
-            }
-
-            List<string> authors = (List<string>)value;
-
             if (authors.Count >= 2)
             {
                 // 2人以上なら"Author et al."の形式
@@ -587,8 +623,20 @@ namespace RonbunMatome
             else
             {
                 // 0人なら空文字列
-                return "";
+                return string.Empty;
             }
+        }
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value is not List<string>)
+            {
+                return DependencyProperty.UnsetValue;
+            }
+
+            string summarizedAuthors = Convert((List<string>)value);
+
+            return summarizedAuthors;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
