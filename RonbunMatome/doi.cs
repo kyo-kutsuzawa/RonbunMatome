@@ -12,6 +12,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Xml;
@@ -266,13 +267,16 @@ namespace RonbunMatome
             XmlNode? titleNode = entryNode.SelectSingleNode("myns:title", nsManager);
             if (titleNode != null)
             {
-                bibItem.Title = titleNode.InnerText;
+                Regex regex = new(@"\s+");
+                bibItem.Title = regex.Replace(titleNode.InnerText, " ");
             }
 
             // 著者名を抽出する
             XmlNodeList? authorsNodeList = entryNode.SelectNodes("myns:author", nsManager);
             if (authorsNodeList != null)
             {
+                List<string> authorsList = new();
+
                 foreach (XmlNode authorNode in authorsNodeList)
                 {
                     XmlNode? nameNode = authorNode.SelectSingleNode("myns:name", nsManager);
@@ -291,9 +295,11 @@ namespace RonbunMatome
                             formattedName = nameNode.InnerText;
                         }
 
-                        bibItem.Authors.Add(formattedName);
+                        authorsList.Add(formattedName);
                     }
                 }
+
+                bibItem.Authors = authorsList;
             }
 
             // 年（更新年）を抽出する
@@ -302,6 +308,13 @@ namespace RonbunMatome
             {
                 bibItem.Year = yearNode.InnerText[..4];
             }
+
+            bibItem.Container = "arXiv preprint";
+            bibItem.EntryType = EntryType.Article;
+            bibItem.Urls = new()
+            {
+                "https://arxiv.org/abs/" + arXivId
+            };
 
             return true;
         }

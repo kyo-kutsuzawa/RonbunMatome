@@ -240,22 +240,17 @@ namespace RonbunMatome
             {
                 if (item.CitationKey == string.Empty)
                 {
-                    reviewString += AuthorSummaryConverter.Convert(item.Authors);
-
-                    if (item.Year != string.Empty)
-                    {
-                        reviewString += ", " + item.Year;
-                    }
-
-                    reviewString += " ";
+                    reviewString += "[" + AuthorSummaryConverter.Convert(item.Authors);
+                    reviewString += (item.Year != string.Empty) ? ", " + item.Year : string.Empty;
+                    reviewString += "]";
                 }
                 else
                 {
-                    reviewString += "\\cite{" + item.CitationKey + "} ";
+                    reviewString += "\\cite{" + item.CitationKey + "}";
                 }
 
+                reviewString += "\n";
                 reviewString += item.Comment;
-
                 reviewString += "\n\n";
             }
 
