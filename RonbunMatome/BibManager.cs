@@ -524,24 +524,16 @@ namespace RonbunMatome
         {
             string content = string.Empty;
 
-            string containerType = string.Empty;
-
-            switch (EntryType)
+            // Container の呼び方を指定する
+            string containerType = EntryType switch
             {
-                case EntryType.Article:
-                    content += "@article{";
-                    containerType = "journal";
-                    break;
-                case EntryType.InProceedings:
-                    content += "@inproceedings{";
-                    containerType = "booktitle";
-                    break;
-                case EntryType.Misc:
-                    content += "@misc{";
-                    containerType = "journal";
-                    break;
-            }
+                EntryType.Article => "journal",
+                EntryType.InProceedings => "booktitle",
+                EntryType.Misc => "journal",
+                _ => "container",
+            };
 
+            content += "@" + EntryTypeConverter.Convert(EntryType) + "{";
             content += (CitationKey != string.Empty) ? CitationKey + ",\n" : "NULL,\n";
             content += (Authors.Count != 0) ? "author = {" + string.Join(" and ", Authors) + "},\n" : string.Empty;
             content += (Title != string.Empty) ? "title = {" + Title + "},\n" : string.Empty;

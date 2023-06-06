@@ -3,7 +3,10 @@
     public enum EntryType
     {
         Article,
+        Book,
+        InBook,
         InProceedings,
+        MastersThesis,
         Misc,
         PhdThesis,
         TechReport
@@ -11,24 +14,36 @@
 
     public class EntryTypeConverter
     {
-        public static EntryType Convert(string value)
+        public static string Convert(EntryType value)
         {
-            if (value == "article")
+            return value switch
             {
-                return EntryType.Article;
-            }
-
-            if (value == "inproceedings")
-            {
-                return EntryType.InProceedings;
-            }
-
-            return EntryType.Misc;
+                EntryType.Article => "article",
+                EntryType.Book => "book",
+                EntryType.InBook => "inbook",
+                EntryType.InProceedings => "inproceedings",
+                EntryType.MastersThesis => "mastersthesis",
+                EntryType.Misc => "misc",
+                EntryType.PhdThesis => "phdthesis",
+                EntryType.TechReport => "techreport",
+                _ => "misc",
+            };
         }
 
-        public static EntryType Convert(EntryType value)
+        public static EntryType ConvertBack(string value)
         {
-            return value;
+            return value switch
+            {
+                "article" => EntryType.Article,
+                "book" => EntryType.Book,
+                "inbook" => EntryType.InBook,
+                "inproceedings" => EntryType.InProceedings,
+                "mastersthesis" => EntryType.MastersThesis,
+                "misc" => EntryType.Misc,
+                "phdthesis" => EntryType.PhdThesis,
+                "techreport" => EntryType.TechReport,
+                _ => EntryType.Misc,
+            };
         }
     }
 }
