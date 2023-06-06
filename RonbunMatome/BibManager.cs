@@ -533,6 +533,8 @@ namespace RonbunMatome
                 _ => "container",
             };
 
+            string monthString = ConvertMonth(Month);
+
             content += "@" + EntryTypeConverter.Convert(EntryType) + "{";
             content += (CitationKey != string.Empty) ? CitationKey + ",\n" : "NULL,\n";
             content += (Authors.Count != 0) ? "author = {" + string.Join(" and ", Authors) + "},\n" : string.Empty;
@@ -544,11 +546,44 @@ namespace RonbunMatome
             content += (Pages != string.Empty) ? "pages = {" + Pages + "},\n" : ""  ;
             content += (Publisher != string.Empty) ? "publisher = {" + Publisher + "},\n" : string.Empty;
             content += (Year != string.Empty) ? "year = {" + Year + "},\n" : string.Empty;
-            content += (Month != string.Empty) ? "month = {" + Month + "},\n" : string.Empty;
+            content += (monthString != string.Empty) ? "month = " + Month + ",\n" : string.Empty;
             content += (Doi != string.Empty) ? "doi = {" + Doi + "},\n" : string.Empty;
             content += "}";
 
             return content;
+        }
+
+        private static string ConvertMonth(string month)
+        {
+            string[] monthList = 
+            {
+                "jan",
+                "feb",
+                "mar",
+                "apr",
+                "may",
+                "jun",
+                "jul",
+                "aug",
+                "sep",
+                "oct",
+                "nov",
+                "dec",
+            };
+
+
+            if (int.TryParse(month, out int idx1))
+            {
+                return monthList[idx1 - 1];
+            }
+
+            int idx2 = Array.IndexOf(monthList, month);
+            if (idx2 != -1)
+            {
+                return monthList[idx2];
+            }
+
+            return string.Empty;
         }
     }
 
