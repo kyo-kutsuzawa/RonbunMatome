@@ -234,7 +234,7 @@ namespace RonbunMatome
         {
             ObservableCollection<BibItem> extractedRefs = NarrowDownWithTag(tagName);
 
-            string reviewString = "\\subsection{Papers on " + tagName + "}\n\n";
+            string reviewString = "\\subsection{" + tagName + "}\n\n";
 
             foreach (BibItem item in extractedRefs)
             {
@@ -257,7 +257,7 @@ namespace RonbunMatome
             // コメント一覧をファイルに保存する
             string libraryFileName = Properties.Settings.Default.LibraryJsonDirectory;
             string libraryDirName = System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(libraryFileName)) ?? ".";
-            string fileName = System.IO.Path.Join(libraryDirName, "review_" + tagName + ".txt");
+            string fileName = System.IO.Path.Join(libraryDirName, "review_" + tagName + ".tex");
             File.WriteAllText(fileName, reviewString, Encoding.UTF8);
 
             return true;
