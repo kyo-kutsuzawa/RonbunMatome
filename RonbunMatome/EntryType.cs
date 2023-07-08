@@ -1,5 +1,8 @@
-﻿namespace RonbunMatome
+﻿using System.Text.Json.Serialization;
+
+namespace RonbunMatome
 {
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum EntryType
     {
         Article,
