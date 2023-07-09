@@ -376,7 +376,8 @@ namespace RonbunMatome
         }
 
         private EntryType _entryType = EntryType.Misc;
-        [JsonPropertyName("entrytype")] public EntryType EntryType
+        [JsonPropertyName("entrytype")]
+        public EntryType EntryType
         {
             get { return _entryType; }
             set { _entryType = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EntryType))); }
@@ -396,6 +397,14 @@ namespace RonbunMatome
         {
             get { return _files; }
             set { _files = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Files))); }
+        }
+
+        private string _institution = string.Empty;
+        [JsonPropertyName("institution")]
+        public string Institution
+        {
+            get { return _institution; }
+            set { _institution = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Isbn))); }
         }
 
         private string _isbn = string.Empty;
@@ -422,9 +431,9 @@ namespace RonbunMatome
             set { _keywords = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Keywords))); }
         }
 
-        private string _month = string.Empty;
+        private Month _month = Month.None;
         [JsonPropertyName("month")]
-        public string Month
+        public Month Month
         {
             get { return _month; }
             set { _month = value; PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Month))); }
@@ -529,11 +538,10 @@ namespace RonbunMatome
             {
                 EntryType.Article => "journal",
                 EntryType.InProceedings => "booktitle",
-                EntryType.Misc => "journal",
                 _ => "container",
             };
 
-            string monthString = ConvertMonth(Month);
+            string monthString = MonthConverter.ConvertToAbbreviatedName(Month);
 
             content += "@" + EntryTypeConverter.Convert(EntryType) + "{";
             content += (CitationKey != string.Empty) ? CitationKey + ",\n" : "NULL,\n";
@@ -541,49 +549,17 @@ namespace RonbunMatome
             content += (Title != string.Empty) ? "title = {" + Title + "},\n" : string.Empty;
             content += (Container != string.Empty) ? containerType + " = {" + Container + "},\n" : string.Empty;
             content += (School != string.Empty) ? "school = {" + School + "},\n" : string.Empty;
-            content += (Volume!= string.Empty) ? "volume = {" + Volume + "},\n" : ""    ;
+            content += (Volume!= string.Empty) ? "volume = {" + Volume + "},\n" : string.Empty;
             content += (Number != string.Empty) ? "number = {" + Number + "},\n" : string.Empty;
-            content += (Pages != string.Empty) ? "pages = {" + Pages + "},\n" : ""  ;
+            content += (Pages != string.Empty) ? "pages = {" + Pages + "},\n" : string.Empty;
             content += (Publisher != string.Empty) ? "publisher = {" + Publisher + "},\n" : string.Empty;
+            content += (Institution != string.Empty) ? "institution = {" + Institution + "},\n" : string.Empty;
             content += (Year != string.Empty) ? "year = {" + Year + "},\n" : string.Empty;
-            content += (monthString != string.Empty) ? "month = " + Month + ",\n" : string.Empty;
+            content += (monthString != string.Empty) ? "month = " + monthString + ",\n" : string.Empty;
             content += (Doi != string.Empty) ? "doi = {" + Doi + "},\n" : string.Empty;
             content += "}";
 
             return content;
-        }
-
-        private static string ConvertMonth(string month)
-        {
-            string[] monthList = 
-            {
-                "jan",
-                "feb",
-                "mar",
-                "apr",
-                "may",
-                "jun",
-                "jul",
-                "aug",
-                "sep",
-                "oct",
-                "nov",
-                "dec",
-            };
-
-
-            if (int.TryParse(month, out int idx1))
-            {
-                return monthList[idx1 - 1];
-            }
-
-            int idx2 = Array.IndexOf(monthList, month);
-            if (idx2 != -1)
-            {
-                return monthList[idx2];
-            }
-
-            return string.Empty;
         }
     }
 

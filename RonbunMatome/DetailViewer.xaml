@@ -9,6 +9,7 @@
     <UserControl.Resources>
         <local:ListStringConverter x:Key="ListString"></local:ListStringConverter>
         <local:TitleFontSizeConverter x:Key="TitleFontSizeConverter"></local:TitleFontSizeConverter>
+        <local:MonthConverter x:Key="MonthConverter"></local:MonthConverter>
         <ObjectDataProvider x:Key="EntryTypeEnum" MethodName="GetValues" ObjectType="{x:Type local:EntryType}">
             <ObjectDataProvider.MethodParameters>
                 <x:Type TypeName="local:EntryType"/>
@@ -156,7 +157,7 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0">Month:</Label>
-                    <TextBox x:Name="Month" Grid.Column="1" Text="{Binding Month}"/>
+                    <TextBox x:Name="Month" Grid.Column="1" Text="{Binding Month, Converter={StaticResource MonthConverter}}"/>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>

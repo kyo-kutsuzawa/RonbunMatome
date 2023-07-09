@@ -170,7 +170,8 @@ namespace RonbunMatome
                                     JsonNode? monthNode = array[1];
                                     if (monthNode != null)
                                     {
-                                        bibItem.Month = monthNode.GetValue<int>().ToString();
+                                        string monthString = monthNode.GetValue<int>().ToString();
+                                        bibItem.Month = MonthConverter.ConvertBack(monthString);
                                     }
                                 }
                             }
