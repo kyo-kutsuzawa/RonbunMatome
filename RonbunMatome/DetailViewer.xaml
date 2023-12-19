@@ -148,14 +148,6 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0">Abstract:</Label>
-                    <TextBox x:Name="Abstract" Grid.Column="1" Text="{Binding Abstract}" AcceptsReturn="True"/>
-                </Grid>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
                     <Label Grid.Column="0">Month:</Label>
                     <TextBox x:Name="Month" Grid.Column="1" Text="{Binding Month, Converter={StaticResource MonthConverter}}"/>
                 </Grid>
@@ -164,24 +156,8 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0">Publisher:</Label>
-                    <TextBox x:Name="Publisher" Grid.Column="1" Text="{Binding Publisher}"/>
-                </Grid>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0">Editor:</Label>
-                    <TextBox x:Name="Editor" Grid.Column="1" Text="{Binding Editor}"/>
-                </Grid>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Label Grid.Column="0">Crossref:</Label>
-                    <TextBox x:Name="Crossref" Grid.Column="1" Text="{Binding Crossref}"/>
+                    <Label Grid.Column="0">Abstract:</Label>
+                    <TextBox x:Name="Abstract" Grid.Column="1" Text="{Binding Abstract}" AcceptsReturn="True"/>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -212,6 +188,14 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Crossref:</Label>
+                    <TextBox x:Name="Crossref" Grid.Column="1" Text="{Binding Crossref}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
                     <Label Grid.Column="0">Container (Short):</Label>
                     <TextBox x:Name="ContainerShort" Grid.Column="1" Text="{Binding ContainerShort}"/>
                 </Grid>
@@ -228,6 +212,14 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Editor:</Label>
+                    <TextBox x:Name="Editor" Grid.Column="1" Text="{Binding Editor}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
                     <Label Grid.Column="0">Eprint:</Label>
                     <TextBox x:Name="Eprint" Grid.Column="1" Text="{Binding Eprint}"/>
                 </Grid>
@@ -238,6 +230,14 @@
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0">ISBN:</Label>
                     <TextBox x:Name="Isbn" Grid.Column="1" Text="{Binding Isbn}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Institution:</Label>
+                    <TextBox x:Name="Institution" Grid.Column="1" Text="{Binding Institution}"/>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -262,6 +262,14 @@
                     </Grid.ColumnDefinitions>
                     <Label Grid.Column="0">PMID:</Label>
                     <TextBox x:Name="Pmid" Grid.Column="1" Text="{Binding Pmid}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Publisher:</Label>
+                    <TextBox x:Name="Publisher" Grid.Column="1" Text="{Binding Publisher}"/>
                 </Grid>
                 <Grid>
                     <Grid.ColumnDefinitions>
