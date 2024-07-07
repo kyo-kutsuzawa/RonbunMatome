@@ -1,0 +1,116 @@
+﻿<Window x:Class="RonbunMatome.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:RonbunMatome"
+        xmlns:wpf="clr-namespace:Microsoft.Web.WebView2.Wpf;assembly=Microsoft.Web.WebView2.Wpf"
+        xmlns:properties="clr-namespace:RonbunMatome.Properties"
+        mc:Ignorable="d"
+        Title="RonbunMatome" Height="720" Width="1280" Initialized="Window_Initialized">
+    <Window.DataContext>
+        <local:MainWindowViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <local:LongStringConverter x:Key="LongStringConverter"></local:LongStringConverter>
+        <local:FilenamesConverter x:Key="FilenamesConverter"></local:FilenamesConverter>
+        <local:AuthorSummaryConverter x:Key="AuthorSummaryConverter"></local:AuthorSummaryConverter>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="0.4*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Menu Grid.ColumnSpan="2" Margin="0,0,0,0" VerticalAlignment="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Add" Command="{Binding AddBibItemCommand}" Click="MenuItem_Click"></MenuItem>
+                <MenuItem Header="Save" Command="{Binding SaveBibListCommand}"></MenuItem>
+                <MenuItem Header="Export" Command="{Binding ExportBibListCommand}"></MenuItem>
+            </MenuItem>
+            <MenuItem Header="Tool">
+                <MenuItem Header="Export comments with the selected tag" Command="{Binding ExportCommentsCommand}" CommandParameter="{Binding SelectedTag}"/>
+            </MenuItem>
+        </Menu>
+        <TabControl x:Name="BiblioTabControl" Margin="0,18,0,0" Grid.ColumnSpan="1">
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="HeaderTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <TextBlock Text="{TemplateBinding Content}" Margin="10, 0, 10, 0"></TextBlock>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </TabControl.Resources>
+            <TabItem x:Name="LibraryTabItem" Header="Library">
+                <Grid Background="#FFE5E5E5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.2*"/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <ListView x:Name="LibraryListView" Margin="0,0,0,0" Grid.Row="1" ItemsSource="{Binding DisplayedBibList}" SelectedItem="{Binding SelectedBibItem}" FontSize="{Binding Path=FontSize, Source={x:Static properties:Settings.Default}}">
+                            <ListView.Resources>
+                                <Style TargetType="GridViewColumnHeader">
+                                    <EventSetter Event="Click" Handler="GridViewColumnHeader_Click"></EventSetter>
+                                </Style>
+                            </ListView.Resources>
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn DisplayMemberBinding="{Binding CitationKey}">
+                                        <GridViewColumnHeader Content="Citation Key 　" Tag="Citationkey"></GridViewColumnHeader>
+                                    </GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding Authors, Converter={StaticResource AuthorSummaryConverter}}">
+                                        <GridViewColumnHeader Content="Authors 　" Tag="AuthorSummary"></GridViewColumnHeader>
+                                    </GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding Year}">
+                                        <GridViewColumnHeader Content="Year 　" Tag="Year"></GridViewColumnHeader>
+                                    </GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding Title}">
+                                        <GridViewColumnHeader Content="Title 　" Tag="Title"></GridViewColumnHeader>
+                                    </GridViewColumn>
+                                    <GridViewColumn DisplayMemberBinding="{Binding Container}">
+                                        <GridViewColumnHeader Content="Container 　" Tag="Container"></GridViewColumnHeader>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="SearchTextBox" Grid.Column="0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="{Binding Path=FontSize, Source={x:Static properties:Settings.Default}}">
+                                <TextBox.InputBindings>
+                                    <KeyBinding Key="Enter" Command="{Binding SearchCommand}" CommandParameter="{Binding ElementName=SearchTextBox, Path=Text}"/>
+                                </TextBox.InputBindings>
+                            </TextBox>
+                            <Button Grid.Column="1" Command="{Binding SearchCommand}" CommandParameter="{Binding ElementName=SearchTextBox, Path=Text}">Search</Button>
+                        </Grid>
+                    </Grid>
+                    <ListBox Margin="0,0,5,0" ItemsSource="{Binding TagList}" SelectedItem="{Binding SelectedTag}" FontSize="{Binding Path=FontSize, Source={x:Static properties:Settings.Default}}">
+                        <ListBox.Resources>
+                            <Style TargetType="ListBoxItem">
+                                <EventSetter Event="Selected" Handler="ListBoxItem_Selected"></EventSetter>
+                            </Style>
+                        </ListBox.Resources>
+                    </ListBox>
+                    <GridSplitter HorizontalAlignment="Right" Margin="0,0,0,0" Width="5"/>
+                </Grid>
+            </TabItem>
+            <TabItem x:Name="PapersTabItem" DataContext="{Binding SelectedBibItem}" Header="{Binding Title, Converter={StaticResource LongStringConverter}}">
+                <wpf:WebView2 Source="{Binding Files, Mode=OneWay, Converter={StaticResource FilenamesConverter}}"/>
+            </TabItem>
+        </TabControl>
+        <GridSplitter Grid.Column="1" HorizontalAlignment="Left" Margin="0,0,0,0" Width="5"/>
+        <local:DetailViewer x:Name="Details" Grid.Column="1" Margin="5,18,0,0" DataContext="{Binding SelectedBibItem}" FontSize="{Binding Path=FontSize, Source={x:Static properties:Settings.Default}}"/>
+    </Grid>
+</Window>

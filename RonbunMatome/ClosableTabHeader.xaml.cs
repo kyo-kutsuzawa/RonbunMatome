@@ -13,25 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Untei
+namespace RonbunMatome
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// ClosableTabHeader.xaml の相互作用ロジック
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ClosableTabHeader : UserControl
     {
-        public MainWindow()
+        public ClosableTabHeader()
         {
             InitializeComponent();
-
-            BibManager tmp = new BibManager();
-            DebugTextBox.Text = tmp.JsonString;
-
-            foreach (string key in tmp.GetKeys())
-            {
-                List<string> list = tmp.GetBibSummary(key);
-                BiblioListView.Items.Add(list);
-            }
         }
     }
 }

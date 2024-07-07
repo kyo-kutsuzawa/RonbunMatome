@@ -1,0 +1,296 @@
+﻿<UserControl x:Class="RonbunMatome.DetailViewer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:RonbunMatome"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800" Background="White">
+    <UserControl.Resources>
+        <local:ListStringConverter x:Key="ListString"></local:ListStringConverter>
+        <local:TitleFontSizeConverter x:Key="TitleFontSizeConverter"></local:TitleFontSizeConverter>
+        <local:MonthConverter x:Key="MonthConverter"></local:MonthConverter>
+        <ObjectDataProvider x:Key="EntryTypeEnum" MethodName="GetValues" ObjectType="{x:Type local:EntryType}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:EntryType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <ScrollViewer Grid.Row="0" Margin="0,0,0,5">
+            <ScrollViewer.Resources>
+                <Style TargetType="Label">
+                    <Setter Property="FontWeight" Value="Bold"></Setter>
+                    <Setter Property="VerticalAlignment" Value="Top"></Setter>
+                </Style>
+                <Style TargetType="TextBox">
+                    <Setter Property="BorderBrush" Value="Transparent"></Setter>
+                    <Setter Property="VerticalAlignment" Value="Center"></Setter>
+                    <Setter Property="TextWrapping" Value="WrapWithOverflow"></Setter>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type TextBox}">
+                                <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
+                                    <ScrollViewer x:Name="PART_ContentHost" Focusable="false" HorizontalScrollBarVisibility="Hidden" VerticalScrollBarVisibility="Hidden"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="BorderBrush" Value="Gray"></Setter>
+                                    </Trigger>
+                                    <Trigger Property="IsFocused" Value="true">
+                                        <Setter Property="BorderThickness" Value="1"></Setter>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ScrollViewer.Resources>
+            <StackPanel Orientation="Vertical">
+                <ComboBox ItemsSource="{Binding Source={StaticResource EntryTypeEnum}}" SelectedItem="{Binding EntryType}"/>
+                <TextBox x:Name="Title" TextWrapping="WrapWithOverflow" FontWeight="Bold" FontSize="{Binding Path=FontSize, RelativeSource={RelativeSource FindAncestor, AncestorType=UserControl}, Converter={StaticResource TitleFontSizeConverter}}" Text="{Binding Title}"/>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Authors:" Grid.Column="0"/>
+                    <TextBox x:Name="Authors" Grid.Column="1" Text="{Binding Authors, Converter={StaticResource ListString}}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Container:</Label>
+                    <TextBox x:Name="Container" Grid.Column="1" Text="{Binding Container}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Year:</Label>
+                    <TextBox x:Name="Year" Grid.Column="1" Text="{Binding Year}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Citation Key:</Label>
+                    <TextBox x:Name="Citationkey" Grid.Column="1" Text="{Binding CitationKey}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Tags:</Label>
+                    <TextBox x:Name="Tags" Grid.Column="1" Text="{Binding Tags, Converter={StaticResource ListString}}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">DOI:</Label>
+                    <TextBox x:Name="Doi" Grid.Column="1" Text="{Binding Doi}"/>
+                    <Button x:Name="DoiButton" Grid.Column="2" Click="DoiButton_Click" Padding="5,0,5,0">Search</Button>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Files:</Label>
+                    <TextBox x:Name="Files" Grid.Column="1" Text="{Binding Files, Converter={StaticResource ListString}}" AcceptsReturn="True"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">URLs:</Label>
+                    <TextBox x:Name="URLs" Grid.Column="1" Text="{Binding Urls, Converter={StaticResource ListString}}" AcceptsReturn="True"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Pages:</Label>
+                    <TextBox x:Name="Pages" Grid.Column="1" Text="{Binding Pages}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Volume:</Label>
+                    <TextBox x:Name="Volume" Grid.Column="1" Text="{Binding Volume}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Number:</Label>
+                    <TextBox x:Name="Number" Grid.Column="1" Text="{Binding Number}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Month:</Label>
+                    <TextBox x:Name="Month" Grid.Column="1" Text="{Binding Month, Converter={StaticResource MonthConverter}}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Abstract:</Label>
+                    <TextBox x:Name="Abstract" Grid.Column="1" Text="{Binding Abstract}" AcceptsReturn="True"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Address:</Label>
+                    <TextBox x:Name="Address" Grid.Column="1" Text="{Binding Address}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Arxiv ID:</Label>
+                    <TextBox x:Name="Arxivid" Grid.Column="1" Text="{Binding Arxivid}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Chapter:</Label>
+                    <TextBox x:Name="Chapter" Grid.Column="1" Text="{Binding Chapter}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Crossref:</Label>
+                    <TextBox x:Name="Crossref" Grid.Column="1" Text="{Binding Crossref}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Container (Short):</Label>
+                    <TextBox x:Name="ContainerShort" Grid.Column="1" Text="{Binding ContainerShort}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Edition:</Label>
+                    <TextBox x:Name="Edition" Grid.Column="1" Text="{Binding Edition}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Editor:</Label>
+                    <TextBox x:Name="Editor" Grid.Column="1" Text="{Binding Editor}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Eprint:</Label>
+                    <TextBox x:Name="Eprint" Grid.Column="1" Text="{Binding Eprint}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">ISBN:</Label>
+                    <TextBox x:Name="Isbn" Grid.Column="1" Text="{Binding Isbn}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Institution:</Label>
+                    <TextBox x:Name="Institution" Grid.Column="1" Text="{Binding Institution}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">ISSN:</Label>
+                    <TextBox x:Name="Issn" Grid.Column="1" Text="{Binding Issn}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Keywords:</Label>
+                    <TextBox x:Name="Keywords" Grid.Column="1" Text="{Binding Keywords}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">PMID:</Label>
+                    <TextBox x:Name="Pmid" Grid.Column="1" Text="{Binding Pmid}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Publisher:</Label>
+                    <TextBox x:Name="Publisher" Grid.Column="1" Text="{Binding Publisher}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">School:</Label>
+                    <TextBox x:Name="School" Grid.Column="1" Text="{Binding School}"/>
+                </Grid>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="0">Series:</Label>
+                    <TextBox x:Name="Series" Grid.Column="1" Text="{Binding Series}"/>
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+        <GridSplitter HorizontalAlignment="Stretch" Margin="0,0,0,0" Height="5" VerticalAlignment="Bottom"/>
+        <TextBox x:Name="CommentBox" Margin="0,0,0,0" Grid.Row="1" TextWrapping="Wrap" AcceptsReturn="True" Text="{Binding Comment}">
+        </TextBox>
+    </Grid>
+</UserControl>
